@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 5: Diffusion & Generative Media — AI Core Advancements</title>
+    <meta name="description" content="Explore the mechanics of diffusion models, latent diffusion, and how Diffusion Transformers (DiT) generate high-fidelity images and videos.">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <a href="../index.html" class="logo-link">AI CORE <span class="logo-badge">GUIDE</span></a>
+            </div>
+            <div class="controls">
+                <div class="font-scale-controls">
+                    <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
+                    <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
+                </div>
+                <button id="theme-toggle" class="btn-icon" aria-label="Toggle dark mode">🌙 Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Toggle Kindle e-ink mode">📖 Kindle / E-Ink</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="animated">
+        <article class="chapter-body">
+            <div class="chapter-header">
+                <div class="chapter-meta">
+                    <span>Chapter 5</span>
+                    <span>• 8 min read</span>
+                </div>
+                <h1>Diffusion & Generative Media</h1>
+            </div>
+
+            <p>Generative AI for images and videos has undergone a massive transformation. Early image generators, called GANs (Generative Adversarial Networks), were notoriously difficult to train, often failing to produce coherent pictures. Today, almost all modern image and video generators (Stable Diffusion, Midjourney, Sora, Flux) rely on a mathematical concept called **Diffusion**.</p>
+
+            <h2>The Diffusion Paradigm</h2>
+            <p>Instead of trying to draw an image from scratch, a diffusion model is trained to do one thing: **remove static noise.** The process is split into two phases: the forward process and the reverse process.</p>
+
+            <h3>1. The Forward Process (Destroying Information)</h3>
+            <p>We take a clean photograph (say, of a golden retriever) and add a tiny layer of random mathematical noise. We repeat this step-by-step, perhaps 1,000 times, until the original dog is completely obliterated, leaving nothing but a block of pure gray static. This process requires no neural network; it is pure math.</p>
+
+            <h3>2. The Reverse Process (Creating Information)</h3>
+            <p>This is where the neural network lives. We show the model a noisy image and ask it: <em>"Can you predict exactly how much noise was added in this step?"</em> </p>
+            <p>By training the model on millions of pairs of clean and noisy images, it learns to recognize subtle structures within noise. When we want to generate a new image, we feed the model a block of **pure, random noise** and a text prompt (e.g., "A golden retriever playing in the grass"). The model subtracts a sliver of estimated noise. We repeat this subtraction loop 20 to 50 times. Bit by bit, structures appear, and a completely unique, high-resolution image emerges.</p>
+
+            <div class="concepts-box">
+                <h4>Key Concept: Latent Diffusion</h4>
+                <p>Early diffusion models operated in <strong>"Pixel Space."</strong> Generating a 1024x1024 pixel image meant calculating noise values for over a million pixels at every step. This made early models incredibly slow and memory-intensive.</p>
+                <p>The breakthrough was **Latent Diffusion** (popularized by Stable Diffusion). It uses a <strong>Variational Autoencoder (VAE)</strong> to compress the image into a highly dense representation called "latent space" (shrinking a 512x512 image down to a 64x64 grid). The diffusion model does all its heavy lifting in this low-resolution space, and the VAE decodes the final latents back into pixels at the very end. This saved 90%+ of the compute, making image generation run on consumer laptops.</p>
+            </div>
+
+            <h2>Classifier-Free Guidance (CFG)</h2>
+            <p>How does the model make sure the image it generates actually matches your prompt, instead of wandering off on its own? This is controlled by **Classifier-Free Guidance (CFG)**.</p>
+            <p>During training, the model is occasionally trained without text prompts (unconditioned). During generation, the model predicts two things: what the noise removal should look like <em>with</em> the prompt, and what it should look like <em>without</em> it. The CFG scale decides how much weight to give to the difference. </p>
+            <ul>
+                <li><strong>Low CFG (1 to 3):</strong> Gives the model creative freedom. The image will be artistic but might ignore parts of your prompt.</li>
+                <li><strong>Medium CFG (7 to 9):</strong> The sweet spot for high-quality, prompt-adhering images.</li>
+                <li><strong>High CFG (15+):</strong> Forces strict prompt adherence, though it can make the image look oversaturated and digitally artificial.</li>
+            </ul>
+
+            <h2>The Shift to Diffusion Transformers (DiT)</h2>
+            <p>Traditional diffusion models used a convolutional network backbone called a **U-Net** to predict noise. However, U-Nets struggled to scale efficiently with massive datasets and compute budgets.</p>
+            <p>In 2023, researchers introduced the **Diffusion Transformer (DiT)**. DiT replaces the U-Net with a standard Transformer backbone. By dividing the latent image into patches (similar to how an LLM divides text into tokens), DiT models can scale predictably: adding more parameters and compute directly correlates with better image and video fidelity. This architecture underpins the latest state-of-the-art models like OpenAI's Sora, Stable Diffusion 3, and Flux.</p>
+        </article>
+
+        <nav class="chapter-navigation">
+            <div class="nav-link-card">
+                <span class="nav-label">Previous Chapter</span>
+                <a href="chapter4-moe.html" class="nav-title">Scaling Efficiency</a>
+            </div>
+            <div class="nav-link-card next">
+                <span class="nav-label">Next Chapter</span>
+                <a href="chapter6-agents.html" class="nav-title">Agentic AI & Reasoning</a>
+            </div>
+        </nav>
+    </main>
+
+    <footer>
+        <p>AI Core Advancements Guide — Optimized for Kindle Web Browser.</p>
+        <p>Toggle "Kindle / E-Ink" mode above for a pure book-like reading layout.</p>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+</html>

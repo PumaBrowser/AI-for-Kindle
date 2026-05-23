@@ -1,0 +1,633 @@
+/* Import Google Fonts for Modern Mode */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@300..900&display=swap');
+
+:root {
+    /* Modern Theme - Light Mode (Default) */
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --accent: #6366f1; /* Indigo */
+    --accent-glow: rgba(99, 102, 241, 0.15);
+    --border-color: #e2e8f0;
+    --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 8px -1px rgba(0, 0, 0, 0.03);
+    --header-blur: saturate(180%) blur(12px);
+    --header-bg: rgba(248, 250, 252, 0.8);
+    
+    /* Font stacks */
+    --font-heading: 'Outfit', system-ui, sans-serif;
+    --font-body: 'Lora', Georgia, serif;
+    
+    /* Transitions */
+    --transition-speed: 0.3s;
+    --transition-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Font size scaling */
+    --font-scale: 1rem;
+}
+
+/* Modern Theme - Dark Mode */
+@media (prefers-color-scheme: dark) {
+    :root:not(.light-theme) {
+        --bg-primary: #0b0f19;
+        --bg-secondary: #111827;
+        --bg-tertiary: #1f2937;
+        --text-primary: #f9fafb;
+        --text-secondary: #d1d5db;
+        --text-muted: #9ca3af;
+        --accent: #818cf8; /* Light Indigo */
+        --accent-glow: rgba(129, 140, 248, 0.25);
+        --border-color: #1f2937;
+        --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.05);
+        --header-bg: rgba(11, 15, 25, 0.8);
+    }
+}
+
+/* Explicit Light Theme Overrides */
+:root.light-theme {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --accent: #6366f1;
+    --accent-glow: rgba(99, 102, 241, 0.15);
+    --border-color: #e2e8f0;
+    --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 8px -1px rgba(0, 0, 0, 0.03);
+    --header-bg: rgba(248, 250, 252, 0.8);
+}
+
+/* Explicit Dark Theme Overrides */
+:root.dark-theme {
+    --bg-primary: #0b0f19;
+    --bg-secondary: #111827;
+    --bg-tertiary: #1f2937;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --text-muted: #9ca3af;
+    --accent: #818cf8;
+    --accent-glow: rgba(129, 140, 248, 0.25);
+    --border-color: #1f2937;
+    --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.05);
+    --header-bg: rgba(11, 15, 25, 0.8);
+}
+
+/* ==========================================================================
+   Kindle / E-Ink Mode Overrides
+   Designed for maximum readability, high contrast, zero animations, and simple rendering
+   ========================================================================== */
+body.kindle-mode {
+    --bg-primary: #ffffff !important;
+    --bg-secondary: #ffffff !important;
+    --bg-tertiary: #ffffff !important;
+    --text-primary: #000000 !important;
+    --text-secondary: #000000 !important;
+    --text-muted: #333333 !important;
+    --accent: #000000 !important;
+    --accent-glow: transparent !important;
+    --border-color: #000000 !important;
+    --card-shadow: none !important;
+    --header-blur: none !important;
+    --header-bg: #ffffff !important;
+    
+    --font-heading: Georgia, serif !important;
+    --font-body: Georgia, serif !important;
+    
+    --transition-speed: 0s !important;
+}
+
+body.kindle-mode * {
+    transition: none !important;
+    animation: none !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+body.kindle-mode a {
+    text-decoration: underline !important;
+    color: #000000 !important;
+}
+
+body.kindle-mode a:hover {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+body.kindle-mode .card,
+body.kindle-mode .chapter-card {
+    border: 2px solid #000000 !important;
+    border-radius: 0px !important;
+    background: #ffffff !important;
+    margin-bottom: 1.5rem !important;
+}
+
+body.kindle-mode button, 
+body.kindle-mode .btn {
+    border: 2px solid #000000 !important;
+    border-radius: 0px !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+    min-height: 48px !important; /* Larger hit target for e-ink touch screens */
+    padding: 12px 20px !important;
+}
+
+body.kindle-mode button:hover,
+body.kindle-mode .btn:hover {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+body.kindle-mode pre,
+body.kindle-mode code {
+    background: #ffffff !important;
+    border: 1px solid #000000 !important;
+    border-radius: 0 !important;
+    color: #000000 !important;
+}
+
+/* ==========================================================================
+   Base Layout & Styling
+   ========================================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: calc(18px * var(--font-scale, 1));
+    line-height: 1.6;
+    transition: background-color var(--transition-speed) var(--transition-ease),
+                color var(--transition-speed) var(--transition-ease);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text-primary);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.6rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
+h3 { font-size: 1.3rem; }
+
+p {
+    margin-bottom: 1.25rem;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--transition-speed) var(--transition-ease);
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   Header and Navigation
+   ========================================================================== */
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--header-bg);
+    backdrop-filter: var(--header-blur);
+    -webkit-backdrop-filter: var(--header-blur);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 1.5rem;
+    transition: background-color var(--transition-speed) var(--transition-ease),
+                border-color var(--transition-speed) var(--transition-ease);
+}
+
+.header-container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo-link {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+}
+
+.logo-link:hover {
+    text-decoration: none;
+}
+
+.logo-badge {
+    background-color: var(--accent);
+    color: #ffffff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-left: 0.5rem;
+}
+
+body.kindle-mode .logo-badge {
+    border: 1px solid #000000;
+    background: #ffffff;
+    color: #000000;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.btn-icon:hover {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-color: var(--accent);
+}
+
+/* ==========================================================================
+   Main Content Layout
+   ========================================================================== */
+
+main {
+    max-width: 760px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 3rem 1.5rem;
+    background: radial-gradient(circle at top right, var(--accent-glow), transparent 60%);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+}
+
+body.kindle-mode .hero {
+    background: transparent !important;
+    border: 2px solid #000000 !important;
+    border-radius: 0px !important;
+    padding: 2rem 1rem !important;
+}
+
+.hero h1 {
+    font-size: 2.8rem;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Table of Contents / Chapter Grid */
+.chapter-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.chapter-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+    box-shadow: var(--card-shadow);
+    transition: transform var(--transition-speed) var(--transition-ease),
+                border-color var(--transition-speed) var(--transition-ease);
+}
+
+.chapter-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+}
+
+.chapter-number {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    min-width: 40px;
+    text-align: center;
+    line-height: 1;
+}
+
+.chapter-info {
+    flex-grow: 1;
+}
+
+.chapter-title {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.chapter-title a {
+    color: var(--text-primary);
+}
+
+.chapter-title a:hover {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.chapter-description {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+/* Reading Layout */
+.chapter-header {
+    margin-bottom: 2.5rem;
+}
+
+.chapter-meta {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.chapter-body {
+    font-family: var(--font-body);
+}
+
+.chapter-body blockquote {
+    border-left: 4px solid var(--accent);
+    padding-left: 1.25rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--text-secondary);
+}
+
+body.kindle-mode .chapter-body blockquote {
+    border-left: 4px solid #000000 !important;
+    color: #000000 !important;
+}
+
+.chapter-body ul,
+.chapter-body ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.chapter-body li {
+    margin-bottom: 0.5rem;
+}
+
+.chapter-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 2rem 0;
+    border: 1px solid var(--border-color);
+}
+
+body.kindle-mode .chapter-body img {
+    border: 2px solid #000000 !important;
+    border-radius: 0px !important;
+    filter: grayscale(100%) contrast(120%) !important;
+}
+
+.code-container {
+    margin: 1.5rem 0;
+}
+
+pre {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.25rem;
+    overflow-x: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9em;
+    background-color: var(--bg-tertiary);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+}
+
+/* Key Concepts Box */
+.concepts-box {
+    background-color: var(--bg-tertiary);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 1.5rem;
+    margin: 2rem 0;
+}
+
+body.kindle-mode .concepts-box {
+    border: 2px solid #000000 !important;
+    border-left: 8px solid #000000 !important;
+    border-radius: 0px !important;
+    background: #ffffff !important;
+}
+
+.concepts-box h4 {
+    margin-top: 0;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+}
+
+body.kindle-mode .concepts-box h4 {
+    color: #000000 !important;
+}
+
+.concepts-box ul {
+    margin-bottom: 0;
+    list-style-type: square;
+}
+
+/* Navigation Footer at bottom of chapters */
+.chapter-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.nav-link-card {
+    display: flex;
+    flex-direction: column;
+    max-width: 45%;
+}
+
+.nav-link-card.next {
+    text-align: right;
+    align-items: flex-end;
+}
+
+.nav-label {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.nav-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-top: 0.25rem;
+}
+
+/* Footer Section */
+footer {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    margin-top: 6rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-family: var(--font-heading);
+}
+
+footer p {
+    margin-bottom: 0.5rem;
+}
+
+/* Quick Control Panel for Kindle Font Scaling */
+.font-scale-controls {
+    display: none;
+    align-items: center;
+    gap: 0.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2px;
+}
+
+body.kindle-mode .font-scale-controls {
+    display: flex;
+    border: 2px solid #000000 !important;
+    border-radius: 0px !important;
+}
+
+.btn-scale {
+    background: transparent;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.btn-scale:hover {
+    background: #000000;
+    color: #ffffff;
+}
+
+/* Animations (Modern Mode Only) */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+main.animated {
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ==========================================================================
+   Responsive adjustments
+   ========================================================================== */
+
+@media (max-width: 600px) {
+    body {
+        font-size: calc(16px * var(--font-scale, 1));
+    }
+    
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.4rem; }
+    
+    .hero {
+        padding: 2rem 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+    
+    .chapter-card {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1.25rem;
+    }
+    
+    .chapter-number {
+        text-align: left;
+        font-size: 1.5rem;
+    }
+    
+    .chapter-navigation {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: stretch;
+    }
+    
+    .nav-link-card {
+        max-width: 100%;
+    }
+    
+    .nav-link-card.next {
+        text-align: left;
+        align-items: flex-start;
+    }
+}

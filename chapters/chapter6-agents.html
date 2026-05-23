@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 6: Agentic AI & Reasoning — AI Core Advancements</title>
+    <meta name="description" content="Explore Agentic AI, function calling, tool use, and the transition from intuitive System 1 chatbots to deliberate System 2 reasoning models.">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <a href="../index.html" class="logo-link">AI CORE <span class="logo-badge">GUIDE</span></a>
+            </div>
+            <div class="controls">
+                <div class="font-scale-controls">
+                    <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
+                    <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
+                </div>
+                <button id="theme-toggle" class="btn-icon" aria-label="Toggle dark mode">🌙 Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Toggle Kindle e-ink mode">📖 Kindle / E-Ink</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="animated">
+        <article class="chapter-body">
+            <div class="chapter-header">
+                <div class="chapter-meta">
+                    <span>Chapter 6</span>
+                    <span>• 9 min read</span>
+                </div>
+                <h1>Agentic AI & Reasoning</h1>
+            </div>
+
+            <p>For the first few years of the LLM boom, AI models were treated as passive chatbots: you write a prompt, and the model instantly outputs a response. Today, the frontier has shifted toward **Agentic AI**. Instead of answering statically, agentic systems act as autonomous software entities that can plan, use external tools, inspect their own output, and run in loops to solve multi-step problems.</p>
+
+            <h2>Tool Use & Function Calling</h2>
+            <p>LLMs are notoriously bad at precise math (like multiplying two 8-digit numbers) and cannot fetch live data or interact with the physical world because they are just word-prediction engines. </p>
+            <p>**Tool Use** (or **Function Calling**) overcomes this limitation by giving models hands. The model is provided with a list of available tools, described in plain text. For example:</p>
+            <pre><code>Available Tool: calculate_weather(location, date)
+- Returns the temperature forecast for a location.</code></pre>
+            <p>If the user asks: <em>"Should I wear a coat in Chicago tomorrow?"</em>, the LLM recognizes it cannot answer from memory. Instead of guessing, it outputs a structured instruction:</p>
+            <pre><code>{
+  "call": "calculate_weather",
+  "arguments": { "location": "Chicago", "date": "tomorrow" }
+}</code></pre>
+            <p>The host application intercepts this JSON, runs the actual weather API, receives the result (e.g., "Chicago: 41°F, Rain"), and appends it to the model's chat history. The LLM reads the result and finishes its response: <em>"Yes, you should wear a coat. Chicago will be 41°F and raining tomorrow."</em></p>
+
+            <h2>Reasoning Loops: ReAct and Reflection</h2>
+            <p>To solve complex tasks, agents use structured loops rather than generating answers in a single pass.</p>
+
+            <h3>1. The ReAct (Reason + Act) Loop</h3>
+            <p>ReAct forces the model to document its thinking before taking actions. The loop proceeds as follows:</p>
+            <ul>
+                <li><strong>Thought:</strong> The model explains its plan (e.g., "I need to find the population of France, then multiply it by 0.12").</li>
+                <li><strong>Action:</strong> The model calls a search engine or calculator tool.</li>
+                <li><strong>Observation:</strong> The model reads the tool's output and updates its plan, looping back to Thought until the task is complete.</li>
+            </ul>
+
+            <h3>2. Reflection and Self-Correction</h3>
+            <p>If a model writes a block of code, it may contain a bug. A reflection agent doesn't send the code to the user immediately. Instead, it runs the code in an isolated environment, catches any error logs, feeds those errors back to itself, and rewrites the code to fix the bug. This cyclic feedback loop dramatically boosts task success rates.</p>
+
+            <div class="concepts-box">
+                <h4>System 1 vs. System 2 Thinking in AI</h4>
+                <p>Cognitive psychologist Daniel Kahneman famously split human thinking into two modes:</p>
+                <ul>
+                    <li><strong>System 1 (Fast):</strong> Fast, intuitive, automatic actions (e.g., answering "2+2=?", reading a familiar road sign).</li>
+                    <li><strong>System 2 (Slow):</strong> Slow, deliberate, logical reasoning (e.g., solving "17 × 24", filling out a tax form).</li>
+                </ul>
+                <p>Standard LLMs operate purely in **System 1**. They output the next token immediately without pre-planning. If they start a sentence poorly, they cannot backtrack, often leading to logical dead-ends.</p>
+                <p>Modern **System 2 Reasoning Models** (like OpenAI's o1 / Strawberry series or Gemini's reasoning modes) are trained to generate a hidden "Chain of Thought" (CoT) before outputting their final response. They write thousands of invisible reasoning tokens to check their work, simulate branches of logic, backtrack when they hit errors, and deliberate on the best approach. This allows models to solve complex competition-level math, coding, and science problems.</p>
+            </div>
+        </article>
+
+        <nav class="chapter-navigation">
+            <div class="nav-link-card">
+                <span class="nav-label">Previous Chapter</span>
+                <a href="chapter5-diffusion.html" class="nav-title">Diffusion & Generative Media</a>
+            </div>
+            <div class="nav-link-card next">
+                <span class="nav-label">Next Chapter</span>
+                <a href="chapter7-frontiers.html" class="nav-title">Future Frontiers</a>
+            </div>
+        </nav>
+    </main>
+
+    <footer>
+        <p>AI Core Advancements Guide — Optimized for Kindle Web Browser.</p>
+        <p>Toggle "Kindle / E-Ink" mode above for a pure book-like reading layout.</p>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+</html>
