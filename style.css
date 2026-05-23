@@ -610,6 +610,117 @@ main.animated {
     animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Illustrations Styling */
+.illustration-container {
+    width: 100%;
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: center;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+body.kindle-mode .illustration-container {
+    background-color: #ffffff !important;
+    border: 2px solid #000000 !important;
+    border-radius: 0px !important;
+}
+
+.illustration {
+    width: 100%;
+    max-width: 580px;
+    height: auto;
+    display: block;
+}
+
+/* SVG Element styling matching the theme dynamically */
+.illustration text {
+    fill: var(--text-primary);
+    font-family: var(--font-heading);
+    font-weight: 500;
+}
+
+.illustration text.muted {
+    fill: var(--text-muted);
+}
+
+.illustration .stroke-accent {
+    stroke: var(--accent);
+    stroke-width: 2px;
+}
+
+.illustration .fill-accent {
+    fill: var(--accent);
+}
+
+.illustration .fill-accent-glow {
+    fill: var(--accent-glow);
+}
+
+.illustration .stroke-border {
+    stroke: var(--border-color);
+    stroke-width: 1.5px;
+}
+
+.illustration .fill-card {
+    fill: var(--bg-secondary);
+}
+
+.illustration .fill-tertiary {
+    fill: var(--bg-tertiary);
+}
+
+.illustration .stroke-muted {
+    stroke: var(--text-muted);
+    stroke-dasharray: 4 4;
+    stroke-width: 1.5px;
+}
+
+/* Kindle Mode overrides for SVGs to guarantee perfect high-contrast e-ink printing */
+body.kindle-mode .illustration text {
+    fill: #000000 !important;
+    font-family: Georgia, serif !important;
+}
+
+body.kindle-mode .illustration text.muted {
+    fill: #000000 !important;
+}
+
+body.kindle-mode .illustration .stroke-accent {
+    stroke: #000000 !important;
+    stroke-width: 2px !important;
+}
+
+body.kindle-mode .illustration .fill-accent {
+    fill: #000000 !important;
+}
+
+body.kindle-mode .illustration .fill-accent-glow {
+    fill: transparent !important;
+}
+
+body.kindle-mode .illustration .stroke-border {
+    stroke: #000000 !important;
+    stroke-width: 2px !important;
+}
+
+body.kindle-mode .illustration .fill-card {
+    fill: #ffffff !important;
+}
+
+body.kindle-mode .illustration .fill-tertiary {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 1px !important;
+}
+
+body.kindle-mode .illustration .stroke-muted {
+    stroke: #000000 !important;
+    stroke-dasharray: 2 2 !important;
+}
+
 /* ==========================================================================
    Responsive adjustments
    ========================================================================== */

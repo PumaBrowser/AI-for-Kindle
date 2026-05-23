@@ -49,6 +49,48 @@
 
             <div class="concepts-box">
                 <h4>Key Concept: The Query-Key-Value (QKV) Analogy</h4>
+                <div class="illustration-container">
+                    <svg class="illustration" viewBox="0 0 580 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Query Vector -->
+                        <rect x="20" y="60" width="100" height="60" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="70" y="88" text-anchor="middle" font-size="14" font-weight="bold">Query (Q)</text>
+                        <text x="70" y="105" text-anchor="middle" font-size="11" class="muted">"What I seek"</text>
+
+                        <!-- Similarity Multiplication -->
+                        <path d="M120 90 L200 45" class="stroke-accent" stroke-width="2" />
+                        <path d="M120 90 L200 135" class="stroke-muted" stroke-width="1.5" />
+
+                        <!-- Key Vectors -->
+                        <rect x="200" y="15" width="100" height="60" rx="6" class="fill-accent-glow stroke-accent" />
+                        <text x="250" y="43" text-anchor="middle" font-size="14" font-weight="bold" class="fill-accent">Key 1 (K₁)</text>
+                        <text x="250" y="60" text-anchor="middle" font-size="11" class="muted">High Match (90%)</text>
+
+                        <rect x="200" y="105" width="100" height="60" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="250" y="133" text-anchor="middle" font-size="14" font-weight="bold">Key 2 (K₂)</text>
+                        <text x="250" y="150" text-anchor="middle" font-size="11" class="muted">Low Match (10%)</text>
+
+                        <!-- Weighted Values -->
+                        <path d="M300 45 L380 45" class="stroke-accent" stroke-width="2" />
+                        <path d="M300 135 L380 135" class="stroke-muted" stroke-width="1.5" />
+
+                        <!-- Value Vectors -->
+                        <rect x="380" y="15" width="100" height="60" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="430" y="43" text-anchor="middle" font-size="14" font-weight="bold">Value 1 (V₁)</text>
+                        <text x="430" y="60" text-anchor="middle" font-size="11" class="muted">Content 1</text>
+
+                        <rect x="380" y="105" width="100" height="60" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="430" y="133" text-anchor="middle" font-size="14" font-weight="bold">Value 2 (V₂)</text>
+                        <text x="430" y="150" text-anchor="middle" font-size="11" class="muted">Content 2</text>
+
+                        <!-- Sum/Output -->
+                        <path d="M480 45 L520 75" class="stroke-accent" stroke-width="2" />
+                        <path d="M480 135 L520 105" class="stroke-muted" stroke-width="1.5" />
+
+                        <!-- Output Vector -->
+                        <circle cx="535" cy="90" r="20" class="fill-accent stroke-accent" />
+                        <text x="535" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">Σ</text>
+                    </svg>
+                </div>
                 <p>To compute attention, the Transformer assigns three vectors to every single word:</p>
                 <ul>
                     <li><strong>Query (Q):</strong> What the word is looking for (e.g., "I am a pronoun, where is my noun?").</li>
