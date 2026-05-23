@@ -387,6 +387,17 @@ body.kindle-mode .hero {
     margin-bottom: 0;
 }
 
+/* Doom bonus card accent */
+.doom-card {
+    border-left: 4px solid var(--accent);
+    background: linear-gradient(135deg, var(--bg-secondary), var(--accent-glow));
+}
+
+body.kindle-mode .doom-card {
+    border-left: 6px solid #000000 !important;
+    background: #ffffff !important;
+}
+
 /* Reading Layout */
 .chapter-header {
     margin-bottom: 2.5rem;
