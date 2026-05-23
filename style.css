@@ -331,6 +331,8 @@ body.kindle-mode .hero {
 }
 
 .chapter-card {
+    position: relative;
+    cursor: pointer;
     background-color: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: 12px;
@@ -345,6 +347,10 @@ body.kindle-mode .hero {
 .chapter-card:hover {
     transform: translateY(-2px);
     border-color: var(--accent);
+}
+
+.chapter-card:hover .chapter-title a {
+    color: var(--accent);
 }
 
 .chapter-number {
@@ -504,6 +510,8 @@ body.kindle-mode .concepts-box h4 {
 }
 
 .nav-link-card {
+    position: relative;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     max-width: 45%;
@@ -526,6 +534,24 @@ body.kindle-mode .concepts-box h4 {
     font-weight: 700;
     font-size: 1.1rem;
     margin-top: 0.25rem;
+    color: var(--text-primary);
+    transition: color var(--transition-speed) var(--transition-ease);
+}
+
+.nav-link-card:hover .nav-title {
+    color: var(--accent);
+}
+
+/* Stretched link to make the entire card / block clickable */
+.chapter-card .chapter-title a::after,
+.nav-link-card a.nav-title::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
 }
 
 /* Footer Section */
