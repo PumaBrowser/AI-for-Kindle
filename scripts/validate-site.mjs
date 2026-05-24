@@ -16,6 +16,7 @@ for (const file of htmlFiles) {
   check(/<title>[^<]+<\/title>/.test(html), rel, 'is missing a title');
   check(/<meta\s+name="description"/.test(html), rel, 'is missing a meta description');
   check(/<script\s+src="[^"]*app\.js"/.test(html), rel, 'does not load app.js');
+  check(/id="genz-toggle"/.test(html), rel, 'is missing the Gen Z translation toggle');
 
   for (const href of extractAttributes(html, 'href')) {
     if (isExternal(href) || href.startsWith('mailto:') || href.startsWith('#')) continue;

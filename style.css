@@ -267,6 +267,8 @@ body.kindle-mode .logo-badge {
 .controls {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     gap: 0.5rem;
 }
 
@@ -290,6 +292,17 @@ body.kindle-mode .logo-badge {
     background-color: var(--bg-tertiary);
     color: var(--text-primary);
     border-color: var(--accent);
+}
+
+#genz-toggle[aria-pressed="true"] {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+}
+
+body.kindle-mode #genz-toggle[aria-pressed="true"] {
+    background: #000000 !important;
+    color: #ffffff !important;
 }
 
 /* ==========================================================================
