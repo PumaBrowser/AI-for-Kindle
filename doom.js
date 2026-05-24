@@ -15,6 +15,7 @@
     const BULLET_COOLDOWN = 300;      // ms between shots
     const ENEMY_DAMAGE = 8;
     const PLAYER_DAMAGE = 25;
+    const KINDLE_FRAME_MS = 180;      // ~5.5fps keeps e-ink responsive without overpainting
 
     // ── Map Definition ────────────────────────────────────────────────
     // 1 = stone wall, 2 = brick wall, 3 = metal wall, 0 = open space
@@ -47,6 +48,7 @@
     let gameWon = false;
     let lastTime = 0;
     let lastShot = 0;
+    let lastRender = 0;
     let shotFlash = 0;
     let damageFlash = 0;
     let kills = 0;
@@ -216,6 +218,8 @@
             ctx.fillStyle = getWallColor(ray.wallType, ray.side, ray.dist);
             ctx.fillRect(i * stripW, drawStart, stripW + 1, lineH);
 
+            if (isKindleMode) continue;
+
             // Simple vertical line texture pattern
             if (lineH > 30) {
                 const texX = ray.wallX;
@@ -268,10 +272,12 @@
         ctx.strokeStyle = isKindleMode ? '#000000' : '#00ff88';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(cx - 12, cy); ctx.lineTo(cx - 4, cy);
-        ctx.moveTo(cx + 4, cy); ctx.lineTo(cx + 12, cy);
-        ctx.moveTo(cx, cy - 12); ctx.lineTo(cx, cy - 4);
-        ctx.moveTo(cx, cy + 4); ctx.lineTo(cx, cy + 12);
+        const crosshairOuter = isKindleMode ? 8 : 12;
+        const crosshairInner = isKindleMode ? 3 : 4;
+        ctx.moveTo(cx - crosshairOuter, cy); ctx.lineTo(cx - crosshairInner, cy);
+        ctx.moveTo(cx + crosshairInner, cy); ctx.lineTo(cx + crosshairOuter, cy);
+        ctx.moveTo(cx, cy - crosshairOuter); ctx.lineTo(cx, cy - crosshairInner);
+        ctx.moveTo(cx, cy + crosshairInner); ctx.lineTo(cx, cy + crosshairOuter);
         ctx.stroke();
 
         // Weapon (simple shotgun shape)
@@ -281,7 +287,7 @@
         drawHUD();
 
         // Minimap
-        drawMinimap();
+        if (!isKindleMode) drawMinimap();
     }
 
     // ── Enemy Rendering ───────────────────────────────────────────────
@@ -327,22 +333,11 @@
         if (isKindleMode) {
             // High-contrast black silhouette
             ctx.fillStyle = '#000000';
-            // Head
-            ctx.beginPath();
-            ctx.arc(cx, bodyTop, headR, 0, Math.PI * 2);
-            ctx.fill();
-            // Body
-            ctx.fillRect(cx - sw * 0.3, bodyTop + headR * 0.5, sw * 0.6, sh * 0.45);
-            // Arms
-            ctx.fillRect(cx - sw * 0.45, bodyTop + headR, sw * 0.15, sh * 0.3);
-            ctx.fillRect(cx + sw * 0.3, bodyTop + headR, sw * 0.15, sh * 0.3);
-            // Legs
-            ctx.fillRect(cx - sw * 0.25, bodyBot - sh * 0.3, sw * 0.18, sh * 0.3);
-            ctx.fillRect(cx + sw * 0.07, bodyBot - sh * 0.3, sw * 0.18, sh * 0.3);
-            // Eyes
+            ctx.fillRect(cx - sw * 0.25, bodyTop, sw * 0.5, sh * 0.75);
+            ctx.fillRect(cx - sw * 0.38, bodyTop + sh * 0.18, sw * 0.76, sh * 0.28);
             ctx.fillStyle = '#ffffff';
-            ctx.fillRect(cx - headR * 0.5, bodyTop - headR * 0.3, headR * 0.35, headR * 0.3);
-            ctx.fillRect(cx + headR * 0.15, bodyTop - headR * 0.3, headR * 0.35, headR * 0.3);
+            ctx.fillRect(cx - sw * 0.14, bodyTop + sh * 0.1, sw * 0.08, sh * 0.08);
+            ctx.fillRect(cx + sw * 0.06, bodyTop + sh * 0.1, sw * 0.08, sh * 0.08);
         } else {
             // Colored enemies
             let bodyColor, headColor;
@@ -415,24 +410,13 @@
 
         if (isKindleMode) {
             // Simple black weapon outline
-            ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 3;
-            ctx.fillStyle = '#ffffff';
-
-            // Barrel
-            ctx.fillRect(wx + ww * 0.4, wy, ww * 0.2, wh * 0.6);
-            ctx.strokeRect(wx + ww * 0.4, wy, ww * 0.2, wh * 0.6);
-
-            // Handle
-            ctx.fillRect(wx + ww * 0.25, wy + wh * 0.5, ww * 0.5, wh * 0.5);
-            ctx.strokeRect(wx + ww * 0.25, wy + wh * 0.5, ww * 0.5, wh * 0.5);
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(wx + ww * 0.42, wy + wh * 0.05, ww * 0.16, wh * 0.58);
+            ctx.fillRect(wx + ww * 0.25, wy + wh * 0.55, ww * 0.5, wh * 0.4);
 
             // Muzzle flash
             if (shotFlash > 0.3) {
-                ctx.fillStyle = '#000000';
-                ctx.beginPath();
-                ctx.arc(wx + ww * 0.5, wy - 5, 12, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.fillRect(wx + ww * 0.42, wy - 8, ww * 0.16, 8);
             }
         } else {
             // Metallic weapon
@@ -596,16 +580,29 @@
             player.y = newY;
         }
 
-        // Enemy AI
+        updateEnemies(dt);
+
+        // Check win condition
+        if (enemies.every(e => !e.alive)) {
+            gameWon = true;
+        }
+    }
+
+    function updateEnemies(dt) {
         const now = performance.now();
+        const maxActiveDistance = isKindleMode ? 7 : 10;
+        const attackRangeSq = 1.5 * 1.5;
+        const chaseStopSq = 1.2 * 1.2;
+        const maxActiveDistanceSq = maxActiveDistance * maxActiveDistance;
+
         for (const e of enemies) {
             if (!e.alive) continue;
             const edx = player.x - e.x;
             const edy = player.y - e.y;
-            const dist = Math.sqrt(edx * edx + edy * edy);
+            const distSq = edx * edx + edy * edy;
 
-            // Move toward player if distance > 1.2
-            if (dist > 1.2 && dist < 10) {
+            if (distSq > chaseStopSq && distSq < maxActiveDistanceSq) {
+                const dist = Math.sqrt(distSq);
                 const speed = (e.type === 'demon' ? ENEMY_SPEED * 1.3 : ENEMY_SPEED) * dt;
                 const nx = e.x + (edx / dist) * speed;
                 const ny = e.y + (edy / dist) * speed;
@@ -615,8 +612,7 @@
                 }
             }
 
-            // Attack player if close
-            if (dist < 1.5 && now - e.lastAttack > 1200) {
+            if (distSq < attackRangeSq && now - e.lastAttack > 1200) {
                 e.lastAttack = now;
                 const dmg = e.type === 'baron' ? ENEMY_DAMAGE * 2 : ENEMY_DAMAGE;
                 player.health = Math.max(0, player.health - dmg);
@@ -625,11 +621,6 @@
                     gameOver = true;
                 }
             }
-        }
-
-        // Check win condition
-        if (enemies.every(e => !e.alive)) {
-            gameWon = true;
         }
     }
 
@@ -678,7 +669,7 @@
     }
 
     function hasLineOfSight(x1, y1, x2, y2) {
-        const steps = 30;
+        const steps = isKindleMode ? 18 : 30;
         const dx = (x2 - x1) / steps;
         const dy = (y2 - y1) / steps;
         for (let i = 1; i < steps; i++) {
@@ -735,8 +726,14 @@
     function gameLoop(time) {
         if (!gameRunning) return;
 
-        const dt = Math.min(time - lastTime, 50); // cap dt to prevent spiral
+        if (isKindleMode && time - lastRender < KINDLE_FRAME_MS) {
+            requestAnimationFrame(gameLoop);
+            return;
+        }
+
+        const dt = Math.min(time - lastTime, isKindleMode ? KINDLE_FRAME_MS : 50); // cap dt to prevent spiral
         lastTime = time;
+        lastRender = time;
 
         update(dt);
 
@@ -819,6 +816,7 @@
         if (!canvas) return;
 
         ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
 
         // Detect kindle mode
         isKindleMode = document.body.classList.contains('kindle-mode');
@@ -826,6 +824,7 @@
         // Observe kindle mode changes
         const observer = new MutationObserver(() => {
             isKindleMode = document.body.classList.contains('kindle-mode');
+            resize();
         });
         observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
@@ -834,14 +833,16 @@
             const container = canvas.parentElement;
             const maxW = container.clientWidth;
             // Kindle browsers may be slow, use lower resolution
-            const scale = isKindleMode ? 0.5 : 1;
-            width = Math.floor(Math.min(maxW, 700) * scale);
+            const displayW = Math.min(maxW, 700);
+            const scale = isKindleMode ? 0.36 : 1;
+            width = Math.max(180, Math.floor(displayW * scale));
             height = Math.floor(width * 0.6);
-            numRays = Math.floor(width / 2); // 1 ray per 2 pixels
+            numRays = isKindleMode ? Math.max(36, Math.floor(width / 6)) : Math.floor(width / 2);
             canvas.width = width;
             canvas.height = height;
-            canvas.style.width = Math.min(maxW, 700) + 'px';
-            canvas.style.height = Math.floor(Math.min(maxW, 700) * 0.6) + 'px';
+            canvas.style.width = displayW + 'px';
+            canvas.style.height = Math.floor(displayW * 0.6) + 'px';
+            if (ctx) ctx.imageSmoothingEnabled = false;
         }
         resize();
         window.addEventListener('resize', resize);
