@@ -122,7 +122,8 @@ body.kindle-mode .chapter-card {
 }
 
 body.kindle-mode button, 
-body.kindle-mode .btn {
+body.kindle-mode .btn,
+body.kindle-mode .btn-icon {
     border: 2px solid #000000 !important;
     border-radius: 0px !important;
     background: #ffffff !important;
@@ -133,7 +134,8 @@ body.kindle-mode .btn {
 }
 
 body.kindle-mode button:hover,
-body.kindle-mode .btn:hover {
+body.kindle-mode .btn:hover,
+body.kindle-mode .btn-icon:hover {
     background: #000000 !important;
     color: #ffffff !important;
 }
@@ -298,6 +300,7 @@ body.kindle-mode .logo-badge {
     background-color: var(--accent);
     border-color: var(--accent);
     color: #ffffff;
+    font-weight: 700;
 }
 
 body.kindle-mode .genz-link.active {
