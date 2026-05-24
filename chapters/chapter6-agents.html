@@ -66,6 +66,35 @@
 
             <div class="concepts-box">
                 <h4>System 1 vs. System 2 Thinking in AI</h4>
+                <div class="illustration-container">
+                    <svg class="illustration" viewBox="0 0 580 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram comparing a fast single-pass answer with a slower reason-act-observe loop">
+                        <rect x="24" y="38" width="218" height="132" rx="8" class="fill-card stroke-border" />
+                        <text x="133" y="68" text-anchor="middle" font-size="15" font-weight="bold">System 1</text>
+                        <rect x="54" y="94" width="70" height="44" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="89" y="120" text-anchor="middle" font-size="12">Prompt</text>
+                        <path d="M124 116 L172 116" class="stroke-accent" />
+                        <polygon points="172,116 162,110 162,122" class="fill-accent" />
+                        <rect x="176" y="94" width="40" height="44" rx="6" class="fill-accent-glow stroke-accent" />
+                        <text x="196" y="120" text-anchor="middle" font-size="12">Ans</text>
+                        <text x="133" y="154" text-anchor="middle" font-size="12" class="muted">one forward pass</text>
+
+                        <rect x="302" y="24" width="254" height="168" rx="8" class="fill-card stroke-border" />
+                        <text x="429" y="54" text-anchor="middle" font-size="15" font-weight="bold">System 2 agent loop</text>
+                        <rect x="334" y="82" width="72" height="42" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="370" y="107" text-anchor="middle" font-size="12">Plan</text>
+                        <rect x="452" y="82" width="72" height="42" rx="6" class="fill-accent-glow stroke-accent" />
+                        <text x="488" y="107" text-anchor="middle" font-size="12">Act</text>
+                        <rect x="393" y="138" width="72" height="42" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="429" y="163" text-anchor="middle" font-size="12">Observe</text>
+                        <path d="M406 103 L452 103" class="stroke-accent" />
+                        <polygon points="452,103 442,97 442,109" class="fill-accent" />
+                        <path d="M488 124 L464 138" class="stroke-accent" />
+                        <polygon points="464,138 469,128 474,138" class="fill-accent" />
+                        <path d="M393 159 C350 154 342 130 354 124" class="stroke-accent" />
+                        <polygon points="354,124 344,128 350,136" class="fill-accent" />
+                        <text x="429" y="203" text-anchor="middle" font-size="12" class="muted">repeat until the task is done</text>
+                    </svg>
+                </div>
                 <p>Cognitive psychologist Daniel Kahneman famously split human thinking into two modes:</p>
                 <ul>
                     <li><strong>System 1 (Fast):</strong> Fast, intuitive, automatic actions (e.g., answering "2+2=?", reading a familiar road sign).</li>

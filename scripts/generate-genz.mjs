@@ -126,8 +126,7 @@ function rewriteStaticAssets(html, rel) {
 
   return html
     .replaceAll('href="../style.css"', 'href="../../style.css"')
-    .replaceAll('src="../app.js"', 'src="../../app.js"')
-    .replaceAll('src="../doom.js"', 'src="../../doom.js"');
+    .replaceAll('src="../app.js"', 'src="../../app.js"');
 }
 
 function rewriteGenZControl(html, rel) {

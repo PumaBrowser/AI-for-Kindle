@@ -76,7 +76,7 @@ function isExternal(value) {
 
 function isTechnicalChapter(rel) {
   const normalized = rel.split(path.sep).join('/');
-  return normalized.includes('chapters/chapter') && !normalized.endsWith('play-doom.html');
+  return normalized.includes('chapters/chapter');
 }
 
 function stripTags(value) {

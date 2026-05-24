@@ -44,6 +44,34 @@
 
             <div class="concepts-box">
                 <h4>Sparse Routing in Action</h4>
+                <div class="illustration-container">
+                    <svg class="illustration" viewBox="0 0 580 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram showing a router sending one token to two selected experts">
+                        <rect x="22" y="82" width="92" height="56" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="68" y="105" text-anchor="middle" font-size="13" font-weight="bold">Token</text>
+                        <text x="68" y="123" text-anchor="middle" font-size="11" class="muted">"def"</text>
+
+                        <path d="M114 110 L164 110" class="stroke-accent" />
+                        <polygon points="164,110 154,104 154,116" class="fill-accent" />
+                        <rect x="168" y="72" width="96" height="76" rx="8" class="fill-accent-glow stroke-accent" />
+                        <text x="216" y="104" text-anchor="middle" font-size="14" font-weight="bold">Router</text>
+                        <text x="216" y="123" text-anchor="middle" font-size="11" class="muted">Top-2 gate</text>
+
+                        <path d="M264 110 C304 38 336 30 378 40" class="stroke-accent" />
+                        <path d="M264 110 C304 88 336 86 378 92" class="stroke-muted" />
+                        <path d="M264 110 C304 130 336 132 378 128" class="stroke-accent" />
+                        <path d="M264 110 C304 180 336 188 378 178" class="stroke-muted" />
+
+                        <rect x="382" y="18" width="150" height="44" rx="6" class="fill-accent-glow stroke-accent" />
+                        <text x="457" y="45" text-anchor="middle" font-size="13" font-weight="bold">Expert 3: code</text>
+                        <rect x="382" y="76" width="150" height="44" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="457" y="103" text-anchor="middle" font-size="13">Expert 4: prose</text>
+                        <rect x="382" y="134" width="150" height="44" rx="6" class="fill-accent-glow stroke-accent" />
+                        <text x="457" y="161" text-anchor="middle" font-size="13" font-weight="bold">Expert 5: logic</text>
+
+                        <path d="M532 40 L560 100 L532 156" class="stroke-accent" />
+                        <text x="496" y="202" text-anchor="middle" font-size="12" class="muted">Only selected experts run</text>
+                    </svg>
+                </div>
                 <p>Imagine a model with 8 distinct "Experts." When a token is processed:</p>
                 <ul>
                     <li>If the token is a line of Python code, the Router sends it to <strong>Expert 3 (Code specialist)</strong> and <strong>Expert 5 (Logic specialist)</strong>.</li>

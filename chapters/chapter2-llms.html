@@ -70,6 +70,31 @@ Response: Photosynthesis is the process by which plants use sunlight, water, and
 
             <div class="concepts-box">
                 <h4>Key Concept: Kaplan vs. Chinchilla Scaling Laws</h4>
+                <div class="illustration-container">
+                    <svg class="illustration" viewBox="0 0 580 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram comparing parameter-heavy scaling with compute-optimal scaling">
+                        <rect x="24" y="24" width="236" height="172" rx="8" class="fill-card stroke-border" />
+                        <text x="142" y="54" text-anchor="middle" font-size="15" font-weight="bold">Kaplan-style scaling</text>
+                        <rect x="54" y="78" width="78" height="60" rx="8" class="fill-accent-glow stroke-accent" />
+                        <text x="93" y="104" text-anchor="middle" font-size="13">Params</text>
+                        <text x="93" y="121" text-anchor="middle" font-size="11" class="muted">pushed up</text>
+                        <rect x="158" y="90" width="58" height="36" rx="8" class="fill-tertiary stroke-border" />
+                        <text x="187" y="112" text-anchor="middle" font-size="12">Data</text>
+                        <path d="M93 144 L93 166 L187 166 L187 132" class="stroke-muted" />
+                        <text x="132" y="186" text-anchor="middle" font-size="12" class="muted">Often under-trained</text>
+
+                        <rect x="320" y="24" width="236" height="172" rx="8" class="fill-card stroke-border" />
+                        <text x="438" y="54" text-anchor="middle" font-size="15" font-weight="bold">Chinchilla-style scaling</text>
+                        <circle cx="398" cy="108" r="26" class="fill-accent-glow stroke-accent" />
+                        <text x="398" y="112" text-anchor="middle" font-size="12">Params</text>
+                        <circle cx="478" cy="108" r="26" class="fill-accent-glow stroke-accent" />
+                        <text x="478" y="112" text-anchor="middle" font-size="12">Tokens</text>
+                        <path d="M424 108 L452 108" class="stroke-accent" />
+                        <text x="438" y="156" text-anchor="middle" font-size="12" class="muted">Scale model and data together</text>
+
+                        <path d="M274 110 L306 110" class="stroke-accent" />
+                        <polygon points="306,110 296,104 296,116" class="fill-accent" />
+                    </svg>
+                </div>
                 <p>How do we make models smarter? For a long time, the industry followed <strong>Kaplan's scaling laws</strong> (2020), which suggested that parameter size was the single most important factor—urging engineers to build larger models, even if they couldn't afford to train them on more data.</p>
                 <p>In 2022, DeepMind published the <strong>Chinchilla scaling laws</strong>. They proved that for optimal performance, parameter count and training data (tokens) should scale in equal proportion. Most models were actually <em>under-trained</em> on too little data. This shifted the industry toward training smaller, highly efficient models (like LLaMA or Mistral) for much longer on high-quality tokens, making them far cheaper to run on standard hardware.</p>
             </div>
