@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter 6: Agentic AI & Reasoning — AI Core Advancements</title>
+    <title>Chapter 6: Agentic AI & Reasoning — AI 101 Guide</title>
     <meta name="description" content="Explore Agentic AI, function calling, tool use, and the transition from intuitive System 1 chatbots to deliberate System 2 reasoning models.">
     <link rel="stylesheet" href="../style.css">
 </head>
@@ -11,15 +11,15 @@
     <header>
         <div class="header-container">
             <div class="logo-section">
-                <a href="../index.html" class="logo-link">AI CORE <span class="logo-badge">GUIDE</span></a>
+                <a href="../index.html" class="logo-link">AI 101 <span class="logo-badge">GUIDE</span></a>
             </div>
             <div class="controls">
                 <div class="font-scale-controls">
                     <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
                     <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
                 </div>
-                <button id="theme-toggle" class="btn-icon" aria-label="Toggle dark mode">🌙 Dark</button>
-                <button id="kindle-toggle" class="btn-icon" aria-label="Toggle Kindle e-ink mode">📖 Kindle / E-Ink</button>
+                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">📖 Kindle / E-Ink</button>
             </div>
         </div>
     </header>
@@ -30,15 +30,16 @@
                 <div class="chapter-meta">
                     <span>Chapter 6</span>
                     <span>• 9 min read</span>
+                    <span>• Last reviewed: May 2026</span>
                 </div>
                 <h1>Agentic AI & Reasoning</h1>
             </div>
 
-            <p>For the first few years of the LLM boom, AI models were treated as passive chatbots: you write a prompt, and the model instantly outputs a response. Today, the frontier has shifted toward **Agentic AI**. Instead of answering statically, agentic systems act as autonomous software entities that can plan, use external tools, inspect their own output, and run in loops to solve multi-step problems.</p>
+            <p>For the first few years of the LLM boom, AI models were treated as passive chatbots: you write a prompt, and the model instantly outputs a response. Today, the frontier has shifted toward <strong>Agentic AI</strong>. Instead of answering statically, agentic systems act as autonomous software entities that can plan, use external tools, inspect their own output, and run in loops to solve multi-step problems.</p>
 
             <h2>Tool Use & Function Calling</h2>
             <p>LLMs are notoriously bad at precise math (like multiplying two 8-digit numbers) and cannot fetch live data or interact with the physical world because they are just word-prediction engines. </p>
-            <p>**Tool Use** (or **Function Calling**) overcomes this limitation by giving models hands. The model is provided with a list of available tools, described in plain text. For example:</p>
+            <p><strong>Tool Use</strong> (or <strong>Function Calling</strong>) overcomes this limitation by giving models hands. The model is provided with a list of available tools, described in plain text. For example:</p>
             <pre><code>Available Tool: calculate_weather(location, date)
 - Returns the temperature forecast for a location.</code></pre>
             <p>If the user asks: <em>"Should I wear a coat in Chicago tomorrow?"</em>, the LLM recognizes it cannot answer from memory. Instead of guessing, it outputs a structured instruction:</p>
@@ -69,9 +70,19 @@
                     <li><strong>System 1 (Fast):</strong> Fast, intuitive, automatic actions (e.g., answering "2+2=?", reading a familiar road sign).</li>
                     <li><strong>System 2 (Slow):</strong> Slow, deliberate, logical reasoning (e.g., solving "17 × 24", filling out a tax form).</li>
                 </ul>
-                <p>Standard LLMs operate purely in **System 1**. They output the next token immediately without pre-planning. If they start a sentence poorly, they cannot backtrack, often leading to logical dead-ends.</p>
-                <p>Modern **System 2 Reasoning Models** (like OpenAI's o1 / Strawberry series or Gemini's reasoning modes) are trained to generate a hidden "Chain of Thought" (CoT) before outputting their final response. They write thousands of invisible reasoning tokens to check their work, simulate branches of logic, backtrack when they hit errors, and deliberate on the best approach. This allows models to solve complex competition-level math, coding, and science problems.</p>
+                <p>Standard LLMs operate purely in <strong>System 1</strong>. They output the next token immediately without pre-planning. If they start a sentence poorly, they cannot backtrack, often leading to logical dead-ends.</p>
+                <p>Modern <strong>System 2 Reasoning Models</strong> (including OpenAI's o-series reasoning models and similar reasoning modes from other labs) are trained to spend extra internal compute before producing a final response. They may generate hidden reasoning tokens, check intermediate work, simulate branches of logic, and backtrack when they hit errors. This helps models solve complex math, coding, and science problems more reliably.</p>
             </div>
+
+            <section class="sources-list" aria-labelledby="sources-heading">
+                <h2 id="sources-heading">Sources</h2>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2210.03629">ReAct: Synergizing Reasoning and Acting in Language Models</a> — Yao et al.</li>
+                    <li><a href="https://arxiv.org/abs/2302.04761">Toolformer: Language Models Can Teach Themselves to Use Tools</a> — Schick et al.</li>
+                    <li><a href="https://arxiv.org/abs/2303.11366">Reflexion: Language Agents with Verbal Reinforcement Learning</a> — Shinn et al.</li>
+                    <li><a href="https://openai.com/index/learning-to-reason-with-llms/">Learning to Reason with LLMs</a> — OpenAI</li>
+                </ul>
+            </section>
         </article>
 
         <nav class="chapter-navigation">
@@ -87,7 +98,7 @@
     </main>
 
     <footer>
-        <p>AI Core Advancements Guide — Optimized for Kindle Web Browser.</p>
+        <p>AI 101 Guide — Optimized for Kindle Web Browser.</p>
         <p>Toggle "Kindle / E-Ink" mode above for a pure book-like reading layout.</p>
         <p>If you have feedback, email us at <a href="mailto:ai@puma.tech">ai@puma.tech</a></p>
     </footer>

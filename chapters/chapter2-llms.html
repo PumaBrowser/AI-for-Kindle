@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter 2: LLM Training & Alignment — AI Core Advancements</title>
+    <title>Chapter 2: LLM Training & Alignment — AI 101 Guide</title>
     <meta name="description" content="Explore how large language models are trained, aligned, and optimized. Understand pre-training, fine-tuning, RLHF, DPO, and scaling laws.">
     <link rel="stylesheet" href="../style.css">
 </head>
@@ -11,15 +11,15 @@
     <header>
         <div class="header-container">
             <div class="logo-section">
-                <a href="../index.html" class="logo-link">AI CORE <span class="logo-badge">GUIDE</span></a>
+                <a href="../index.html" class="logo-link">AI 101 <span class="logo-badge">GUIDE</span></a>
             </div>
             <div class="controls">
                 <div class="font-scale-controls">
                     <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
                     <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
                 </div>
-                <button id="theme-toggle" class="btn-icon" aria-label="Toggle dark mode">🌙 Dark</button>
-                <button id="kindle-toggle" class="btn-icon" aria-label="Toggle Kindle e-ink mode">📖 Kindle / E-Ink</button>
+                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">📖 Kindle / E-Ink</button>
             </div>
         </div>
     </header>
@@ -30,14 +30,15 @@
                 <div class="chapter-meta">
                     <span>Chapter 2</span>
                     <span>• 9 min read</span>
+                    <span>• Last reviewed: May 2026</span>
                 </div>
                 <h1>LLM Training & Alignment</h1>
             </div>
 
-            <p>Creating a modern AI assistant like ChatGPT or Gemini is not a single-step process. It requires taking raw, chaotic web data and refining it through multiple training stages. The journey from raw math to a helpful assistant is divided into three major milestones: **Pre-training**, **Supervised Fine-Tuning (SFT)**, and **Alignment**.</p>
+            <p>Creating a modern AI assistant like ChatGPT or Gemini is not a single-step process. It requires taking raw, chaotic web data and refining it through multiple training stages. The journey from raw math to a helpful assistant is divided into three major milestones: <strong>Pre-training</strong>, <strong>Supervised Fine-Tuning (SFT)</strong>, and <strong>Alignment</strong>.</p>
 
             <h2>Phase 1: Pre-training (Creating the "Base Model")</h2>
-            <p>The foundation of any LLM is the pre-trained base model. During this stage, the model is fed petabytes of raw text from books, articles, code repositories, and web pages. The training objective is simple: **predict the next word (token) in a sentence.**</p>
+            <p>The foundation of any LLM is the pre-trained base model. During this stage, the model is fed petabytes of raw text from books, articles, code repositories, and web pages. The training objective is simple: <strong>predict the next word (token) in a sentence.</strong></p>
             <p>For example, given the text:</p>
             <blockquote>
                 "The cat sat on the..."
@@ -45,7 +46,7 @@
             <p>The model calculates probability distributions over its entire vocabulary and predicts "mat" (or "sofa", "bed", etc.). By repeating this trillions of times across vast supercomputer clusters, the model builds a rich internal map of language, grammar, reasoning patterns, and encyclopedic facts. However, a base model is not an assistant; it is a text completer. If you ask a base model <em>"Write a recipe for chocolate cake,"</em> it might reply with a second question: <em>"And write a recipe for apple pie,"</em> because it is mimicking lists of recipes found on the internet.</p>
 
             <h2>Phase 2: Supervised Fine-Tuning (Creating the "Instruct Model")</h2>
-            <p>To turn a text completer into an interactive assistant, engineers perform **Supervised Fine-Tuning (SFT)**. In this phase, the base model is trained on a curated dataset of high-quality conversational prompts and responses, written by human experts.</p>
+            <p>To turn a text completer into an interactive assistant, engineers perform <strong>Supervised Fine-Tuning (SFT)</strong>. In this phase, the base model is trained on a curated dataset of high-quality conversational prompts and responses, written by human experts.</p>
             <p>A typical training sample looks like:</p>
             <pre><code>Prompt: Explain photosynthesis in one sentence.
 Response: Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to create oxygen and energy in the form of sugar.</code></pre>
@@ -64,13 +65,23 @@ Response: Photosynthesis is the process by which plants use sunlight, water, and
 
             <h3>2. Direct Preference Optimization (DPO)</h3>
             <p>While RLHF is highly effective, it is notoriously unstable, expensive, and complex to train because it requires maintaining multiple models simultaneously (the LLM, the Reward Model, and reference models). </p>
-            <p>In 2023, researchers introduced **Direct Preference Optimization (DPO)**. DPO bypasses the reward model entirely. It mathematically proves that you can optimize the LLM policy directly using a dataset of paired choices: a prompt, a **preferred (chosen)** response, and a **disliked (rejected)** response. DPO adjusts the weights so that the probability of the chosen response increases relative to the rejected response, creating a much simpler, faster, and more stable alignment loop.</p>
+            <p>In 2023, researchers introduced <strong>Direct Preference Optimization (DPO)</strong>. DPO bypasses the reward model entirely. It mathematically proves that you can optimize the LLM policy directly using a dataset of paired choices: a prompt, a <strong>preferred (chosen)</strong> response, and a <strong>disliked (rejected)</strong> response. DPO adjusts the weights so that the probability of the chosen response increases relative to the rejected response, creating a much simpler, faster, and more stable alignment loop.</p>
 
             <div class="concepts-box">
                 <h4>Key Concept: Kaplan vs. Chinchilla Scaling Laws</h4>
                 <p>How do we make models smarter? For a long time, the industry followed <strong>Kaplan's scaling laws</strong> (2020), which suggested that parameter size was the single most important factor—urging engineers to build larger models, even if they couldn't afford to train them on more data.</p>
-                <p>In 2022, DeepMind published the **Chinchilla scaling laws**. They proved that for optimal performance, parameter count and training data (tokens) should scale in equal proportion. Most models were actually <em>under-trained</em> on too little data. This shifted the industry toward training smaller, highly efficient models (like LLaMA or Mistral) for much longer on high-quality tokens, making them far cheaper to run on standard hardware.</p>
+                <p>In 2022, DeepMind published the <strong>Chinchilla scaling laws</strong>. They proved that for optimal performance, parameter count and training data (tokens) should scale in equal proportion. Most models were actually <em>under-trained</em> on too little data. This shifted the industry toward training smaller, highly efficient models (like LLaMA or Mistral) for much longer on high-quality tokens, making them far cheaper to run on standard hardware.</p>
             </div>
+
+            <section class="sources-list" aria-labelledby="sources-heading">
+                <h2 id="sources-heading">Sources</h2>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2001.08361">Scaling Laws for Neural Language Models</a> — Kaplan et al.</li>
+                    <li><a href="https://arxiv.org/abs/2203.15556">Training Compute-Optimal Large Language Models</a> — Hoffmann et al.</li>
+                    <li><a href="https://arxiv.org/abs/2203.02155">Training Language Models to Follow Instructions with Human Feedback</a> — Ouyang et al.</li>
+                    <li><a href="https://arxiv.org/abs/2305.18290">Direct Preference Optimization</a> — Rafailov et al.</li>
+                </ul>
+            </section>
         </article>
 
         <nav class="chapter-navigation">
@@ -86,7 +97,7 @@ Response: Photosynthesis is the process by which plants use sunlight, water, and
     </main>
 
     <footer>
-        <p>AI Core Advancements Guide — Optimized for Kindle Web Browser.</p>
+        <p>AI 101 Guide — Optimized for Kindle Web Browser.</p>
         <p>Toggle "Kindle / E-Ink" mode above for a pure book-like reading layout.</p>
         <p>If you have feedback, email us at <a href="mailto:ai@puma.tech">ai@puma.tech</a></p>
     </footer>

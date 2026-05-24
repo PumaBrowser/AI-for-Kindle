@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter 1: The Transformer Core — AI Core Advancements</title>
+    <title>Chapter 1: The Transformer Core — AI 101 Guide</title>
     <meta name="description" content="Learn the core mechanics of the Transformer architecture, self-attention, and the Query-Key-Value mechanism that changed natural language processing.">
     <link rel="stylesheet" href="../style.css">
 </head>
@@ -11,15 +11,15 @@
     <header>
         <div class="header-container">
             <div class="logo-section">
-                <a href="../index.html" class="logo-link">AI CORE <span class="logo-badge">GUIDE</span></a>
+                <a href="../index.html" class="logo-link">AI 101 <span class="logo-badge">GUIDE</span></a>
             </div>
             <div class="controls">
                 <div class="font-scale-controls">
                     <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
                     <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
                 </div>
-                <button id="theme-toggle" class="btn-icon" aria-label="Toggle dark mode">🌙 Dark</button>
-                <button id="kindle-toggle" class="btn-icon" aria-label="Toggle Kindle e-ink mode">📖 Kindle / E-Ink</button>
+                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">📖 Kindle / E-Ink</button>
             </div>
         </div>
     </header>
@@ -30,13 +30,14 @@
                 <div class="chapter-meta">
                     <span>Chapter 1</span>
                     <span>• 8 min read</span>
+                    <span>• Last reviewed: May 2026</span>
                 </div>
                 <h1>The Transformer Core</h1>
             </div>
 
             <p>Before 2017, natural language processing (NLP) models read text like humans do: one word at a time, from left to right. These models, known as Recurrent Neural Networks (RNNs) and Long Short-Term Memory (LSTM) networks, kept a running "mental state" that updated with each new word. While intuitive, this approach had a catastrophic bottleneck: it could not be parallelized. Because you needed the state of word <em>n-1</em> to compute the state of word <em>n</em>, GPUs could not process entire blocks of text simultaneously.</p>
             
-            <p>Then came the landmark paper, <em>"Attention Is All You Need"</em>, which introduced the **Transformer architecture**. The Transformer discarded recurrence entirely, opting to process all words in a sequence at the exact same time. To do this, it relied on a mathematical shortcut called **Self-Attention**.</p>
+            <p>Then came the landmark paper, <em>"Attention Is All You Need"</em>, which introduced the <strong>Transformer architecture</strong>. The Transformer discarded recurrence entirely, opting to process all words in a sequence at the exact same time. To do this, it relied on a mathematical shortcut called <strong>Self-Attention</strong>.</p>
 
             <h2>The Core Breakthrough: Self-Attention</h2>
             <p>Self-attention allows a model to look at a specific word and determine which other words in the sentence are most relevant to it, regardless of how far apart they are. Consider this example:</p>
@@ -101,7 +102,7 @@
             </div>
 
             <h2>Multi-Head Attention</h2>
-            <p>Instead of doing this attention calculation once, the Transformer does it multiple times in parallel. Each calculation is called an **Attention Head**. This is known as <strong>Multi-Head Attention</strong>.</p>
+            <p>Instead of doing this attention calculation once, the Transformer does it multiple times in parallel. Each calculation is called an <strong>Attention Head</strong>. This is known as <strong>Multi-Head Attention</strong>.</p>
             <p>By using multiple heads, the model can look at different aspects of the text at the same time. For example:</p>
             <ul>
                 <li><strong>Head 1</strong> might focus on grammatical relationships (finding the verb for each noun).</li>
@@ -112,17 +113,25 @@
 
             <h2>Positional Encoding</h2>
             <p>Since a Transformer processes all words simultaneously, it has no natural understanding of order. To a pure attention mechanism, "The dog bit the man" and "The man bit the dog" look identical because the words are the same. </p>
-            <p>To fix this, the Transformer uses **Positional Encodings**—a set of mathematical values added to each word's embedding that act as a coordinate. These coordinates tell the model exactly where each word sits in the sentence, allowing it to preserve the structural grammar of the text.</p>
+            <p>To fix this, the Transformer uses <strong>Positional Encodings</strong>—a set of mathematical values added to each word's embedding that act as a coordinate. These coordinates tell the model exactly where each word sits in the sentence, allowing it to preserve the structural grammar of the text.</p>
 
             <h2>Encoder vs. Decoder Architectures</h2>
-            <p>The original Transformer consisted of two halves: an **Encoder** (which reads and understands text) and a **Decoder** (which writes new text). Depending on the task, modern advancements have split these into three variants:</p>
+            <p>The original Transformer consisted of two halves: an <strong>Encoder</strong> (which reads and understands text) and a <strong>Decoder</strong> (which writes new text). Depending on the task, modern advancements have split these into three variants:</p>
             <ol>
                 <li><strong>Encoder-Only Models (e.g., BERT):</strong> Excellent for understanding, classifying, and extracting information from text. They look in both directions (left and right) simultaneously.</li>
                 <li><strong>Decoder-Only Models (e.g., GPT, LLaMA):</strong> Excellent for generating text. They are autoregressive, meaning they generate one word at a time, looking only at past words (left-to-right masking) to predict the next word.</li>
                 <li><strong>Encoder-Decoder Models (e.g., T5, BART):</strong> Often used for translation or summarization, where an input sequence is processed entirely, and a brand new output sequence is generated.</li>
             </ol>
 
-            <p>Almost all state-of-the-art Large Language Models (LLMs) today are **decoder-only architectures**, optimized purely for generating text by predicting the next token with massive efficiency.</p>
+            <p>Many frontier text-first Large Language Models (LLMs) use <strong>decoder-only architectures</strong>, optimized for generating text by predicting the next token with massive efficiency.</p>
+
+            <section class="sources-list" aria-labelledby="sources-heading">
+                <h2 id="sources-heading">Sources</h2>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a> — Vaswani et al.</li>
+                    <li><a href="https://arxiv.org/abs/1810.04805">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</a> — Devlin et al.</li>
+                </ul>
+            </section>
         </article>
 
         <nav class="chapter-navigation">
@@ -138,7 +147,7 @@
     </main>
 
     <footer>
-        <p>AI Core Advancements Guide — Optimized for Kindle Web Browser.</p>
+        <p>AI 101 Guide — Optimized for Kindle Web Browser.</p>
         <p>Toggle "Kindle / E-Ink" mode above for a pure book-like reading layout.</p>
         <p>If you have feedback, email us at <a href="mailto:ai@puma.tech">ai@puma.tech</a></p>
     </footer>

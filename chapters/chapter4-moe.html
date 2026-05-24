@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter 4: Scaling Efficiency — AI Core Advancements</title>
+    <title>Chapter 4: Scaling Efficiency — AI 101 Guide</title>
     <meta name="description" content="Learn about Mixture of Experts (MoE) and Quantization, the critical technologies that make running huge AI models computationally feasible.">
     <link rel="stylesheet" href="../style.css">
 </head>
@@ -11,15 +11,15 @@
     <header>
         <div class="header-container">
             <div class="logo-section">
-                <a href="../index.html" class="logo-link">AI CORE <span class="logo-badge">GUIDE</span></a>
+                <a href="../index.html" class="logo-link">AI 101 <span class="logo-badge">GUIDE</span></a>
             </div>
             <div class="controls">
                 <div class="font-scale-controls">
                     <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
                     <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
                 </div>
-                <button id="theme-toggle" class="btn-icon" aria-label="Toggle dark mode">🌙 Dark</button>
-                <button id="kindle-toggle" class="btn-icon" aria-label="Toggle Kindle e-ink mode">📖 Kindle / E-Ink</button>
+                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">📖 Kindle / E-Ink</button>
             </div>
         </div>
     </header>
@@ -30,15 +30,16 @@
                 <div class="chapter-meta">
                     <span>Chapter 4</span>
                     <span>• 9 min read</span>
+                    <span>• Last reviewed: May 2026</span>
                 </div>
                 <h1>Scaling Efficiency: MoE & Quantization</h1>
             </div>
 
-            <p>As AI models grow larger, running them becomes incredibly expensive. A dense 175-billion-parameter model requires multiple high-end enterprise GPUs running concurrently just to output a single word. To make these models practical for commercial use and deployable on smaller hardware, engineers rely on two massive efficiency breakthroughs: **Mixture of Experts (MoE)** and **Quantization**.</p>
+            <p>As AI models grow larger, running them becomes incredibly expensive. A dense 175-billion-parameter model requires multiple high-end enterprise GPUs running concurrently just to output a single word. To make these models practical for commercial use and deployable on smaller hardware, engineers rely on two massive efficiency breakthroughs: <strong>Mixture of Experts (MoE)</strong> and <strong>Quantization</strong>.</p>
 
             <h2>Mixture of Experts (MoE)</h2>
-            <p>In a standard **"Dense"** model, every single parameter (the neural connections) is activated for every single word processed. This is highly inefficient; a model doesn't need to invoke its entire mathematical knowledge base to process a simple punctuation mark or pronoun.</p>
-            <p>An **MoE** architecture turns a dense model into a **"Sparse"** model by breaking it up into specialized compartments called **Experts** (typically inside the Feed-Forward Network layers). Instead of passing a word through all pathways, a dynamic **Gating Network (Router)** decides which experts should handle which word.</p>
+            <p>In a standard <strong>"Dense"</strong> model, every single parameter (the neural connections) is activated for every single word processed. This is highly inefficient; a model doesn't need to invoke its entire mathematical knowledge base to process a simple punctuation mark or pronoun.</p>
+            <p>An <strong>MoE</strong> architecture turns a dense model into a <strong>"Sparse"</strong> model by breaking it up into specialized compartments called <strong>Experts</strong> (typically inside the Feed-Forward Network layers). Instead of passing a word through all pathways, a dynamic <strong>Gating Network (Router)</strong> decides which experts should handle which word.</p>
 
             <div class="concepts-box">
                 <h4>Sparse Routing in Action</h4>
@@ -58,9 +59,9 @@
             </ol>
 
             <h2>Quantization</h2>
-            <p>Neural networks represent their learned weights as high-precision decimals called floating-point numbers. During training, these are typically represented in 16-bit precision (**FP16** or **BF16**). </p>
+            <p>Neural networks represent their learned weights as high-precision decimals called floating-point numbers. During training, these are typically represented in 16-bit precision (<strong>FP16</strong> or <strong>BF16</strong>). </p>
             <p>Storing weights in 16-bit precision means every single parameter requires 2 bytes of GPU memory. A 70-billion-parameter model requires at least 140 gigabytes of VRAM just to load, which exceeds the capacity of almost all consumer GPUs.</p>
-            <p>**Quantization** is the process of compressing these weights by reducing their numerical precision—mapping them to smaller formats like 8-bit integers (**INT8**), 4-bit integers (**INT4**), or even custom formats like **FP4**.</p>
+            <p><strong>Quantization</strong> is the process of compressing these weights by reducing their numerical precision—mapping them to smaller formats like 8-bit integers (<strong>INT8</strong>), 4-bit integers (<strong>INT4</strong>), or even custom formats like <strong>FP4</strong>.</p>
 
             <h3>The Intuition Behind Quantization</h3>
             <p>Think of quantization like reducing the color depth of a digital photo. If you convert a photo from 24-bit true color to an 8-bit color palette, the file size shrinks by 66%. The image looks slightly less smooth, but the shapes, objects, and overall context are still perfectly recognizable. </p>
@@ -72,6 +73,16 @@
                 <li><strong>GGUF (formerly GGML):</strong> Optimized specifically for CPU execution, allowing users to run large models on consumer laptops (like Apple Silicon Macbooks) by leveraging system RAM instead of expensive GPU VRAM.</li>
                 <li><strong>GPTQ / AWQ:</strong> Formats optimized for GPU-accelerated quantized inference, ensuring that compressed models generate text at blisteringly fast speeds on standard desktop graphic cards.</li>
             </ul>
+
+            <section class="sources-list" aria-labelledby="sources-heading">
+                <h2 id="sources-heading">Sources</h2>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2101.03961">Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity</a> — Fedus et al.</li>
+                    <li><a href="https://arxiv.org/abs/2210.17323">GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers</a> — Frantar et al.</li>
+                    <li><a href="https://arxiv.org/abs/2306.00978">AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration</a> — Lin et al.</li>
+                    <li><a href="https://github.com/ggerganov/ggml/blob/master/docs/gguf.md">GGUF format documentation</a> — ggml</li>
+                </ul>
+            </section>
         </article>
 
         <nav class="chapter-navigation">
@@ -87,7 +98,7 @@
     </main>
 
     <footer>
-        <p>AI Core Advancements Guide — Optimized for Kindle Web Browser.</p>
+        <p>AI 101 Guide — Optimized for Kindle Web Browser.</p>
         <p>Toggle "Kindle / E-Ink" mode above for a pure book-like reading layout.</p>
         <p>If you have feedback, email us at <a href="mailto:ai@puma.tech">ai@puma.tech</a></p>
     </footer>

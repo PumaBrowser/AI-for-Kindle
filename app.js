@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const root = document.documentElement;
     const body = document.body;
     const themeToggleBtn = document.getElementById('theme-toggle');
     const kindleToggleBtn = document.getElementById('kindle-toggle');
@@ -51,19 +52,19 @@ document.addEventListener('DOMContentLoaded', () => {
         themeToggleBtn.addEventListener('click', () => {
             if (isKindleMode) return; // Ignore clicks in Kindle Mode
             
-            if (body.classList.contains('dark-theme')) {
+            if (root.classList.contains('dark-theme')) {
                 currentTheme = 'light';
-                body.classList.remove('dark-theme');
-                body.classList.add('light-theme');
-            } else if (body.classList.contains('light-theme')) {
+                root.classList.remove('dark-theme');
+                root.classList.add('light-theme');
+            } else if (root.classList.contains('light-theme')) {
                 currentTheme = 'dark';
-                body.classList.remove('light-theme');
-                body.classList.add('dark-theme');
+                root.classList.remove('light-theme');
+                root.classList.add('dark-theme');
             } else {
                 // System default, determine current and switch
                 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 currentTheme = prefersDark ? 'light' : 'dark';
-                body.classList.add(currentTheme + '-theme');
+                root.classList.add(currentTheme + '-theme');
             }
             
             try {
@@ -103,8 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isKindleMode) {
             body.classList.add('kindle-mode');
             if (kindleToggleBtn) {
-                kindleToggleBtn.innerHTML = '⚡ Modern Web Mode';
+                kindleToggleBtn.textContent = 'Modern Web Mode';
                 kindleToggleBtn.setAttribute('aria-label', 'Switch to standard web mode');
+                kindleToggleBtn.setAttribute('aria-pressed', 'true');
             }
             if (themeToggleBtn) {
                 themeToggleBtn.style.display = 'none'; // Hide light/dark toggle in Kindle Mode
@@ -112,12 +114,14 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             body.classList.remove('kindle-mode');
             if (kindleToggleBtn) {
-                kindleToggleBtn.innerHTML = '📖 Kindle / E-Ink Mode';
+                kindleToggleBtn.textContent = 'Kindle / E-Ink Mode';
                 kindleToggleBtn.setAttribute('aria-label', 'Switch to high-contrast Kindle mode');
+                kindleToggleBtn.setAttribute('aria-pressed', 'false');
             }
             if (themeToggleBtn) {
                 themeToggleBtn.style.display = 'inline-flex';
             }
+            updateThemeUI();
         }
     }
     
@@ -125,21 +129,29 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isKindleMode) return;
         
         // Remove classes
-        body.classList.remove('light-theme', 'dark-theme');
+        root.classList.remove('light-theme', 'dark-theme');
         
         if (currentTheme === 'light') {
-            body.classList.add('light-theme');
-            if (themeToggleBtn) themeToggleBtn.innerHTML = '🌙 Dark';
+            root.classList.add('light-theme');
+            if (themeToggleBtn) {
+                themeToggleBtn.textContent = 'Dark';
+                themeToggleBtn.setAttribute('aria-label', 'Switch to dark mode');
+                themeToggleBtn.setAttribute('aria-pressed', 'false');
+            }
         } else if (currentTheme === 'dark') {
-            body.classList.add('dark-theme');
-            if (themeToggleBtn) themeToggleBtn.innerHTML = '☀️ Light';
+            root.classList.add('dark-theme');
+            if (themeToggleBtn) {
+                themeToggleBtn.textContent = 'Light';
+                themeToggleBtn.setAttribute('aria-label', 'Switch to light mode');
+                themeToggleBtn.setAttribute('aria-pressed', 'true');
+            }
         } else {
             // System Default
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (prefersDark) {
-                if (themeToggleBtn) themeToggleBtn.innerHTML = '☀️ Light';
-            } else {
-                if (themeToggleBtn) themeToggleBtn.innerHTML = '🌙 Dark';
+            if (themeToggleBtn) {
+                themeToggleBtn.textContent = prefersDark ? 'Light' : 'Dark';
+                themeToggleBtn.setAttribute('aria-label', prefersDark ? 'Switch to light mode' : 'Switch to dark mode');
+                themeToggleBtn.setAttribute('aria-pressed', prefersDark ? 'true' : 'false');
             }
         }
     }

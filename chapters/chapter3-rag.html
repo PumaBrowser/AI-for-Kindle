@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter 3: RAG & Context Windows — AI Core Advancements</title>
+    <title>Chapter 3: RAG & Context Windows — AI 101 Guide</title>
     <meta name="description" content="Understand Retrieval-Augmented Generation (RAG) and how context windows have scaled to millions of tokens through architectures like FlashAttention.">
     <link rel="stylesheet" href="../style.css">
 </head>
@@ -11,15 +11,15 @@
     <header>
         <div class="header-container">
             <div class="logo-section">
-                <a href="../index.html" class="logo-link">AI CORE <span class="logo-badge">GUIDE</span></a>
+                <a href="../index.html" class="logo-link">AI 101 <span class="logo-badge">GUIDE</span></a>
             </div>
             <div class="controls">
                 <div class="font-scale-controls">
                     <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
                     <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
                 </div>
-                <button id="theme-toggle" class="btn-icon" aria-label="Toggle dark mode">🌙 Dark</button>
-                <button id="kindle-toggle" class="btn-icon" aria-label="Toggle Kindle e-ink mode">📖 Kindle / E-Ink</button>
+                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">📖 Kindle / E-Ink</button>
             </div>
         </div>
     </header>
@@ -30,11 +30,12 @@
                 <div class="chapter-meta">
                     <span>Chapter 3</span>
                     <span>• 9 min read</span>
+                    <span>• Last reviewed: May 2026</span>
                 </div>
                 <h1>RAG & Context Windows</h1>
             </div>
 
-            <p>An AI model has two kinds of memory. The first is **Parametric Memory**—information baked directly into the model's weights during training. The second is **Working Memory**—the space available in the immediate input prompt, known as the **Context Window**. To build reliable systems that do not hallucinate, engineers use these two memories in tandem through RAG and ultra-long context architectures.</p>
+            <p>An AI model has two kinds of memory. The first is <strong>Parametric Memory</strong>—information baked directly into the model's weights during training. The second is <strong>Working Memory</strong>—the space available in the immediate input prompt, known as the <strong>Context Window</strong>. To build reliable systems that do not hallucinate, engineers use these two memories in tandem through RAG and ultra-long context architectures.</p>
 
             <h2>The Limitation of Parametric Memory</h2>
             <p>Relying purely on what a model has memorized has three massive drawbacks:</p>
@@ -45,7 +46,7 @@
             </ol>
 
             <h2>Retrieval-Augmented Generation (RAG)</h2>
-            <p>**RAG** solves this by turning the model into an open-book test taker. Instead of answering from memory, the system searches an external database for the answer, pastes the relevant documents directly into the context window, and asks the model to read them to generate the answer.</p>
+            <p><strong>RAG</strong> solves this by turning the model into an open-book test taker. Instead of answering from memory, the system searches an external database for the answer, pastes the relevant documents directly into the context window, and asks the model to read them to generate the answer.</p>
 
             <div class="concepts-box">
                 <h4>How the RAG Pipeline Works</h4>
@@ -60,18 +61,28 @@
 
             <h2>The Evolution of Context Windows</h2>
             <p>If RAG is so powerful, why not just feed the entire database directly into the model? Historically, this was impossible because of the way attention works. </p>
-            <p>The memory and computation cost of standard Self-Attention scales **quadratically** ($O(N^2)$) with the length of the input. If you double the length of your input, it takes four times more compute and memory to process. Early models were capped at a context window of just 2,048 tokens (roughly 1,500 words).</p>
+            <p>The memory and computation cost of standard Self-Attention scales <strong>quadratically</strong> ($O(N^2)$) with the length of the input. If you double the length of your input, it takes four times more compute and memory to process. Early models were capped at a context window of just 2,048 tokens (roughly 1,500 words).</p>
             <p>Recent architectural breakthroughs have broken this barrier, enabling models like Gemini to handle 1 to 2 million tokens of active memory. The main pillars of this scaling are:</p>
 
             <h3>1. FlashAttention</h3>
             <p>Introduced by Tri Dao, FlashAttention is a software-level optimization. Rather than changing the math of attention, it changes how the GPU handles memory. Standard attention writes massive intermediate tables back and forth between slow GPU High Bandwidth Memory (HBM) and fast on-chip SRAM. FlashAttention computes attention in small blocks, keeping data in the fast SRAM cache as much as possible. This reduces memory traffic by up to 20x, allowing context windows to scale dramatically without running out of GPU memory.</p>
 
             <h3>2. Rotary Position Embeddings (RoPE)</h3>
-            <p>Older absolute positional systems could not handle context lengths longer than what they were trained on. **RoPE** represents positions by rotating the word vectors in a multi-dimensional mathematical space. Because rotation is relative, the model can understand the distance between words even if the total text length is far longer than the training parameters, allowing context window sizes to be scaled up post-training with minimal fine-tuning.</p>
+            <p>Older absolute positional systems could not handle context lengths longer than what they were trained on. <strong>RoPE</strong> represents positions by rotating the word vectors in a multi-dimensional mathematical space. Because rotation is relative, the model can understand the distance between words even if the total text length is far longer than the training parameters, allowing context window sizes to be scaled up post-training with minimal fine-tuning.</p>
 
             <h2>The "Needle in a Haystack" Test</h2>
-            <p>Just because a model <em>can</em> accept a million tokens doesn't mean it is actually reading them. To evaluate long-context retrieval, researchers use the **Needle in a Haystack (NIAH)** test. </p>
+            <p>Just because a model <em>can</em> accept a million tokens doesn't mean it is actually reading them. To evaluate long-context retrieval, researchers use the <strong>Needle in a Haystack (NIAH)</strong> test. </p>
             <p>A random, unrelated fact (the "needle") is hidden somewhere inside a massive text dump of documents (the "haystack"). The model is then asked a question that can only be answered using that specific fact. Modern models must achieve near 100% accuracy, finding the needle regardless of whether it is hidden at the beginning, middle, or end of the document stack.</p>
+
+            <section class="sources-list" aria-labelledby="sources-heading">
+                <h2 id="sources-heading">Sources</h2>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2005.11401">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a> — Lewis et al.</li>
+                    <li><a href="https://arxiv.org/abs/2205.14135">FlashAttention</a> — Dao et al.</li>
+                    <li><a href="https://arxiv.org/abs/2104.09864">RoFormer: Enhanced Transformer with Rotary Position Embedding</a> — Su et al.</li>
+                    <li><a href="https://blog.google/technology/ai/google-gemini-next-generation-model-february-2024/">Gemini 1.5 and long-context model capabilities</a> — Google</li>
+                </ul>
+            </section>
         </article>
 
         <nav class="chapter-navigation">
@@ -87,7 +98,7 @@
     </main>
 
     <footer>
-        <p>AI Core Advancements Guide — Optimized for Kindle Web Browser.</p>
+        <p>AI 101 Guide — Optimized for Kindle Web Browser.</p>
         <p>Toggle "Kindle / E-Ink" mode above for a pure book-like reading layout.</p>
         <p>If you have feedback, email us at <a href="mailto:ai@puma.tech">ai@puma.tech</a></p>
     </footer>

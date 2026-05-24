@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Play Doom — AI Core Advancements</title>
+    <title>Play Doom — AI 101 Guide</title>
     <meta name="description" content="A Kindle-friendly raycasting Doom clone built entirely in JavaScript. Playable on e-ink displays with touch controls.">
     <link rel="stylesheet" href="../style.css">
     <style>
@@ -190,15 +190,15 @@
     <header>
         <div class="header-container">
             <div class="logo-section">
-                <a href="../index.html" class="logo-link">AI CORE <span class="logo-badge">GUIDE</span></a>
+                <a href="../index.html" class="logo-link">AI 101 <span class="logo-badge">GUIDE</span></a>
             </div>
             <div class="controls">
                 <div class="font-scale-controls">
                     <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
                     <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
                 </div>
-                <button id="theme-toggle" class="btn-icon" aria-label="Toggle dark mode">🌙 Dark</button>
-                <button id="kindle-toggle" class="btn-icon" aria-label="Toggle Kindle e-ink mode">📖 Kindle / E-Ink</button>
+                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">📖 Kindle / E-Ink</button>
             </div>
         </div>
     </header>
@@ -216,19 +216,21 @@
             <p>A fully playable raycasting FPS built in pure JavaScript — no libraries, no WebGL, just a <code>&lt;canvas&gt;</code> and math. Runs on Kindle's e-ink browser with large touch targets and high-contrast rendering.</p>
 
             <div class="doom-wrapper">
-                <button id="doom-start">▶ START GAME</button>
-                <canvas id="doom-canvas"></canvas>
+                <button id="doom-start" aria-label="Start or restart Doom game">START GAME</button>
+                <canvas id="doom-canvas" role="img" aria-label="Playable raycasting Doom game canvas">
+                    Your browser does not support canvas. Use a modern browser to play the Doom bonus level.
+                </canvas>
             </div>
 
             <p class="controls-label">Touch Controls</p>
             <div class="touch-controls">
-                <button class="touch-btn ctrl-strafe-l" id="btn-strafe-left">⇤</button>
-                <button class="touch-btn ctrl-left" id="btn-left">◀</button>
-                <button class="touch-btn ctrl-fwd" id="btn-forward">▲</button>
-                <button class="touch-btn fire ctrl-fire" id="btn-shoot">🔥</button>
-                <button class="touch-btn ctrl-back" id="btn-backward">▼</button>
-                <button class="touch-btn ctrl-right" id="btn-right">▶</button>
-                <button class="touch-btn ctrl-strafe-r" id="btn-strafe-right">⇥</button>
+                <button class="touch-btn ctrl-strafe-l" id="btn-strafe-left" aria-label="Strafe left">⇤</button>
+                <button class="touch-btn ctrl-left" id="btn-left" aria-label="Turn left">◀</button>
+                <button class="touch-btn ctrl-fwd" id="btn-forward" aria-label="Move forward">▲</button>
+                <button class="touch-btn fire ctrl-fire" id="btn-shoot" aria-label="Fire weapon">FIRE</button>
+                <button class="touch-btn ctrl-back" id="btn-backward" aria-label="Move backward">▼</button>
+                <button class="touch-btn ctrl-right" id="btn-right" aria-label="Turn right">▶</button>
+                <button class="touch-btn ctrl-strafe-r" id="btn-strafe-right" aria-label="Strafe right">⇥</button>
             </div>
 
             <p class="keyboard-hint">
@@ -257,7 +259,7 @@
     </main>
 
     <footer>
-        <p>AI Core Advancements Guide — Optimized for Kindle Web Browser.</p>
+        <p>AI 101 Guide — Optimized for Kindle Web Browser.</p>
         <p>Toggle "Kindle / E-Ink" mode above for a pure book-like reading layout.</p>
         <p>If you have feedback, email us at <a href="mailto:ai@puma.tech">ai@puma.tech</a></p>
     </footer>
