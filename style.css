@@ -294,13 +294,13 @@ body.kindle-mode .logo-badge {
     border-color: var(--accent);
 }
 
-#genz-toggle[aria-pressed="true"] {
+.genz-link.active {
     background-color: var(--accent);
     border-color: var(--accent);
     color: #ffffff;
 }
 
-body.kindle-mode #genz-toggle[aria-pressed="true"] {
+body.kindle-mode .genz-link.active {
     background: #000000 !important;
     color: #ffffff !important;
 }

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="genz-static">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter 6: Agentic AI & Reasoning — AI 101 Guide</title>
-    <meta name="description" content="Explore Agentic AI, function calling, tool use, and the transition from intuitive System 1 chatbots to deliberate System 2 reasoning models.">
-    <link rel="stylesheet" href="../style.css">
+    <title>Chapter 6: Agentic AI & Reasoning — AI 101 Guide — Gen Z Edition</title>
+    <meta name="description" content="Vibe-check Agentic AI, function calling, tool use, and the transition from intuitive System 1 chatbots to deliberate System 2 reasoning models.">
+    <link rel="stylesheet" href="../../style.css">
 </head>
 <body>
     <header>
@@ -18,7 +18,7 @@
                     <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
                     <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
                 </div>
-                <a href="../genz/chapters/chapter6-agents.html" class="btn-icon genz-link" aria-label="Read the Gen Z version">Gen Z</a>
+                <a href="../../chapters/chapter6-agents.html" class="btn-icon genz-link active" aria-label="Read the original version">Original</a>
                 <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
                 <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">📖 Kindle / E-Ink</button>
             </div>
@@ -51,7 +51,7 @@
             <p>The host application intercepts this JSON, runs the actual weather API, receives the result (e.g., "Chicago: 41°F, Rain"), and appends it to the model's chat history. The LLM reads the result and finishes its response: <em>"Yes, you should wear a coat. Chicago will be 41°F and raining tomorrow."</em></p>
 
             <h2>Reasoning Loops: ReAct and Reflection</h2>
-            <p>To solve complex tasks, agents use structured loops rather than generating answers in a single pass.</p>
+            <p>To solve big-brain tasks, agents use structured loops rather than generating answers in a single pass.</p>
 
             <h3>1. The ReAct (Reason + Act) Loop</h3>
             <p>ReAct forces the model to document its thinking before taking actions. The loop proceeds as follows:</p>
@@ -68,11 +68,11 @@
                 <h4>System 1 vs. System 2 Thinking in AI</h4>
                 <p>Cognitive psychologist Daniel Kahneman famously split human thinking into two modes:</p>
                 <ul>
-                    <li><strong>System 1 (Fast):</strong> Fast, intuitive, automatic actions (e.g., answering "2+2=?", reading a familiar road sign).</li>
+                    <li><strong>System 1 (speedy):</strong> speedy, intuitive, automatic actions (e.g., answering "2+2=?", reading a familiar road sign).</li>
                     <li><strong>System 2 (Slow):</strong> Slow, deliberate, logical reasoning (e.g., solving "17 × 24", filling out a tax form).</li>
                 </ul>
                 <p>Standard LLMs operate purely in <strong>System 1</strong>. They output the next token immediately without pre-planning. If they start a sentence poorly, they cannot backtrack, often leading to logical dead-ends.</p>
-                <p>Modern <strong>System 2 Reasoning Models</strong> (including OpenAI's o-series reasoning models and similar reasoning modes from other labs) are trained to spend extra internal compute before producing a final response. They may generate hidden reasoning tokens, check intermediate work, simulate branches of logic, and backtrack when they hit errors. This helps models solve complex math, coding, and science problems more reliably.</p>
+                <p>Modern <strong>System 2 Reasoning Models</strong> (including OpenAI's o-series reasoning models and similar reasoning modes from other labs) are trained to spend extra internal compute before producing a final response. They may generate hidden reasoning tokens, check intermediate work, simulate branches of logic, and backtrack when they hit errors. This helps models solve big-brain math, coding, and science problems more reliably.</p>
             </div>
 
             <section class="sources-list" aria-labelledby="sources-heading">
@@ -104,6 +104,6 @@
         <p>If you have feedback, email us at <a href="mailto:ai@puma.tech">ai@puma.tech</a></p>
     </footer>
 
-    <script src="../app.js"></script>
+    <script src="../../app.js"></script>
 </body>
 </html>

@@ -16,7 +16,7 @@ for (const file of htmlFiles) {
   check(/<title>[^<]+<\/title>/.test(html), rel, 'is missing a title');
   check(/<meta\s+name="description"/.test(html), rel, 'is missing a meta description');
   check(/<script\s+src="[^"]*app\.js"/.test(html), rel, 'does not load app.js');
-  check(/id="genz-toggle"/.test(html), rel, 'is missing the Gen Z translation toggle');
+  check(/class="[^"]*\bgenz-link\b/.test(html), rel, 'is missing the Gen Z/static original link');
 
   for (const href of extractAttributes(html, 'href')) {
     if (isExternal(href) || href.startsWith('mailto:') || href.startsWith('#')) continue;
@@ -37,7 +37,7 @@ for (const file of htmlFiles) {
     check(hasLabel, rel, `has an unlabeled button: ${button[0].slice(0, 80)}...`);
   }
 
-  if (rel.startsWith(`chapters${path.sep}`) && rel !== path.join('chapters', 'play-doom.html')) {
+  if (isTechnicalChapter(rel)) {
     check(html.includes('Last reviewed: May 2026'), rel, 'is missing last reviewed metadata');
     check(html.includes('class="sources-list"'), rel, 'is missing a sources list');
   }
@@ -72,6 +72,11 @@ function extractAttributes(html, attr) {
 
 function isExternal(value) {
   return /^https?:\/\//.test(value) || value.startsWith('//');
+}
+
+function isTechnicalChapter(rel) {
+  const normalized = rel.split(path.sep).join('/');
+  return normalized.includes('chapters/chapter') && !normalized.endsWith('play-doom.html');
 }
 
 function stripTags(value) {

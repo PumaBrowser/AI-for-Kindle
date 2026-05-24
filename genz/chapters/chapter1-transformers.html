@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="genz-static">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter 1: The Transformer Core — AI 101 Guide</title>
-    <meta name="description" content="Learn the core mechanics of the Transformer architecture, self-attention, and the Query-Key-Value mechanism that changed natural language processing.">
-    <link rel="stylesheet" href="../style.css">
+    <title>Chapter 1: The Transformer Core — AI 101 Guide — Gen Z Edition</title>
+    <meta name="description" content="Lock in on the core mechanics of the Transformer architecture, self-attention, and the Query-Key-Value mechanism that changed natural language processing.">
+    <link rel="stylesheet" href="../../style.css">
 </head>
 <body>
     <header>
@@ -18,7 +18,7 @@
                     <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
                     <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
                 </div>
-                <a href="../genz/chapters/chapter1-transformers.html" class="btn-icon genz-link" aria-label="Read the Gen Z version">Gen Z</a>
+                <a href="../../chapters/chapter1-transformers.html" class="btn-icon genz-link active" aria-label="Read the original version">Original</a>
                 <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
                 <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">📖 Kindle / E-Ink</button>
             </div>
@@ -103,8 +103,8 @@
             </div>
 
             <h2>Multi-Head Attention</h2>
-            <p>Instead of doing this attention calculation once, the Transformer does it multiple times in parallel. Each calculation is called an <strong>Attention Head</strong>. This is known as <strong>Multi-Head Attention</strong>.</p>
-            <p>By using multiple heads, the model can look at different aspects of the text at the same time. For example:</p>
+            <p>Instead of doing this attention calculation once, the Transformer does it a bunch of times in parallel. Each calculation is called an <strong>Attention Head</strong>. This is known as <strong>Multi-Head Attention</strong>.</p>
+            <p>By using a bunch of heads, the model can look at different aspects of the text at the same time. For example:</p>
             <ul>
                 <li><strong>Head 1</strong> might focus on grammatical relationships (finding the verb for each noun).</li>
                 <li><strong>Head 2</strong> might focus on coreference resolution (matching "he" or "it" to the correct entity).</li>
@@ -117,14 +117,14 @@
             <p>To fix this, the Transformer uses <strong>Positional Encodings</strong>—a set of mathematical values added to each word's embedding that act as a coordinate. These coordinates tell the model exactly where each word sits in the sentence, allowing it to preserve the structural grammar of the text.</p>
 
             <h2>Encoder vs. Decoder Architectures</h2>
-            <p>The original Transformer consisted of two halves: an <strong>Encoder</strong> (which reads and understands text) and a <strong>Decoder</strong> (which writes new text). Depending on the task, modern advancements have split these into three variants:</p>
+            <p>The original Transformer consisted of two halves: an <strong>Encoder</strong> (which reads and understands text) and a <strong>Decoder</strong> (which writes new text). Depending on the task, modern glow-ups have split these into three variants:</p>
             <ol>
-                <li><strong>Encoder-Only Models (e.g., BERT):</strong> Excellent for understanding, classifying, and extracting information from text. They look in both directions (left and right) simultaneously.</li>
-                <li><strong>Decoder-Only Models (e.g., GPT, LLaMA):</strong> Excellent for generating text. They are autoregressive, meaning they generate one word at a time, looking only at past words (left-to-right masking) to predict the next word.</li>
+                <li><strong>Encoder-Only Models (e.g., BERT):</strong> goated for understanding, classifying, and extracting information from text. They look in both directions (left and right) simultaneously.</li>
+                <li><strong>Decoder-Only Models (e.g., GPT, LLaMA):</strong> goated for generating text. They are autoregressive, meaning they generate one word at a time, looking only at past words (left-to-right masking) to predict the next word.</li>
                 <li><strong>Encoder-Decoder Models (e.g., T5, BART):</strong> Often used for translation or summarization, where an input sequence is processed entirely, and a brand new output sequence is generated.</li>
             </ol>
 
-            <p>Many frontier text-first Large Language Models (LLMs) use <strong>decoder-only architectures</strong>, optimized for generating text by predicting the next token with massive efficiency.</p>
+            <p>Many frontier text-first LLMs (LLMs) use <strong>decoder-only architectures</strong>, optimized for generating text by predicting the next token with massive efficiency.</p>
 
             <section class="sources-list" aria-labelledby="sources-heading">
                 <h2 id="sources-heading">Sources</h2>
@@ -153,6 +153,6 @@
         <p>If you have feedback, email us at <a href="mailto:ai@puma.tech">ai@puma.tech</a></p>
     </footer>
 
-    <script src="../app.js"></script>
+    <script src="../../app.js"></script>
 </body>
 </html>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="genz-static">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter 4: Scaling Efficiency — AI 101 Guide</title>
-    <meta name="description" content="Learn about Mixture of Experts (MoE) and Quantization, the critical technologies that make running huge AI models computationally feasible.">
-    <link rel="stylesheet" href="../style.css">
+    <title>Chapter 4: Scaling Efficiency — AI 101 Guide — Gen Z Edition</title>
+    <meta name="description" content="Lock in on about Mixture of Experts (MoE) and Quantization, the critical technologies that make running huge AI models computationally feasible.">
+    <link rel="stylesheet" href="../../style.css">
 </head>
 <body>
     <header>
@@ -18,7 +18,7 @@
                     <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
                     <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
                 </div>
-                <a href="../genz/chapters/chapter4-moe.html" class="btn-icon genz-link" aria-label="Read the Gen Z version">Gen Z</a>
+                <a href="../../chapters/chapter4-moe.html" class="btn-icon genz-link active" aria-label="Read the original version">Original</a>
                 <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
                 <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">📖 Kindle / E-Ink</button>
             </div>
@@ -36,7 +36,7 @@
                 <h1>Scaling Efficiency: MoE & Quantization</h1>
             </div>
 
-            <p>As AI models grow larger, running them becomes incredibly expensive. A dense 175-billion-parameter model requires multiple high-end enterprise GPUs running concurrently just to output a single word. To make these models practical for commercial use and deployable on smaller hardware, engineers rely on two massive efficiency breakthroughs: <strong>Mixture of Experts (MoE)</strong> and <strong>Quantization</strong>.</p>
+            <p>As AI models grow larger, running them becomes incredibly expensive. A dense 175-billion-parameter model needs a bunch of high-end enterprise GPUs running concurrently just to output a single word. To make these models practical for commercial use and deployable on smaller hardware, engineers rely on two massive efficiency glow-ups: <strong>Mixture of Experts (MoE)</strong> and <strong>Quantization</strong>.</p>
 
             <h2>Mixture of Experts (MoE)</h2>
             <p>In a standard <strong>"Dense"</strong> model, every single parameter (the neural connections) is activated for every single word processed. This is highly inefficient; a model doesn't need to invoke its entire mathematical knowledge base to process a simple punctuation mark or pronoun.</p>
@@ -49,19 +49,19 @@
                     <li>If the token is a line of Python code, the Router sends it to <strong>Expert 3 (Code specialist)</strong> and <strong>Expert 5 (Logic specialist)</strong>.</li>
                     <li>If the token is a word in French, the Router sends it to <strong>Expert 1 (Translation specialist)</strong>.</li>
                 </ul>
-                <p>Typically, the Router selects only the <strong>Top-2 Experts</strong> for each token. If a model has a total of 8x 7B experts (56B total parameters), it only activates roughly 12B parameters per token. This gives the model the vast knowledge capacity of a 56B model, but with the fast generation speed and compute cost of a much smaller 12B model.</p>
+                <p>Typically, the Router selects only the <strong>Top-2 Experts</strong> for each token. If a model has a total of 8x 7B experts (56B total parameters), it only activates roughly 12B parameters per token. This gives the model the vast knowledge capacity of a 56B model, but with the speedy generation speed and compute cost of a much smaller 12B model.</p>
             </div>
 
             <h3>The Challenges of MoE</h3>
             <p>MoE is not a free lunch. It introduces several hard engineering hurdles:</p>
             <ol>
-                <li><strong>RAM Overhead:</strong> Although only 12B parameters are active at any millisecond, the entire 56B parameter model must still be loaded into the GPU's memory (VRAM). This means MoE requires significantly more memory than dense models of equivalent speed.</li>
+                <li><strong>RAM Overhead:</strong> Although only 12B parameters are active at any millisecond, the entire 56B parameter model must still be loaded into the GPU's memory (VRAM). This means MoE needs significantly more memory than dense models of equivalent speed.</li>
                 <li><strong>Routing Collapse:</strong> During early training, the router might favor one expert, making it smarter, which causes the router to send even more traffic to it. Engineers must write custom algorithms to force load-balancing so all experts are trained evenly.</li>
             </ol>
 
             <h2>Quantization</h2>
             <p>Neural networks represent their learned weights as high-precision decimals called floating-point numbers. During training, these are typically represented in 16-bit precision (<strong>FP16</strong> or <strong>BF16</strong>). </p>
-            <p>Storing weights in 16-bit precision means every single parameter requires 2 bytes of GPU memory. A 70-billion-parameter model requires at least 140 gigabytes of VRAM just to load, which exceeds the capacity of almost all consumer GPUs.</p>
+            <p>Storing weights in 16-bit precision means every single parameter needs 2 bytes of GPU memory. A 70-billion-parameter model needs at least 140 gigabytes of VRAM just to load, which exceeds the capacity of almost all consumer GPUs.</p>
             <p><strong>Quantization</strong> is the process of compressing these weights by reducing their numerical precision—mapping them to smaller formats like 8-bit integers (<strong>INT8</strong>), 4-bit integers (<strong>INT4</strong>), or even custom formats like <strong>FP4</strong>.</p>
 
             <h3>The Intuition Behind Quantization</h3>
@@ -72,7 +72,7 @@
             <p>Several standard file formats are used to run these compressed models:</p>
             <ul>
                 <li><strong>GGUF (formerly GGML):</strong> Optimized specifically for CPU execution, allowing users to run large models on consumer laptops (like Apple Silicon Macbooks) by leveraging system RAM instead of expensive GPU VRAM.</li>
-                <li><strong>GPTQ / AWQ:</strong> Formats optimized for GPU-accelerated quantized inference, ensuring that compressed models generate text at blisteringly fast speeds on standard desktop graphic cards.</li>
+                <li><strong>GPTQ / AWQ:</strong> Formats optimized for GPU-accelerated quantized inference, ensuring that compressed models generate text at blisteringly speedy speeds on standard desktop graphic cards.</li>
             </ul>
 
             <section class="sources-list" aria-labelledby="sources-heading">
@@ -104,6 +104,6 @@
         <p>If you have feedback, email us at <a href="mailto:ai@puma.tech">ai@puma.tech</a></p>
     </footer>
 
-    <script src="../app.js"></script>
+    <script src="../../app.js"></script>
 </body>
 </html>

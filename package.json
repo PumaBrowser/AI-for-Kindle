@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "validate": "node scripts/validate-site.mjs",
+    "generate:genz": "node scripts/generate-genz.mjs",
+    "validate": "node scripts/generate-genz.mjs && node scripts/validate-site.mjs",
     "serve": "python3 -m http.server 8000"
   },
   "devDependencies": {}

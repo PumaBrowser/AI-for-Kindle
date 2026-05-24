@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="genz-static">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Play Doom — AI 101 Guide</title>
+    <title>Play Doom — AI 101 Guide — Gen Z Edition</title>
     <meta name="description" content="A Kindle-friendly raycasting Doom clone built entirely in JavaScript. Playable on e-ink displays with touch controls.">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../../style.css">
     <style>
         /* ── Doom-specific styles ── */
         .doom-wrapper {
@@ -197,7 +197,7 @@
                     <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
                     <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
                 </div>
-                <a href="../genz/chapters/play-doom.html" class="btn-icon genz-link" aria-label="Read the Gen Z version">Gen Z</a>
+                <a href="../../chapters/play-doom.html" class="btn-icon genz-link active" aria-label="Read the original version">Original</a>
                 <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
                 <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">📖 Kindle / E-Ink</button>
             </div>
@@ -242,7 +242,7 @@
 
             <div class="concepts-box" style="margin-top: 2rem;">
                 <h4>How This Engine Works</h4>
-                <p>This game uses <strong>raycasting</strong> — the same technique behind the original 1993 Doom engine. For each vertical column of the screen, a single ray is cast from the player's position into the world. When the ray hits a wall, we calculate its distance and draw a vertical stripe proportional to 1/distance, creating the illusion of 3D perspective.</p>
+                <p>This game uses <strong>raycasting</strong> — the same technique behind the original 1993 Doom engine. For each vertical column of the screen, a single ray is cast from the player's position into the world. When the ray hits a wall, we calculate its distance and draw a vertical stripe proportional to 1/distance, cooking up the illusion of 3D perspective.</p>
                 <p>The algorithm used is <strong>DDA (Digital Differential Analyzer)</strong>, which efficiently steps through the grid cells along each ray to find wall intersections. Enemies are rendered as 2D sprites sorted by depth, and shooting uses <strong>hitscan</strong> detection along the aim vector.</p>
             </div>
         </article>
@@ -265,7 +265,7 @@
         <p>If you have feedback, email us at <a href="mailto:ai@puma.tech">ai@puma.tech</a></p>
     </footer>
 
-    <script src="../app.js"></script>
-    <script src="../doom.js"></script>
+    <script src="../../app.js"></script>
+    <script src="../../doom.js"></script>
 </body>
 </html>

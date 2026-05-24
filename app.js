@@ -3,16 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const themeToggleBtn = document.getElementById('theme-toggle');
     const kindleToggleBtn = document.getElementById('kindle-toggle');
-    const genZToggleBtn = document.getElementById('genz-toggle');
     const fontSizeDecreaseBtn = document.getElementById('font-decrease');
     const fontSizeIncreaseBtn = document.getElementById('font-increase');
-    const originalTextNodes = new WeakMap();
     
     // Default config values
     let isKindleMode = false;
     let currentTheme = 'system'; // 'system', 'light', 'dark'
     let fontScale = 1.0;
-    let isGenZMode = false;
     
     // Load config from localStorage
     try {
@@ -30,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         currentTheme = localStorage.getItem('site-theme') || 'system';
         fontScale = parseFloat(localStorage.getItem('font-scale')) || 1.0;
-        isGenZMode = localStorage.getItem('genz-mode') === 'true';
     } catch (e) {
         console.error('LocalStorage not available:', e);
     }
@@ -39,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateKindleModeUI();
     updateThemeUI();
     updateFontScaleUI();
-    updateGenZModeUI();
     
     // Kindle mode toggle handler
     if (kindleToggleBtn) {
@@ -49,17 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('kindle-mode', isKindleMode);
             } catch (e) {}
             updateKindleModeUI();
-        });
-    }
-    
-    // Gen Z translation toggle handler
-    if (genZToggleBtn) {
-        genZToggleBtn.addEventListener('click', () => {
-            isGenZMode = !isGenZMode;
-            try {
-                localStorage.setItem('genz-mode', isGenZMode);
-            } catch (e) {}
-            updateGenZModeUI();
         });
     }
     
@@ -174,122 +158,5 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function updateFontScaleUI() {
         body.style.setProperty('--font-scale', fontScale);
-    }
-
-    function updateGenZModeUI() {
-        body.classList.toggle('genz-mode', isGenZMode);
-        if (genZToggleBtn) {
-            genZToggleBtn.textContent = isGenZMode ? 'Original' : 'Gen Z';
-            genZToggleBtn.setAttribute('aria-label', isGenZMode ? 'Restore original page text' : 'Translate page to Gen Z speak');
-            genZToggleBtn.setAttribute('aria-pressed', isGenZMode ? 'true' : 'false');
-        }
-
-        const walker = document.createTreeWalker(
-            document.querySelector('main') || body,
-            NodeFilter.SHOW_TEXT,
-            {
-                acceptNode(node) {
-                    if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-                    if (shouldSkipTranslation(node.parentElement)) return NodeFilter.FILTER_REJECT;
-                    return NodeFilter.FILTER_ACCEPT;
-                }
-            }
-        );
-
-        const textNodes = [];
-        while (walker.nextNode()) textNodes.push(walker.currentNode);
-
-        for (const node of textNodes) {
-            if (!originalTextNodes.has(node)) {
-                originalTextNodes.set(node, node.nodeValue);
-            }
-            const original = originalTextNodes.get(node);
-            node.nodeValue = isGenZMode ? translateToGenZ(original, node.parentElement) : original;
-        }
-    }
-
-    function shouldSkipTranslation(element) {
-        return Boolean(element && element.closest([
-            'code',
-            'pre',
-            'kbd',
-            'script',
-            'style',
-            'svg',
-            'canvas',
-            '.chapter-meta',
-            '.chapter-navigation',
-            '.sources-list'
-        ].join(',')));
-    }
-
-    function translateToGenZ(text, element) {
-        const trimmed = text.trim();
-        if (!trimmed) return text;
-
-        let translated = text
-            .replace(/\bArtificial Intelligence\b/g, 'AI')
-            .replace(/\bartificial intelligence\b/g, 'AI')
-            .replace(/\bLarge Language Models\b/g, 'LLMs')
-            .replace(/\blarge language models\b/g, 'LLMs')
-            .replace(/\bunderstand\b/gi, 'get')
-            .replace(/\bUnderstanding\b/g, 'Getting')
-            .replace(/\bExplore\b/g, 'Vibe-check')
-            .replace(/\bexplore\b/g, 'vibe-check')
-            .replace(/\bLearn\b/g, 'Lock in on')
-            .replace(/\blearn\b/g, 'lock in on')
-            .replace(/\bCreating\b/g, 'Cooking up')
-            .replace(/\bcreating\b/g, 'cooking up')
-            .replace(/\brequires\b/gi, 'needs')
-            .replace(/\bjourney\b/gi, 'arc')
-            .replace(/\bhelpful\b/gi, 'solid')
-            .replace(/\bmultiple\b/gi, 'a bunch of')
-            .replace(/\bdivided\b/gi, 'split')
-            .replace(/\bimportant\b/gi, 'key')
-            .replace(/\bpowerful\b/gi, 'cracked')
-            .replace(/\befficient\b/gi, 'low-key efficient')
-            .replace(/\bfast\b/gi, 'speedy')
-            .replace(/\bdifficult\b/gi, 'rough')
-            .replace(/\bcomplex\b/gi, 'big-brain')
-            .replace(/\bexcellent\b/gi, 'goated')
-            .replace(/\bsignificant\b/gi, 'major')
-            .replace(/\badvancements\b/gi, 'glow-ups')
-            .replace(/\bbreakthroughs\b/gi, 'glow-ups')
-            .replace(/\bstate-of-the-art\b/gi, 'frontier-tier');
-
-        const leading = text.match(/^\s*/)[0];
-        const content = translated.trim();
-        const trailing = text.match(/\s*$/)[0];
-        const hasInlineMarkup = element && [...element.childNodes].some(child => child.nodeType === Node.ELEMENT_NODE);
-        const isInlineElement = element && ['A', 'EM', 'STRONG', 'SPAN'].includes(element.tagName);
-
-        if (content.length < 14 || hasInlineMarkup || isInlineElement || /^(Chapter|Previous|Next|First)$/i.test(content)) {
-            return translated;
-        }
-
-        const prefix = chooseGenZPrefix(content);
-        const ending = chooseGenZEnding(content);
-        const withPrefix = prefix && !/^(Basically|Low-key|Real talk|Big picture),/i.test(content)
-            ? `${prefix}${content.charAt(0).toLowerCase()}${content.slice(1)}`
-            : content;
-
-        return `${leading}${applyEnding(withPrefix, ending)}${trailing}`;
-    }
-
-    function chooseGenZPrefix(content) {
-        const prefixes = ['Basically, ', 'Low-key, ', 'Real talk, ', 'Big picture, '];
-        return prefixes[content.length % prefixes.length];
-    }
-
-    function chooseGenZEnding(content) {
-        const endings = [' no cap.', ' fr.', ' and it kind of slaps.', ''];
-        return endings[content.length % endings.length];
-    }
-
-    function applyEnding(content, ending) {
-        if (!ending || /[?!:]$/.test(content) || /\b(no cap|fr|slaps)\.?$/i.test(content)) {
-            return content;
-        }
-        return content.replace(/[.。]?$/, ending);
     }
 });
