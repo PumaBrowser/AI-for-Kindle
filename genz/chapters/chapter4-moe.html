@@ -36,14 +36,14 @@
                 <h1>Scaling Efficiency: MoE & Quantization</h1>
             </div>
 
-            <p>As AI models grow larger, running them becomes incredibly expensive. A dense 175-billion-parameter model needs a bunch of high-end enterprise GPUs running concurrently just to output a single word. To make these models practical for commercial use and deployable on smaller hardware, engineers rely on two massive efficiency glow-ups: <strong>Mixture of Experts (MoE)</strong> and <strong>Quantization</strong>.</p>
+            <p>As AI models get bigger, running them gets wildly expensive. A dense 175-billion-parameter model needs multiple enterprise GPUs just to output one word at a time. To make these models usable in products and on smaller hardware, engineers lean on two major efficiency plays: <strong>Mixture of Experts (MoE)</strong> and <strong>Quantization</strong>.</p>
 
             <h2>Mixture of Experts (MoE)</h2>
-            <p>In a standard <strong>"Dense"</strong> model, every single parameter (the neural connections) is activated for every single word processed. This is highly inefficient; a model doesn't need to invoke its entire mathematical knowledge base to process a simple punctuation mark or pronoun.</p>
-            <p>An <strong>MoE</strong> architecture turns a dense model into a <strong>"Sparse"</strong> model by breaking it up into specialized compartments called <strong>Experts</strong> (typically inside the Feed-Forward Network layers). Instead of passing a word through all pathways, a dynamic <strong>Gating Network (Router)</strong> decides which experts should handle which word.</p>
+            <p>In a standard <strong>"Dense"</strong> model, every parameter activates for every word. That is wasteful; the model does not need its entire math brain for a comma or a pronoun.</p>
+            <p>An <strong>MoE</strong> architecture turns a dense model into a <strong>"Sparse"</strong> model by splitting it into specialized compartments called <strong>Experts</strong> (usually inside feed-forward layers). Instead of sending every word through every path, a dynamic <strong>Gating Network (Router)</strong> decides which experts should handle each token.</p>
 
             <div class="concepts-box">
-                <h4>Sparse Routing in Action</h4>
+                <h4>Sparse routing in action</h4>
                 <div class="illustration-container">
                     <svg class="illustration" viewBox="0 0 580 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram showing a router sending one token to two selected experts">
                         <rect x="22" y="82" width="92" height="56" rx="6" class="fill-tertiary stroke-border" />
@@ -72,37 +72,37 @@
                         <text x="496" y="202" text-anchor="middle" font-size="12" class="muted">Only selected experts run</text>
                     </svg>
                 </div>
-                <p>Imagine a model with 8 distinct "Experts." When a token is processed:</p>
+                <p>Imagine a model with 8 separate experts. When a token comes in:</p>
                 <ul>
-                    <li>If the token is a line of Python code, the Router sends it to <strong>Expert 3 (Code specialist)</strong> and <strong>Expert 5 (Logic specialist)</strong>.</li>
-                    <li>If the token is a word in French, the Router sends it to <strong>Expert 1 (Translation specialist)</strong>.</li>
+                    <li>If the token is Python code, the router sends it to <strong>Expert 3 (Code specialist)</strong> and <strong>Expert 5 (Logic specialist)</strong>.</li>
+                    <li>If the token is French, the router sends it to <strong>Expert 1 (Translation specialist)</strong>.</li>
                 </ul>
-                <p>Typically, the Router selects only the <strong>Top-2 Experts</strong> for each token. If a model has a total of 8x 7B experts (56B total parameters), it only activates roughly 12B parameters per token. This gives the model the vast knowledge capacity of a 56B model, but with the speedy generation speed and compute cost of a much smaller 12B model.</p>
+                <p>Usually, the router selects only the <strong>Top-2 Experts</strong> for each token. If the model has 8x 7B experts, or 56B total parameters, it might activate only about 12B per token. You get huge total capacity with per-token compute closer to a smaller model.</p>
             </div>
 
-            <h3>The Challenges of MoE</h3>
-            <p>MoE is not a free lunch. It introduces several hard engineering hurdles:</p>
+            <h3>Where MoE gets messy</h3>
+            <p>MoE is not free. It brings real engineering headaches:</p>
             <ol>
-                <li><strong>RAM Overhead:</strong> Although only 12B parameters are active at any millisecond, the entire 56B parameter model must still be loaded into the GPU's memory (VRAM). This means MoE needs significantly more memory than dense models of equivalent speed.</li>
-                <li><strong>Routing Collapse:</strong> During early training, the router might favor one expert, making it smarter, which causes the router to send even more traffic to it. Engineers must write custom algorithms to force load-balancing so all experts are trained evenly.</li>
+                <li><strong>RAM Overhead:</strong> Even if only 12B parameters are active at a moment, the whole 56B model still has to sit in GPU memory. MoE can need much more VRAM than a dense model with similar active compute.</li>
+                <li><strong>Routing Collapse:</strong> Early in training, the router can overuse one expert. That expert gets better, so the router sends it even more traffic. Engineers need load-balancing tricks so every expert learns.</li>
             </ol>
 
             <h2>Quantization</h2>
-            <p>Neural networks represent their learned weights as high-precision decimals called floating-point numbers. During training, these are typically represented in 16-bit precision (<strong>FP16</strong> or <strong>BF16</strong>). </p>
-            <p>Storing weights in 16-bit precision means every single parameter needs 2 bytes of GPU memory. A 70-billion-parameter model needs at least 140 gigabytes of VRAM just to load, which exceeds the capacity of almost all consumer GPUs.</p>
-            <p><strong>Quantization</strong> is the process of compressing these weights by reducing their numerical precision—mapping them to smaller formats like 8-bit integers (<strong>INT8</strong>), 4-bit integers (<strong>INT4</strong>), or even custom formats like <strong>FP4</strong>.</p>
+            <p>Neural networks store learned weights as high-precision decimals called floating-point numbers. During training, these usually use 16-bit precision (<strong>FP16</strong> or <strong>BF16</strong>). </p>
+            <p>At 16-bit precision, each parameter needs 2 bytes of GPU memory. A 70B model needs at least 140GB of VRAM just to load, which is way beyond most consumer GPUs.</p>
+            <p><strong>Quantization</strong> compresses weights by lowering numerical precision, mapping them to smaller formats like 8-bit integers (<strong>INT8</strong>), 4-bit integers (<strong>INT4</strong>), or custom formats like <strong>FP4</strong>.</p>
 
-            <h3>The Intuition Behind Quantization</h3>
-            <p>Think of quantization like reducing the color depth of a digital photo. If you convert a photo from 24-bit true color to an 8-bit color palette, the file size shrinks by 66%. The image looks slightly less smooth, but the shapes, objects, and overall context are still perfectly recognizable. </p>
-            <p>Similarly, when we quantize a model from 16-bit to 4-bit, we decrease its size by 75%. A 70B model that once required 140GB of VRAM can now fit into roughly 35GB of VRAM. Remarkably, due to the high mathematical redundancy in neural networks, this massive compression results in only a tiny degradation in reasoning capability.</p>
+            <h3>Quantization intuition</h3>
+            <p>Quantization is like lowering the color depth of a photo. Convert 24-bit true color to an 8-bit palette and the file shrinks hard. It looks a bit less smooth, but the shapes and meaning are still obvious. </p>
+            <p>Similarly, quantizing a model from 16-bit to 4-bit cuts size by 75%. A 70B model that needed 140GB of VRAM can fit around 35GB. Because neural networks have lots of redundancy, the reasoning hit can be surprisingly small.</p>
 
-            <h3>Modern Quantization Formats</h3>
-            <p>Several standard file formats are used to run these compressed models:</p>
+            <h3>Modern quantization formats</h3>
+            <p>Several standard formats run compressed models:</p>
             <ul>
-                <li><strong>GGUF (formerly GGML):</strong> Optimized specifically for CPU execution, allowing users to run large models on consumer laptops (like Apple Silicon Macbooks) by leveraging system RAM instead of expensive GPU VRAM.</li>
-                <li><strong>GPTQ / AWQ:</strong> Formats optimized for GPU-accelerated quantized inference, ensuring that compressed models generate text at blisteringly speedy speeds on standard desktop graphic cards.</li>
+                <li><strong>GGUF (formerly GGML):</strong> Optimized for CPU execution, so large models can run on consumer laptops like Apple Silicon MacBooks using system RAM instead of GPU VRAM.</li>
+                <li><strong>GPTQ / AWQ:</strong> GPU-focused quantized formats that keep compressed models generating quickly on standard desktop graphics cards.</li>
             </ul>
-            <p>The 2025-2026 open-weight wave made this efficiency story concrete. OpenAI's gpt-oss models, for example, use Transformer MoE architectures where the 117B-parameter model activates only 5.1B parameters per token and the 21B-parameter model activates 3.6B. That design lets model builders expose large total capacity while keeping the per-token compute closer to a much smaller dense model.</p>
+            <p>The 2025-2026 open-weight wave made the efficiency story real. OpenAI's gpt-oss models use Transformer MoE: the 117B model activates only 5.1B parameters per token, and the 21B model activates 3.6B. That gives builders large total capacity while keeping per-token compute closer to a smaller dense model.</p>
 
             <section class="sources-list" aria-labelledby="sources-heading">
                 <h2 id="sources-heading">Sources</h2>

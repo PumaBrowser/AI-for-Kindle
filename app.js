@@ -166,6 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const game = document.getElementById('ai-game');
         if (!game) return;
 
+        const isGenZ = root.classList.contains('genz-static');
         const scenarios = [
             {
                 chapter: 'Chapter 1: Transformers',
@@ -245,6 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ]
             }
         ];
+        if (isGenZ) translateGameScenarios(scenarios);
 
         const roundEl = document.getElementById('game-round');
         const scoreEl = document.getElementById('game-score');
@@ -298,10 +300,12 @@ document.addEventListener('DOMContentLoaded', () => {
             titleEl.textContent = current.title;
             scenarioEl.textContent = current.prompt;
             sourceEl.href = current.source;
-            sourceEl.textContent = 'Review ' + current.chapter;
+            sourceEl.textContent = (isGenZ ? 'Recheck ' : 'Review ') + current.chapter;
             feedbackEl.hidden = true;
             nextBtn.hidden = true;
-            nextBtn.textContent = round === scenarios.length - 1 ? 'Show Score' : 'Next Round';
+            nextBtn.textContent = round === scenarios.length - 1
+                ? (isGenZ ? 'Drop Score' : 'Show Score')
+                : 'Next Round';
 
             const fragment = document.createDocumentFragment();
             choicesEl.textContent = '';
@@ -332,7 +336,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             scoreEl.textContent = String(score);
             healthEl.textContent = getHealth();
-            resultEl.textContent = selected[1] ? 'Good system call.' : 'That design would be risky.';
+            resultEl.textContent = selected[1]
+                ? (isGenZ ? 'Clean system call.' : 'Good system call.')
+                : (isGenZ ? 'That design is not it.' : 'That design would be risky.');
             explanationEl.textContent = selected[2];
             feedbackEl.hidden = false;
             nextBtn.hidden = false;
@@ -344,8 +350,10 @@ document.addEventListener('DOMContentLoaded', () => {
             roundEl.textContent = scenarios.length + ' / ' + scenarios.length;
             scoreEl.textContent = String(score);
             healthEl.textContent = getHealth();
-            chapterEl.textContent = 'Complete';
-            titleEl.textContent = score >= 6 ? 'Production-ready instincts' : 'Review, then replay';
+            chapterEl.textContent = isGenZ ? 'Quest complete' : 'Complete';
+            titleEl.textContent = score >= 6
+                ? (isGenZ ? 'Ship-ready instincts' : 'Production-ready instincts')
+                : (isGenZ ? 'Review, then run it back' : 'Review, then replay');
             scenarioEl.textContent = 'Final score: ' + score + ' of ' + scenarios.length + '. ' + getSummary();
             choicesEl.textContent = '';
             feedbackEl.hidden = true;
@@ -353,16 +361,114 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function getHealth() {
-            if (score >= 6) return 'Robust';
+            if (score >= 6) return isGenZ ? 'Locked' : 'Robust';
             if (score >= 4) return 'Stable';
             if (score >= 2) return 'Needs Review';
-            return 'Fragile';
+            return isGenZ ? 'Shaky' : 'Fragile';
         }
 
         function getSummary() {
-            if (score >= 6) return 'You matched most scenarios to the right AI system pattern.';
-            if (score >= 4) return 'You have the core map. Revisit the missed chapters to tighten the tradeoffs.';
-            return 'Start with Transformers, RAG, and Agents. Those three unlock most of the guide.';
+            if (score >= 6) {
+                return isGenZ
+                    ? 'You matched almost every scenario to the right AI system pattern.'
+                    : 'You matched most scenarios to the right AI system pattern.';
+            }
+            if (score >= 4) {
+                return isGenZ
+                    ? 'You have the core map. Recheck the missed chapters to sharpen the tradeoffs.'
+                    : 'You have the core map. Revisit the missed chapters to tighten the tradeoffs.';
+            }
+            return isGenZ
+                ? 'Start with Transformers, RAG, and Agents. Those three unlock most of the guide.'
+                : 'Start with Transformers, RAG, and Agents. Those three unlock most of the guide.';
+        }
+
+        function translateGameScenarios(items) {
+            const translations = new Map([
+                ['Chapter 1: Transformers', 'Chapter 1: Transformers'],
+                ['A sentence has two meanings for one word.', 'One word is doing two jobs.'],
+                ['Your model reads: "The bank robber ran to the river bank." Which mechanism lets it connect each use of "bank" to the right surrounding words?', 'Your model reads: "The bank robber ran to the river bank." What mechanism helps it match each "bank" to the right nearby clue?'],
+                ['Self-attention with Query, Key, and Value vectors', 'Self-attention with Query, Key, and Value vectors'],
+                ['Correct. Attention compares each token with the surrounding tokens, so "robber" and "river" can pull the two meanings apart.', 'Correct. Attention compares tokens with nearby context, so "robber" and "river" separate the two meanings.'],
+                ['A larger static dictionary', 'A bigger static dictionary'],
+                ['A dictionary lists meanings, but it does not decide which meaning fits this sentence.', 'A dictionary lists meanings, but it does not choose the one that fits this sentence.'],
+                ['More image training data', 'More image training data'],
+                ['Images can help multimodal models, but this is a language context problem.', 'Images can help multimodal models, but this is a language-context problem.'],
+
+                ['Chapter 2: Training', 'Chapter 2: Training'],
+                ['A base model keeps completing instead of helping.', 'The base model keeps autocompleting instead of helping.'],
+                ['It can predict text well, but it does not follow instructions reliably. What training stage turns it into an assistant?', 'It predicts text well, but it does not reliably follow instructions. Which training stage turns it into an assistant?'],
+                ['Supervised fine-tuning on prompt-response examples', 'Supervised fine-tuning on prompt-response examples'],
+                ['Correct. SFT teaches the model the interaction pattern: read the user request and answer helpfully.', 'Correct. SFT teaches the interaction pattern: read the request, answer usefully.'],
+                ['Only increasing the context window', 'Only making the context window bigger'],
+                ['A longer prompt gives more room, but it does not teach assistant behavior by itself.', 'More context gives more room, but it does not teach assistant behavior by itself.'],
+                ['Quantizing the weights', 'Quantizing the weights'],
+                ['Quantization makes inference cheaper; it does not align behavior.', 'Quantization makes inference cheaper; it does not fix behavior.'],
+
+                ['Chapter 3: RAG', 'Chapter 3: RAG'],
+                ['The answer depends on a new policy PDF.', 'The answer lives in a new policy PDF.'],
+                ['The model was trained before the policy changed, and the source is private. What should the app do before generating?', 'The model trained before the policy changed, and the source is private. What should the app do before answering?'],
+                ['Retrieve the relevant chunks and place them in context', 'Retrieve the relevant chunks and put them in context'],
+                ['Correct. RAG grounds the answer in fresh private evidence instead of asking the model to guess.', 'Correct. RAG grounds the answer in fresh private evidence instead of letting the model guess.'],
+                ['Ask the model to remember harder', 'Ask the model to remember harder'],
+                ['Parametric memory cannot access a private file it never saw.', 'Parametric memory cannot access a private file it never saw.'],
+                ['Use diffusion to denoise the PDF', 'Use diffusion to denoise the PDF'],
+                ['Diffusion is useful for generative media, not policy retrieval.', 'Diffusion is for generative media, not policy retrieval.'],
+
+                ['Chapter 4: Efficiency', 'Chapter 4: Efficiency'],
+                ['The model is huge but most tokens are simple.', 'The model is huge, but most tokens are easy.'],
+                ['You want more total capacity without paying dense-model compute on every token. Which architecture helps?', 'You want more total capacity without paying dense-model compute for every token. Which architecture helps?'],
+                ['Mixture of Experts with sparse routing', 'Mixture of Experts with sparse routing'],
+                ['Correct. The router activates only a few experts per token, reducing active compute while preserving large capacity.', 'Correct. The router activates only a few experts per token, keeping active compute lower while total capacity stays high.'],
+                ['A bigger dense feed-forward network', 'A bigger dense feed-forward network'],
+                ['That raises capacity, but every token still pays for the larger network.', 'That raises capacity, but every token still pays for the whole bigger network.'],
+                ['A longer prompt template', 'A longer prompt template'],
+                ['Prompting can guide behavior, but it does not reduce per-token compute.', 'Prompting can guide behavior, but it does not lower per-token compute.'],
+
+                ['Chapter 5: Diffusion', 'Chapter 5: Diffusion'],
+                ['You need to generate an image from text.', 'You need to make an image from text.'],
+                ['The system starts from random noise and repeatedly removes predicted noise under prompt guidance. What family of models is this?', 'The system starts with random noise and repeatedly removes predicted noise under prompt guidance. What model family is this?'],
+                ['Diffusion models', 'Diffusion models'],
+                ['Correct. Diffusion generation is a learned denoising loop, often running in latent space for efficiency.', 'Correct. Diffusion is a learned denoising loop, often running in latent space so it stays efficient.'],
+                ['A vector database', 'A vector database'],
+                ['A vector database retrieves existing chunks; it does not synthesize images.', 'A vector database retrieves existing chunks; it does not synthesize pixels.'],
+                ['A reward model', 'A reward model'],
+                ['Reward models score outputs during alignment; they do not generate the pixels.', 'Reward models score outputs during alignment; they do not generate pixels.'],
+
+                ['Chapter 6: Agents', 'Chapter 6: Agents'],
+                ['The task needs live weather and arithmetic.', 'The task needs live weather and exact math.'],
+                ['The model should not guess tomorrow\'s forecast or multiply large numbers in text. What should the host application provide?', 'The model should not guess tomorrow\'s forecast or multiply giant numbers in text. What should the host app provide?'],
+                ['Tool calls for weather and calculation', 'Tool calls for weather and calculation'],
+                ['Correct. Tool use lets the model delegate exact or live operations to reliable external systems.', 'Correct. Tool use lets the model hand exact or live work to reliable external systems.'],
+                ['A prettier answer style', 'A cleaner answer style'],
+                ['Tone does not fix stale data or exact arithmetic.', 'Tone does not fix stale data or exact arithmetic.'],
+                ['A lower token limit', 'A lower token limit'],
+                ['A smaller context usually makes complex tasks harder, not safer.', 'A smaller context usually makes complex tasks harder, not safer.'],
+
+                ['Chapter 7: Frontiers', 'Chapter 7: Frontiers'],
+                ['The problem is hard enough to justify extra thinking.', 'The problem deserves extra thinking.'],
+                ['A coding agent must inspect files, run tests, repair failures, and continue until the work is done. Which frontier pattern fits?', 'A coding agent needs to inspect files, run tests, fix failures, and keep going until done. Which frontier pattern fits?'],
+                ['Test-time compute in an agent loop', 'Test-time compute in an agent loop'],
+                ['Correct. The system spends extra inference-time work on planning, acting, observing, and revising.', 'Correct. The system spends extra inference-time work planning, acting, observing, and revising.'],
+                ['One immediate next-token answer', 'One instant next-token answer'],
+                ['A single pass is fast, but it is brittle for long workflows with feedback.', 'One pass is fast, but brittle for long workflows with feedback.'],
+                ['Training only on unverified synthetic data', 'Training only on unverified synthetic data'],
+                ['Unverified synthetic loops can compound errors; useful synthetic data needs checks.', 'Unverified synthetic loops can compound errors; useful synthetic data needs checks.']
+            ]);
+
+            for (const item of items) {
+                item.chapter = translate(item.chapter);
+                item.title = translate(item.title);
+                item.prompt = translate(item.prompt);
+                for (const choice of item.choices) {
+                    choice[0] = translate(choice[0]);
+                    choice[2] = translate(choice[2]);
+                }
+            }
+
+            function translate(value) {
+                return translations.get(value) || value;
+            }
         }
     }
 });

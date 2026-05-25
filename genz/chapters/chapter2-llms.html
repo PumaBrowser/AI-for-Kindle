@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chapter 2: LLM Training & Alignment — AI 101 Guide — Gen Z Edition</title>
-    <meta name="description" content="Vibe-check how LLMs are trained, aligned, and optimized. get pre-training, fine-tuning, RLHF, DPO, and scaling laws.">
+    <meta name="description" content="Vibe-check how LLMs are trained, aligned, and optimized. Get pre-training, fine-tuning, RLHF, DPO, and scaling laws.">
     <link rel="stylesheet" href="../../style.css">
 </head>
 <body>
@@ -36,40 +36,40 @@
                 <h1>LLM Training & Alignment</h1>
             </div>
 
-            <p>Cooking up a modern AI assistant like ChatGPT or Gemini is not a single-step process. It needs taking raw, chaotic web data and refining it through a bunch of training stages. The arc from raw math to a solid assistant is split into three major milestones: <strong>Pre-training</strong>, <strong>Supervised Fine-Tuning (SFT)</strong>, and <strong>Alignment</strong>.</p>
+            <p>Cooking up a modern AI assistant like ChatGPT or Gemini is not one step. It starts with chaotic web-scale data, then refines it through several training stages. The arc from raw math to useful assistant has three big milestones: <strong>Pre-training</strong>, <strong>Supervised Fine-Tuning (SFT)</strong>, and <strong>Alignment</strong>.</p>
 
-            <h2>Phase 1: Pre-training (Cooking up the "Base Model")</h2>
-            <p>The foundation of any LLM is the pre-trained base model. During this stage, the model is fed petabytes of raw text from books, articles, code repositories, and web pages. The training objective is simple: <strong>predict the next word (token) in a sentence.</strong></p>
+            <h2>Phase 1: Pre-training, aka the base model era</h2>
+            <p>Every LLM starts with a pre-trained base model. At this stage, the model gets petabytes of raw text from books, articles, code repositories, and web pages. The training objective is simple: <strong>predict the next word (token) in a sentence.</strong></p>
             <p>For example, given the text:</p>
             <blockquote>
                 "The cat sat on the..."
             </blockquote>
-            <p>The model calculates probability distributions over its entire vocabulary and predicts "mat" (or "sofa", "bed", etc.). By repeating this trillions of times across vast supercomputer clusters, the model builds a rich internal map of language, grammar, reasoning patterns, and encyclopedic facts. However, a base model is not an assistant; it is a text completer. If you ask a base model <em>"Write a recipe for chocolate cake,"</em> it might reply with a second question: <em>"And write a recipe for apple pie,"</em> because it is mimicking lists of recipes found on the internet.</p>
+            <p>The model calculates probabilities across its vocabulary and predicts "mat" (or "sofa", "bed", etc.). Do that trillions of times on supercomputer clusters, and the model builds an internal map of language, grammar, reasoning patterns, and facts. But a base model is not an assistant; it is a text completer. If you ask it <em>"Write a recipe for chocolate cake,"</em> it might continue the pattern with another prompt: <em>"And write a recipe for apple pie,"</em> because it is mimicking recipe lists from the internet.</p>
 
-            <h2>Phase 2: Supervised Fine-Tuning (Cooking up the "Instruct Model")</h2>
-            <p>To turn a text completer into an interactive assistant, engineers perform <strong>Supervised Fine-Tuning (SFT)</strong>. In this phase, the base model is trained on a curated dataset of high-quality conversational prompts and responses, written by human experts.</p>
+            <h2>Phase 2: Supervised Fine-Tuning, aka making it follow directions</h2>
+            <p>To turn a text completer into an assistant, engineers run <strong>Supervised Fine-Tuning (SFT)</strong>. In this phase, the base model trains on curated prompt-response examples written by human experts.</p>
             <p>A typical training sample looks like:</p>
             <pre><code>Prompt: Explain photosynthesis in one sentence.
 Response: Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to create oxygen and energy in the form of sugar.</code></pre>
-            <p>By training on tens of thousands of these conversational examples, the model learns the "instruct" behavior: it recognizes when it is being asked a question and understands that it must respond with solid answers, adopting a conversational and polite tone.</p>
+            <p>After tens of thousands of these examples, the model learns "instruct" behavior: recognize the user request, answer directly, and keep the tone conversational.</p>
 
-            <h2>Phase 3: Alignment (RLHF and DPO)</h2>
-            <p>Even after SFT, a model can still produce toxic, biased, incorrect, or unhelpful output. SFT only teaches the model to imitate the training dialogues. To ensure the model is solid, honest, and harmless, engineers "align" it with human preferences using two primary techniques:</p>
+            <h2>Phase 3: Alignment with RLHF and DPO</h2>
+            <p>Even after SFT, a model can still produce toxic, biased, wrong, or useless output. SFT teaches imitation; alignment teaches preference. Engineers align models with human preferences using two main techniques:</p>
 
             <h3>1. Reinforcement Learning from Human Feedback (RLHF)</h3>
-            <p>RLHF works by using a grading system. The process involves three steps:</p>
+            <p>RLHF is basically a grading loop with three steps:</p>
             <ul>
-                <li><strong>Generate Options:</strong> The model generates a bunch of candidate answers to a prompt.</li>
-                <li><strong>Train a Reward Model:</strong> Human evaluators rate these candidate answers from best to worst. A separate neural network—the <em>Reward Model</em>—is trained to predict what score a human would give to any given response.</li>
-                <li><strong>Reinforce:</strong> Using an RL algorithm (typically PPO), the LLM's parameters are updated to maximize the score predicted by the Reward Model. Responses that humans like are rewarded, and disliked responses are penalized.</li>
+                <li><strong>Generate Options:</strong> The model generates several possible answers to a prompt.</li>
+                <li><strong>Train a Reward Model:</strong> Human evaluators rank those answers from best to worst. A separate neural network, the <em>Reward Model</em>, learns to predict what score a human would give.</li>
+                <li><strong>Reinforce:</strong> Using an RL algorithm, usually PPO, the LLM updates its parameters to maximize the Reward Model score. Human-approved answers get boosted; disliked answers get pushed down.</li>
             </ul>
 
             <h3>2. Direct Preference Optimization (DPO)</h3>
-            <p>While RLHF is highly effective, it is notoriously unstable, expensive, and big-brain to train because it needs maintaining a bunch of models simultaneously (the LLM, the Reward Model, and reference models). </p>
-            <p>In 2023, researchers introduced <strong>Direct Preference Optimization (DPO)</strong>. DPO bypasses the reward model entirely. It mathematically proves that you can optimize the LLM policy directly using a dataset of paired choices: a prompt, a <strong>preferred (chosen)</strong> response, and a <strong>disliked (rejected)</strong> response. DPO adjusts the weights so that the probability of the chosen response increases relative to the rejected response, cooking up a much simpler, faster, and more stable alignment loop.</p>
+            <p>RLHF works, but it is famously unstable, expensive, and messy because you have to juggle the LLM, Reward Model, and reference models at the same time. </p>
+            <p>In 2023, researchers introduced <strong>Direct Preference Optimization (DPO)</strong>. DPO skips the reward model entirely. It shows you can optimize the LLM directly from paired choices: a prompt, a <strong>preferred (chosen)</strong> response, and a <strong>disliked (rejected)</strong> response. DPO adjusts the weights so the chosen response becomes more likely than the rejected one. Same alignment goal, cleaner loop.</p>
 
             <div class="concepts-box">
-                <h4>Key Concept: Kaplan vs. Chinchilla Scaling Laws</h4>
+                <h4>Key Concept: Kaplan vs. Chinchilla scaling laws</h4>
                 <div class="illustration-container">
                     <svg class="illustration" viewBox="0 0 580 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram comparing parameter-heavy scaling with compute-optimal scaling">
                         <rect x="24" y="24" width="236" height="172" rx="8" class="fill-card stroke-border" />
@@ -95,8 +95,8 @@ Response: Photosynthesis is the process by which plants use sunlight, water, and
                         <polygon points="306,110 296,104 296,116" class="fill-accent" />
                     </svg>
                 </div>
-                <p>How do we make models smarter? For a long time, the industry followed <strong>Kaplan's scaling laws</strong> (2020), which suggested that parameter size was the single most key factor—urging engineers to build larger models, even if they couldn't afford to train them on more data.</p>
-                <p>In 2022, DeepMind published the <strong>Chinchilla scaling laws</strong>. They proved that for optimal performance, parameter count and training data (tokens) should scale in equal proportion. Most models were actually <em>under-trained</em> on too little data. This shifted the industry toward training smaller, highly low-key efficient models (like LLaMA or Mistral) for much longer on high-quality tokens, making them far cheaper to run on standard hardware.</p>
+                <p>How do models get smarter? For a long time, the industry followed <strong>Kaplan's scaling laws</strong> (2020), which made parameter count look like the main lever. That pushed teams toward bigger models, even when they did not have enough data to train them properly.</p>
+                <p>In 2022, DeepMind published the <strong>Chinchilla scaling laws</strong>. The result: for optimal performance, parameter count and training tokens should scale together. Many models were actually <em>under-trained</em> on too little data. The industry shifted toward smaller, stronger models trained longer on high-quality tokens, like LLaMA and Mistral, which are much cheaper to run on standard hardware.</p>
             </div>
 
             <section class="sources-list" aria-labelledby="sources-heading">

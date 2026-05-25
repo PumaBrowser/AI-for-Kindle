@@ -36,36 +36,36 @@
                 <h1>Agentic AI & Reasoning</h1>
             </div>
 
-            <p>For the first few years of the LLM boom, AI models were treated as passive chatbots: you write a prompt, and the model instantly outputs a response. Today, the frontier has shifted toward <strong>Agentic AI</strong>. Instead of answering statically, agentic systems act as autonomous software entities that can plan, use external tools, inspect their own output, and run in loops to solve multi-step problems.</p>
+            <p>For the first few years of the LLM boom, AI models were treated like passive chatbots: write a prompt, get an instant answer. Now the frontier has shifted toward <strong>Agentic AI</strong>. Instead of one static answer, agentic systems can plan, use tools, inspect their output, and loop through multi-step work.</p>
 
-            <h2>Tool Use & Function Calling</h2>
-            <p>LLMs are notoriously bad at precise math (like multiplying two 8-digit numbers) and cannot fetch live data or interact with the physical world because they are just word-prediction engines. </p>
+            <h2>Tool use and function calling</h2>
+            <p>LLMs are famously bad at exact math, like multiplying two 8-digit numbers, and they cannot fetch live data or touch the physical world by themselves. They are word-prediction engines. </p>
             <p><strong>Tool Use</strong> (or <strong>Function Calling</strong>) overcomes this limitation by giving models hands. The model is provided with a list of available tools, described in plain text. For example:</p>
             <pre><code>Available Tool: calculate_weather(location, date)
 - Returns the temperature forecast for a location.</code></pre>
-            <p>If the user asks: <em>"Should I wear a coat in Chicago tomorrow?"</em>, the LLM recognizes it cannot answer from memory. Instead of guessing, it outputs a structured instruction:</p>
+            <p>If the user asks: <em>"Should I wear a coat in Chicago tomorrow?"</em>, the LLM should realize memory is not enough. Instead of guessing, it emits a structured instruction:</p>
             <pre><code>{
   "call": "calculate_weather",
   "arguments": { "location": "Chicago", "date": "tomorrow" }
 }</code></pre>
-            <p>The host application intercepts this JSON, runs the actual weather API, receives the result (e.g., "Chicago: 41°F, Rain"), and appends it to the model's chat history. The LLM reads the result and finishes its response: <em>"Yes, you should wear a coat. Chicago will be 41°F and raining tomorrow."</em></p>
+            <p>The host app intercepts the JSON, calls the real weather API, gets the result, and adds it back to the chat history. The LLM reads the result and finishes: <em>"Yes, you should wear a coat. Chicago will be 41°F and raining tomorrow."</em></p>
 
-            <h2>Reasoning Loops: ReAct and Reflection</h2>
-            <p>To solve big-brain tasks, agents use structured loops rather than generating answers in a single pass.</p>
+            <h2>Reasoning loops: ReAct and reflection</h2>
+            <p>For complex tasks, agents use structured loops instead of one-shot answers.</p>
 
-            <h3>1. The ReAct (Reason + Act) Loop</h3>
-            <p>ReAct forces the model to document its thinking before taking actions. The loop proceeds as follows:</p>
+            <h3>1. ReAct: reason, then act</h3>
+            <p>ReAct makes the model reason before taking action. The loop goes like this:</p>
             <ul>
-                <li><strong>Thought:</strong> The model explains its plan (e.g., "I need to find the population of France, then multiply it by 0.12").</li>
-                <li><strong>Action:</strong> The model calls a search engine or calculator tool.</li>
-                <li><strong>Observation:</strong> The model reads the tool's output and updates its plan, looping back to Thought until the task is complete.</li>
+                <li><strong>Thought:</strong> The model states a plan, like "find France's population, then multiply by 0.12."</li>
+                <li><strong>Action:</strong> The model calls a search engine, calculator, or other tool.</li>
+                <li><strong>Observation:</strong> The model reads the tool output, updates the plan, and loops until the task is done.</li>
             </ul>
 
-            <h3>2. Reflection and Self-Correction</h3>
-            <p>If a model writes a block of code, it may contain a bug. A reflection agent doesn't send the code to the user immediately. Instead, it runs the code in an isolated environment, catches any error logs, feeds those errors back to itself, and rewrites the code to fix the bug. This cyclic feedback loop dramatically boosts task success rates.</p>
+            <h3>2. Reflection and self-correction</h3>
+            <p>If a model writes code, the first draft may be buggy. A reflection agent does not ship it immediately. It runs the code in an isolated environment, reads errors, feeds those errors back into the model, and rewrites the code. That feedback loop boosts task success.</p>
 
             <div class="concepts-box">
-                <h4>System 1 vs. System 2 Thinking in AI</h4>
+                <h4>System 1 vs. System 2 thinking in AI</h4>
                 <div class="illustration-container">
                     <svg class="illustration" viewBox="0 0 580 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram comparing a fast single-pass answer with a slower reason-act-observe loop">
                         <rect x="24" y="38" width="218" height="132" rx="8" class="fill-card stroke-border" />
@@ -97,11 +97,11 @@
                 </div>
                 <p>Cognitive psychologist Daniel Kahneman famously split human thinking into two modes:</p>
                 <ul>
-                    <li><strong>System 1 (speedy):</strong> speedy, intuitive, automatic actions (e.g., answering "2+2=?", reading a familiar road sign).</li>
-                    <li><strong>System 2 (Slow):</strong> Slow, deliberate, logical reasoning (e.g., solving "17 × 24", filling out a tax form).</li>
+                    <li><strong>System 1 (Fast):</strong> Fast, intuitive, automatic actions, like answering "2+2=?" or reading a familiar road sign.</li>
+                    <li><strong>System 2 (Slow):</strong> Slow, deliberate reasoning, like solving "17 x 24" or filling out a tax form.</li>
                 </ul>
-                <p>Standard LLMs operate mostly like <strong>System 1</strong>. They output the next token immediately without much opportunity to plan, test, or revise. If they start a sentence poorly, they cannot truly rewind the generation path.</p>
-                <p>Modern <strong>System 2 Reasoning Models</strong> spend extra inference-time compute before producing a final answer. OpenAI's GPT-5.5, Google's Gemini 3.5 Flash, DeepSeek-R1, and related reasoning systems all point toward the same design shift: models are being trained and served to plan, use tools, check intermediate work, and keep going across longer workflows. Some expose a visible plan or controllable "thinking" effort; others keep the reasoning internal while returning a concise answer.</p>
+                <p>Standard LLMs mostly act like <strong>System 1</strong>. They output the next token immediately, with limited room to plan, test, or revise. If the answer starts badly, they cannot truly rewind.</p>
+                <p>Modern <strong>System 2 Reasoning Models</strong> spend extra inference-time compute before giving the final answer. OpenAI's GPT-5.5, Google's Gemini 3.5 Flash, DeepSeek-R1, and related reasoning systems all point to the same shift: models plan, use tools, check intermediate work, and keep going across longer workflows. Some show controllable "thinking" effort; others keep it internal and return a concise answer.</p>
             </div>
 
             <section class="sources-list" aria-labelledby="sources-heading">
