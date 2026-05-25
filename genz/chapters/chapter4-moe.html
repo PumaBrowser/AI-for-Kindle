@@ -19,8 +19,8 @@
                     <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
                 </div>
                 <a href="../../chapters/chapter4-moe.html" class="btn-icon genz-link active" aria-label="Read the original version">Original</a>
-                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
-                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">📖 Kindle / E-Ink</button>
+                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">Kindle / E-Ink</button>
             </div>
         </div>
     </header>
@@ -102,6 +102,7 @@
                 <li><strong>GGUF (formerly GGML):</strong> Optimized specifically for CPU execution, allowing users to run large models on consumer laptops (like Apple Silicon Macbooks) by leveraging system RAM instead of expensive GPU VRAM.</li>
                 <li><strong>GPTQ / AWQ:</strong> Formats optimized for GPU-accelerated quantized inference, ensuring that compressed models generate text at blisteringly speedy speeds on standard desktop graphic cards.</li>
             </ul>
+            <p>The 2025-2026 open-weight wave made this efficiency story concrete. OpenAI's gpt-oss models, for example, use Transformer MoE architectures where the 117B-parameter model activates only 5.1B parameters per token and the 21B-parameter model activates 3.6B. That design lets model builders expose large total capacity while keeping the per-token compute closer to a much smaller dense model.</p>
 
             <section class="sources-list" aria-labelledby="sources-heading">
                 <h2 id="sources-heading">Sources</h2>
@@ -110,6 +111,7 @@
                     <li><a href="https://arxiv.org/abs/2210.17323">GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers</a> — Frantar et al.</li>
                     <li><a href="https://arxiv.org/abs/2306.00978">AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration</a> — Lin et al.</li>
                     <li><a href="https://github.com/ggerganov/ggml/blob/master/docs/gguf.md">GGUF format documentation</a> — ggml</li>
+                    <li><a href="https://openai.com/index/introducing-gpt-oss/">Introducing gpt-oss</a> — OpenAI</li>
                 </ul>
             </section>
         </article>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Systems Quest — Kindle Reader Edition</title>
+    <meta name="description" content="A lightweight Kindle-friendly game that teaches modern AI systems through short engineering choices.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <a href="index.html" class="logo-link">AI 101 <span class="logo-badge">GAME</span></a>
+            </div>
+            <div class="controls">
+                <div class="font-scale-controls">
+                    <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
+                    <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
+                </div>
+                <a href="index.html" class="btn-icon" aria-label="Read the AI guide">Guide</a>
+                <a href="genz/game.html" class="btn-icon genz-link" aria-label="Play the Gen Z version">Gen Z</a>
+                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">Kindle / E-Ink</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="animated game-shell">
+        <section class="hero game-hero">
+            <p class="eyebrow">Interactive review</p>
+            <h1>AI Systems Quest</h1>
+            <p>Build a reliable AI product by choosing the right system design move for each scenario. Every round maps back to a chapter, and every interaction is plain HTML for fast Kindle refresh.</p>
+        </section>
+
+        <section class="game-board" id="ai-game" aria-labelledby="game-title">
+            <div class="game-status" aria-live="polite">
+                <div>
+                    <span class="game-label">Round</span>
+                    <strong id="game-round">1 / 7</strong>
+                </div>
+                <div>
+                    <span class="game-label">Score</span>
+                    <strong id="game-score">0</strong>
+                </div>
+                <div>
+                    <span class="game-label">System Health</span>
+                    <strong id="game-health">Stable</strong>
+                </div>
+            </div>
+
+            <article class="scenario-card">
+                <p class="game-label" id="game-chapter">Chapter 1</p>
+                <h2 id="game-title">Loading scenario</h2>
+                <p id="game-scenario">The game will load when JavaScript is available.</p>
+                <div class="choice-list" id="game-choices"></div>
+                <div class="game-feedback" id="game-feedback" hidden>
+                    <p class="game-result" id="game-result"></p>
+                    <p id="game-explanation"></p>
+                    <p><a id="game-source" href="chapters/chapter1-transformers.html">Review the matching chapter</a></p>
+                </div>
+                <div class="game-actions">
+                    <button id="game-next" class="btn-primary" type="button" hidden>Next Round</button>
+                    <button id="game-restart" class="btn-secondary" type="button">Restart</button>
+                </div>
+            </article>
+        </section>
+
+        <section class="game-notes" aria-labelledby="game-notes-heading">
+            <h2 id="game-notes-heading">Kindle Performance Notes</h2>
+            <ul>
+                <li>No canvas, WebGL, external fonts, images, timers, audio, or network calls.</li>
+                <li>Only one scenario is rendered at a time to keep the DOM small.</li>
+                <li>Kindle mode disables animation and keeps every control as a large high-contrast tap target.</li>
+            </ul>
+        </section>
+
+        <noscript>
+            <section class="concepts-box">
+                <h2>JavaScript is off</h2>
+                <p>The game needs JavaScript for scoring. You can still read the full guide from the <a href="index.html">table of contents</a>.</p>
+            </section>
+        </noscript>
+    </main>
+
+    <footer>
+        <p>AI 101 Guide — Optimized for Kindle Web Browser.</p>
+        <p>Toggle "Kindle / E-Ink" mode above for a pure book-like layout.</p>
+        <p>If you have feedback, email us at <a href="mailto:ai@puma.tech">ai@puma.tech</a></p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

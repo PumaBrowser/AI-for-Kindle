@@ -19,8 +19,8 @@
                     <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
                 </div>
                 <a href="../../chapters/chapter6-agents.html" class="btn-icon genz-link active" aria-label="Read the original version">Original</a>
-                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
-                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">📖 Kindle / E-Ink</button>
+                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">Kindle / E-Ink</button>
             </div>
         </div>
     </header>
@@ -100,8 +100,8 @@
                     <li><strong>System 1 (speedy):</strong> speedy, intuitive, automatic actions (e.g., answering "2+2=?", reading a familiar road sign).</li>
                     <li><strong>System 2 (Slow):</strong> Slow, deliberate, logical reasoning (e.g., solving "17 × 24", filling out a tax form).</li>
                 </ul>
-                <p>Standard LLMs operate purely in <strong>System 1</strong>. They output the next token immediately without pre-planning. If they start a sentence poorly, they cannot backtrack, often leading to logical dead-ends.</p>
-                <p>Modern <strong>System 2 Reasoning Models</strong> (including OpenAI's o-series reasoning models and similar reasoning modes from other labs) are trained to spend extra internal compute before producing a final response. They may generate hidden reasoning tokens, check intermediate work, simulate branches of logic, and backtrack when they hit errors. This helps models solve big-brain math, coding, and science problems more reliably.</p>
+                <p>Standard LLMs operate mostly like <strong>System 1</strong>. They output the next token immediately without much opportunity to plan, test, or revise. If they start a sentence poorly, they cannot truly rewind the generation path.</p>
+                <p>Modern <strong>System 2 Reasoning Models</strong> spend extra inference-time compute before producing a final answer. OpenAI's GPT-5.5, Google's Gemini 3.5 Flash, DeepSeek-R1, and related reasoning systems all point toward the same design shift: models are being trained and served to plan, use tools, check intermediate work, and keep going across longer workflows. Some expose a visible plan or controllable "thinking" effort; others keep the reasoning internal while returning a concise answer.</p>
             </div>
 
             <section class="sources-list" aria-labelledby="sources-heading">
@@ -111,6 +111,9 @@
                     <li><a href="https://arxiv.org/abs/2302.04761">Toolformer: Language Models Can Teach Themselves to Use Tools</a> — Schick et al.</li>
                     <li><a href="https://arxiv.org/abs/2303.11366">Reflexion: Language Agents with Verbal Reinforcement Learning</a> — Shinn et al.</li>
                     <li><a href="https://openai.com/index/learning-to-reason-with-llms/">Learning to Reason with LLMs</a> — OpenAI</li>
+                    <li><a href="https://openai.com/index/introducing-gpt-5-5/">Introducing GPT-5.5</a> — OpenAI</li>
+                    <li><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/">Gemini 3.5: frontier intelligence with action</a> — Google</li>
+                    <li><a href="https://www.nature.com/articles/s41586-025-09422-z">DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning</a> — Nature</li>
                 </ul>
             </section>
         </article>

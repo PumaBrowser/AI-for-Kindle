@@ -5,10 +5,11 @@ A lightweight static guide to modern AI concepts, tuned for Kindle and e-ink rea
 ## Project Structure
 
 - `index.html` — table of contents and landing page
+- `game.html` — Kindle-friendly interactive review game
 - `chapters/` — chapter pages with embedded SVG diagrams
 - `style.css` — shared layout, reading, theme, Kindle, and accessibility styles
 - `app.js` — theme, Kindle mode, and font scaling controls
-- `genz/` — generated static Gen Z version of the site
+- `genz/` — generated static Gen Z version of the site and game
 - `scripts/generate-genz.mjs` — regenerates static Gen Z pages from the canonical HTML
 - `scripts/validate-site.mjs` — local smoke checks for HTML, links, sources, and common markup regressions
 

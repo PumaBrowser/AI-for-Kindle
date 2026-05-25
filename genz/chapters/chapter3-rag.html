@@ -19,8 +19,8 @@
                     <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
                 </div>
                 <a href="../../chapters/chapter3-rag.html" class="btn-icon genz-link active" aria-label="Read the original version">Original</a>
-                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
-                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">📖 Kindle / E-Ink</button>
+                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">Kindle / E-Ink</button>
             </div>
         </div>
     </header>
@@ -100,7 +100,7 @@
             <h2>The Evolution of Context Windows</h2>
             <p>If RAG is so cracked, why not just feed the entire database directly into the model? Historically, this was impossible because of the way attention works. </p>
             <p>The memory and computation cost of standard Self-Attention scales <strong>quadratically</strong> ($O(N^2)$) with the length of the input. If you double the length of your input, it takes four times more compute and memory to process. Early models were capped at a context window of just 2,048 tokens (roughly 1,500 words).</p>
-            <p>Recent architectural glow-ups have broken this barrier, enabling models like Gemini to handle 1 to 2 million tokens of active memory. The main pillars of this scaling are:</p>
+            <p>Recent architectural and serving glow-ups have broken this barrier. By 2026, frontier systems commonly offer hundreds of thousands to millions of tokens of working memory; OpenAI lists a 1 million token API context window for GPT-5.5, while Google's Gemini line has pushed long-context reasoning into mainstream multimodal products. The main pillars of this scaling are:</p>
 
             <h3>1. FlashAttention</h3>
             <p>Introduced by Tri Dao, FlashAttention is a software-level optimization. Rather than changing the math of attention, it changes how the GPU handles memory. Standard attention writes massive intermediate tables back and forth between slow GPU High Bandwidth Memory (HBM) and speedy on-chip SRAM. FlashAttention computes attention in small blocks, keeping data in the speedy SRAM cache as much as possible. This reduces memory traffic by up to 20x, allowing context windows to scale dramatically without running out of GPU memory.</p>
@@ -111,6 +111,7 @@
             <h2>The "Needle in a Haystack" Test</h2>
             <p>Just because a model <em>can</em> accept a million tokens doesn't mean it is actually reading them. To evaluate long-context retrieval, researchers use the <strong>Needle in a Haystack (NIAH)</strong> test. </p>
             <p>A random, unrelated fact (the "needle") is hidden somewhere inside a massive text dump of documents (the "haystack"). The model is then asked a question that can only be answered using that specific fact. Modern models must achieve near 100% accuracy, finding the needle regardless of whether it is hidden at the beginning, middle, or end of the document stack.</p>
+            <p>However, long context is not a free replacement for retrieval. Million-token prompts can still be slower, more expensive, and harder to audit than a well-built RAG pipeline. In production systems, engineers often combine both: use retrieval to select the most relevant evidence, then use a long-context model when the task needs cross-document synthesis, codebase-wide reasoning, or comparison across many artifacts.</p>
 
             <section class="sources-list" aria-labelledby="sources-heading">
                 <h2 id="sources-heading">Sources</h2>
@@ -119,6 +120,8 @@
                     <li><a href="https://arxiv.org/abs/2205.14135">FlashAttention</a> — Dao et al.</li>
                     <li><a href="https://arxiv.org/abs/2104.09864">RoFormer: Enhanced Transformer with Rotary Position Embedding</a> — Su et al.</li>
                     <li><a href="https://blog.google/technology/ai/google-gemini-next-generation-model-february-2024/">Gemini 1.5 and long-context model capabilities</a> — Google</li>
+                    <li><a href="https://openai.com/index/introducing-gpt-5-5/">Introducing GPT-5.5</a> — OpenAI</li>
+                    <li><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/">Gemini 3.5: frontier intelligence with action</a> — Google</li>
                 </ul>
             </section>
         </article>

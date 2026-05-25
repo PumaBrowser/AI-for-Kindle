@@ -108,6 +108,10 @@ body.kindle-mode a {
     color: #000000 !important;
 }
 
+body.kindle-mode .logo-link {
+    text-decoration: none !important;
+}
+
 body.kindle-mode a:hover {
     background-color: #000000 !important;
     color: #ffffff !important;
@@ -123,7 +127,9 @@ body.kindle-mode .chapter-card {
 
 body.kindle-mode button, 
 body.kindle-mode .btn,
-body.kindle-mode .btn-icon {
+body.kindle-mode .btn-icon,
+body.kindle-mode .btn-primary,
+body.kindle-mode .btn-secondary {
     border: 2px solid #000000 !important;
     border-radius: 0px !important;
     background: #ffffff !important;
@@ -135,7 +141,9 @@ body.kindle-mode .btn-icon {
 
 body.kindle-mode button:hover,
 body.kindle-mode .btn:hover,
-body.kindle-mode .btn-icon:hover {
+body.kindle-mode .btn-icon:hover,
+body.kindle-mode .btn-primary:hover,
+body.kindle-mode .btn-secondary:hover {
     background: #000000 !important;
     color: #ffffff !important;
 }
@@ -156,6 +164,10 @@ body.kindle-mode code {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+[hidden] {
+    display: none !important;
 }
 
 body {
@@ -296,6 +308,43 @@ body.kindle-mode .logo-badge {
     border-color: var(--accent);
 }
 
+.btn-primary,
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.65rem 1rem;
+    border-radius: 8px;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    border-color: var(--accent);
+    text-decoration: none;
+}
+
 .genz-link.active {
     background-color: var(--accent);
     border-color: var(--accent);
@@ -345,6 +394,24 @@ body.kindle-mode .hero {
     color: var(--text-secondary);
     max-width: 600px;
     margin: 0 auto;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem !important;
+}
+
+.eyebrow {
+    font-family: var(--font-heading);
+    font-size: 0.8rem !important;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent) !important;
+    margin-bottom: 0.5rem !important;
 }
 
 /* Table of Contents / Chapter Grid */
@@ -541,6 +608,150 @@ body.kindle-mode .concepts-box h4 {
 
 body.kindle-mode .sources-list {
     border-top: 2px solid #000000 !important;
+}
+
+body.kindle-mode .game-board,
+body.kindle-mode .game-feedback {
+    border: 2px solid #000000 !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+}
+
+body.kindle-mode .game-status {
+    display: block !important;
+    background: #ffffff !important;
+    border-bottom: 2px solid #000000 !important;
+}
+
+body.kindle-mode .game-status > div {
+    display: inline-block !important;
+    min-width: 32%;
+    background: #ffffff !important;
+    padding: 0.75rem !important;
+}
+
+body.kindle-mode .choice-button {
+    border: 2px solid #000000 !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+}
+
+body.kindle-mode .choice-button.correct {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+/* Game */
+.game-shell {
+    max-width: 840px;
+}
+
+.game-hero {
+    margin-bottom: 2rem;
+}
+
+.game-board {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--bg-secondary);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+}
+
+.game-status {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border-color);
+}
+
+.game-status > div {
+    background: var(--bg-tertiary);
+    padding: 1rem;
+}
+
+.game-label {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.scenario-card {
+    padding: 1.5rem;
+}
+
+.scenario-card h2 {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.choice-list {
+    display: grid;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+}
+
+.choice-button {
+    width: 100%;
+    min-height: 56px;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+.choice-button:hover,
+.choice-button:focus-visible {
+    border-color: var(--accent);
+}
+
+.choice-button.correct {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+}
+
+.choice-button.incorrect {
+    border-style: dashed;
+}
+
+.choice-button[disabled] {
+    cursor: default;
+}
+
+.game-feedback {
+    border-left: 4px solid var(--accent);
+    background: var(--bg-tertiary);
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.game-result {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+}
+
+.game-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.game-notes {
+    margin-top: 2rem;
 }
 
 /* Navigation Footer at bottom of chapters */
@@ -784,6 +995,16 @@ body.kindle-mode .illustration .stroke-muted {
     body {
         font-size: calc(16px * var(--font-scale, 1));
     }
+
+    .header-container {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .controls {
+        justify-content: flex-start;
+    }
     
     h1 { font-size: 1.8rem; }
     h2 { font-size: 1.4rem; }
@@ -821,5 +1042,24 @@ body.kindle-mode .illustration .stroke-muted {
     .nav-link-card.next {
         text-align: left;
         align-items: flex-start;
+    }
+
+    .game-status {
+        grid-template-columns: 1fr;
+    }
+
+    .scenario-card {
+        padding: 1.25rem;
+    }
+
+    .game-actions,
+    .hero-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
     }
 }

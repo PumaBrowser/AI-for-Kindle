@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const files = [
   'index.html',
+  'game.html',
   ...readdirSync(path.join(root, 'chapters'))
     .filter((file) => file.endsWith('.html'))
     .sort()
@@ -118,7 +119,7 @@ function translatePlainText(text) {
 }
 
 function rewriteStaticAssets(html, rel) {
-  if (rel === 'index.html') {
+  if (isTopLevel(rel)) {
     return html
       .replaceAll('href="style.css"', 'href="../style.css"')
       .replaceAll('src="app.js"', 'src="../app.js"');
@@ -130,17 +131,18 @@ function rewriteStaticAssets(html, rel) {
 }
 
 function rewriteGenZControl(html, rel) {
-  const originalHref = rel === 'index.html' ? '../index.html' : `../../${rel}`;
+  const originalHref = isTopLevel(rel) ? `../${rel}` : `../../${rel}`;
   return html.replace(
-    /<a href="[^"]*" class="btn-icon genz-link" aria-label="Read the Gen Z version">Gen Z<\/a>/,
+    /<a href="[^"]*" class="btn-icon genz-link" aria-label="[^"]+">Gen Z<\/a>/,
     `<a href="${originalHref}" class="btn-icon genz-link active" aria-label="Read the original version">Original</a>`
   );
 }
 
 function rewriteInternalLinks(html, rel) {
-  if (rel === 'index.html') {
+  if (isTopLevel(rel)) {
     return html
       .replaceAll('href="index.html"', 'href="index.html"')
+      .replaceAll('href="game.html"', 'href="game.html"')
       .replaceAll('href="chapters/', 'href="chapters/');
   }
 
@@ -151,4 +153,8 @@ function rewriteInternalLinks(html, rel) {
 
 function escapeAttribute(value) {
   return value.replaceAll('&', '&amp;').replaceAll('"', '&quot;');
+}
+
+function isTopLevel(rel) {
+  return !rel.includes(path.sep) && !rel.includes('/');
 }

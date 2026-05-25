@@ -19,8 +19,8 @@
                     <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
                 </div>
                 <a href="../../chapters/chapter7-frontiers.html" class="btn-icon genz-link active" aria-label="Read the original version">Original</a>
-                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">🌙 Dark</button>
-                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">📖 Kindle / E-Ink</button>
+                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">Kindle / E-Ink</button>
             </div>
         </div>
     </header>
@@ -36,11 +36,11 @@
                 <h1>Future Frontiers & Physical AI</h1>
             </div>
 
-            <p>We are entering a new era of AI. The boundaries of what is possible are no longer just about making models bigger. Researchers are focused on expanding models into the physical world, training them to process a bunch of senses natively, and tackling the looming threat of the "data wall."</p>
+            <p>We are entering a new era of AI. The frontier is no longer just about making models bigger. Researchers are expanding models into the physical world, training them to process a bunch of senses natively, and shifting from one-shot answers toward agents that can take action over time.</p>
 
             <h2>Native Multimodality</h2>
             <p>Early multimodal systems were <strong>"Stitched"</strong> together. For example, to let an AI "see" an image, engineers would run an image-captioning model to generate a text description, and then feed that text to the LLM. This was incredibly lossy; a text caption cannot capture the precise spatial layout of a room, the emotional expression on a face, or the specific pitch of a sound.</p>
-            <p>Modern frontier-tier models (like Gemini) are <strong>Natively Multimodal</strong>. They are built with a single unified neural architecture. Text, pixels, audio waveforms, and video frames are converted into a shared mathematical language (embeddings) and fed into the same Transformer network. </p>
+            <p>Modern frontier-tier models (like Gemini and GPT-5.5) are <strong>Natively Multimodal</strong>. They are built with a unified architecture or tightly integrated model system. Text, pixels, audio waveforms, video frames, and tool outputs are converted into a shared mathematical language (embeddings) and routed through models that can reason across them. </p>
             <p>This allows the model to reason across modalities simultaneously. A native multimodal model can watch a video, listen to the speaker's sarcasm, read the slides in the background, and output a unified analysis in real time, catching nuances that stitched systems miss entirely.</p>
 
             <h2>The "Data Wall" and Synthetic Data</h2>
@@ -90,20 +90,22 @@
             </div>
 
             <h2>Robotics and Physical Grounding</h2>
-            <p>For AI to truly get the world, it must interact with it. By combining multimodal LLMs with robotic control systems, researchers have developed <strong>Vision-Language-Action (VLA)</strong> models (such as Google's RT-2).</p>
-            <p>A VLA model doesn't just output text; it outputs physical coordinates for a robot's joints and grippers. When you tell a VLA-enabled robot arm: <em>"Pick up the yellow banana and put it in the basket,"</em> the model processes the camera feed (pixels), matches the words to the objects, calculates the spatial path, and controls the robot's motors directly. The LLM acts as the robot's brain, giving it common-sense reasoning and immediate adaptability to new environments without custom programming.</p>
+            <p>For AI to truly get the world, it must interact with it. By combining multimodal LLMs with robotic control systems, researchers have developed <strong>Vision-Language-Action (VLA)</strong> models such as Google's RT-2 and Gemini Robotics.</p>
+            <p>A VLA model doesn't just output text; it outputs physical actions for a robot's joints and grippers. When you tell a VLA-enabled robot arm: <em>"Pick up the yellow banana and put it in the basket,"</em> the model processes the camera feed (pixels), matches the words to the objects, calculates the spatial path, and controls the robot's motors directly. The LLM acts as the robot's planning layer, giving it common-sense reasoning and adaptability to new environments without custom programming for every object.</p>
 
             <h2>The Next Paradigm: Test-Time Compute</h2>
-            <p>Pre-training scaling laws (adding more parameters and GPUs during training) are starting to show diminishing returns. The new vector of scaling is <strong>Test-Time Compute</strong> (scaling at inference time).</p>
-            <p>Instead of forcing a model to answer within a fraction of a second, test-time compute allows the model to spend seconds or minutes thinking. By running Monte Carlo Tree Search (MCTS) or generating extensive self-corrections (similar to how chess engines calculate paths before moving), models can work through highly big-brain scientific, mathematical, and coding problems, opening up a new dimension of machine intelligence.</p>
+            <p>Pre-training scaling laws (adding more parameters and GPUs during training) are no longer the only axis of progress. The newer vector is <strong>Test-Time Compute</strong> (scaling at inference time).</p>
+            <p>Instead of forcing a model to answer within a fraction of a second, test-time compute lets the model spend extra compute planning, checking, searching, or coordinating tools. This is why frontier model releases increasingly emphasize agentic coding, computer use, document work, and scientific workflows rather than only chat benchmark scores. The practical question is becoming: how much thought should the system buy for this task?</p>
 
             <section class="sources-list" aria-labelledby="sources-heading">
                 <h2 id="sources-heading">Sources</h2>
                 <ul>
                     <li><a href="https://deepmind.google/discover/blog/rt-2-new-model-translates-vision-and-language-into-action/">RT-2: New model translates vision and language into action</a> — Google DeepMind</li>
+                    <li><a href="https://arxiv.org/abs/2503.20020">Gemini Robotics: Bringing AI into the Physical World</a> — Google DeepMind</li>
                     <li><a href="https://www.nature.com/articles/s41586-024-07566-y">AI models collapse when trained on recursively generated data</a> — Nature</li>
                     <li><a href="https://arxiv.org/abs/2408.03314">Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters</a> — Snell et al.</li>
                     <li><a href="https://openai.com/index/learning-to-reason-with-llms/">Learning to Reason with LLMs</a> — OpenAI</li>
+                    <li><a href="https://openai.com/index/introducing-gpt-5-5/">Introducing GPT-5.5</a> — OpenAI</li>
                 </ul>
             </section>
         </article>
