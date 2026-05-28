@@ -4,8 +4,9 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const files = [
-  'index.html',
-  'game.html',
+  ...readdirSync(root)
+    .filter((file) => file.endsWith('.html'))
+    .sort(),
   ...readdirSync(path.join(root, 'chapters'))
     .filter((file) => file.endsWith('.html'))
     .sort()
@@ -88,9 +89,15 @@ function translatePlainText(text) {
 const exactTextTranslations = new Map([
   ['Learn Modern AI', 'Modern AI, but make it make sense'],
   ['Learn Modern AI — Kindle Reader Edition', 'Modern AI, but make it make sense — Kindle Reader Edition'],
+  ['Glossary & Concept Index — AI 101 Guide', 'Glossary & Concept Index — AI 101 Guide'],
+  ['Single-Page Edition — AI 101 Guide', 'Single-Page Edition — AI 101 Guide'],
   ['A high-contrast guide and lightweight decision game for learning the systems behind modern AI: transformers, RAG, MoE, diffusion, agents, reasoning, and physical AI.', 'A crisp, high-contrast guide plus a quick decision game for getting the AI stack: transformers, RAG, MoE, diffusion, agents, reasoning, and physical AI.'],
+  ['A high-contrast guide and lightweight decision game for learning the systems behind modern AI: transformers, RAG, MoE, diffusion, agents, reasoning, physical AI, and production evals.', 'A crisp, high-contrast guide plus a quick decision game for getting the AI stack: transformers, RAG, MoE, diffusion, agents, reasoning, physical AI, and production evals.'],
+  ['A lightweight, high-contrast, and up-to-date guide to the core ideas and advancements behind modern AI models, from Transformers and RAG to agents, evals, and production safety. Built for Kindle and e-ink reading.', 'A lightweight, high-contrast guide to the core ideas behind modern AI models, from Transformers and RAG to agents, evals, and production safety. Built for Kindle and e-ink reading.'],
   ['Start the Game', 'Start the Quest'],
   ['Read the Guide', 'Read the Lore'],
+  ['Open Glossary', 'Open Glossary'],
+  ['Single-Page Edition', 'Single-Page Edition'],
   ['Understanding Modern AI', 'Modern AI, decoded'],
   ['A lightweight, high-contrast, and up-to-date guide to the core ideas and advancements behind modern AI models (Transformers, LLMs, MoE, RAG, Agents). Built for Kindle and e-ink reading.', 'A lightweight, high-contrast guide to the core ideas behind modern AI models: Transformers, LLMs, MoE, RAG, and agents. Built for Kindle and e-ink reading.'],
   ['Artificial Intelligence has moved at a breakneck speed since the introduction of the Transformer architecture. This site explains the key engineering ideas behind modern models without the math-heavy clutter, updated for the 2026 shift toward reasoning models, agentic workflows, long-context systems, efficient open-weight models, and physical AI.', 'AI has been moving absurdly fast since the Transformer architecture dropped. This site breaks down the big engineering ideas without math-heavy clutter, updated for the 2026 shift toward reasoning models, agentic workflows, long-context systems, efficient open-weight models, and physical AI.'],
@@ -100,6 +107,14 @@ const exactTextTranslations = new Map([
   ['Read the chapters in order or play', 'Read the chapters in order, or run'],
   ['AI Systems Quest', 'AI Systems Quest'],
   [', a compact scenario game where each choice tests whether you know when to use retrieval, attention, sparse experts, tool calls, or extra test-time compute. Both paths are optimized for Kindle and other e-ink displays.', ', a compact scenario game where every choice checks whether you know when to use retrieval, attention, sparse experts, tool calls, or extra test-time compute. Both paths are Kindle and e-ink friendly.'],
+  [', a compact scenario game where each choice tests whether you know when to use retrieval, attention, sparse experts, tool calls, extra test-time compute, or production evaluation. Both paths are optimized for Kindle and other e-ink displays.', ', a compact scenario game where every choice checks whether you know when to use retrieval, attention, sparse experts, tool calls, extra test-time compute, or production evals. Both paths are Kindle and e-ink friendly.'],
+  ['Reading progress', 'Reading progress'],
+  ['Track Your Chapters', 'Track your chapters'],
+  ['Mark chapters complete as you read. Progress stays on this device and works without an account.', 'Mark chapters complete as you read. Progress stays on this device, no account needed.'],
+  ['Reference Tools', 'Reference tools'],
+  ['Glossary & Concept Index', 'Glossary & Concept Index'],
+  ['Quick definitions for the terms used across the guide.', 'Quick definitions for terms used across the guide.'],
+  ['A complete printable version assembled from the canonical chapters.', 'A complete printable version assembled from the canonical chapters.'],
   ['Understand self-attention, the Query-Key-Value mechanism, and how it replaced recurrent networks to form the bedrock of generative AI.', 'Get self-attention, the Query-Key-Value mechanism, and how it replaced recurrent networks to become the foundation of generative AI.'],
   ['Understand self-attention, the Query-Key-Value mechanism, and how it', 'Get self-attention, the Query-Key-Value mechanism, and how it'],
   ['replaced recurrent networks to form the bedrock of generative AI.', 'replaced recurrent networks to become the foundation of generative AI.'],
@@ -121,6 +136,8 @@ const exactTextTranslations = new Map([
   ['Analyze native multimodality, synthetic data constraints, and the next physical frontiers for AI integration.', 'Vibe-check native multimodality, synthetic data limits, and the next physical frontiers for AI.'],
   ['Analyze native multimodality, synthetic data constraints, and the', 'Vibe-check native multimodality, synthetic data limits, and the'],
   ['next physical frontiers for AI integration.', 'next physical frontiers for AI.'],
+  ['Evaluation, Safety & Production AI', 'Evaluation, Safety & Production AI'],
+  ['Learn how teams test AI systems before launch: eval sets, groundedness checks, prompt-injection defenses, observability, and human review loops.', 'See how teams test AI systems before launch: eval sets, groundedness checks, prompt-injection defenses, observability, and human review loops.'],
 
   ['Interactive review', 'Interactive vibe check'],
   ['Build a reliable AI product by choosing the right system design move for each scenario. Every round maps back to a chapter, and every interaction is plain HTML for fast Kindle refresh.', 'Build a reliable AI product by picking the right system-design move for each scenario. Every round maps back to a chapter, and the whole thing stays plain HTML so Kindle refresh stays snappy.'],

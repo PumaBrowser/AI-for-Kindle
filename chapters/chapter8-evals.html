@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 8: Evaluation, Safety & Production AI — AI 101 Guide</title>
+    <meta name="description" content="Learn how production AI systems are evaluated, monitored, and guarded before launch, including eval sets, groundedness checks, prompt-injection defenses, observability, and human review loops.">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <a href="../index.html" class="logo-link">AI 101 <span class="logo-badge">GUIDE</span></a>
+            </div>
+            <div class="controls">
+                <div class="font-scale-controls">
+                    <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
+                    <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
+                </div>
+                <a href="../glossary.html" class="btn-icon" aria-label="Open the AI glossary">Glossary</a>
+                <a href="../genz/chapters/chapter8-evals.html" class="btn-icon genz-link" aria-label="Read the Gen Z version">Gen Z</a>
+                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">Kindle / E-Ink</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="animated">
+        <article class="chapter-body">
+            <div class="chapter-header">
+                <div class="chapter-meta">
+                    <span>Chapter 8</span>
+                    <span>• 10 min read</span>
+                    <span>• Last reviewed: May 2026</span>
+                </div>
+                <h1>Evaluation, Safety & Production AI</h1>
+            </div>
+
+            <p>Building an AI demo is mostly about capability: can the model answer, retrieve, reason, or act? Shipping an AI product is about repeatability: can the system keep doing the right thing when prompts change, documents drift, users attack it, models upgrade, and costs spike?</p>
+            <p>Production AI teams treat the model as one component in a larger system. The surrounding product needs evals, guardrails, observability, rollback plans, and human review for cases where model confidence is not enough.</p>
+
+            <h2>Eval-Driven Development</h2>
+            <p>An <strong>eval</strong> is a repeatable test for behavior that matters. Instead of asking "does the answer look good?", an eval asks a narrower question: did the assistant cite the right policy section, refuse the unsafe request, preserve the JSON schema, choose the right tool, or solve the task within the latency budget?</p>
+            <p>Useful eval suites mix several test types:</p>
+            <ul>
+                <li><strong>Golden examples:</strong> known prompts with expected answers, labels, or rubrics.</li>
+                <li><strong>Regression cases:</strong> failures from production that must not come back after a prompt, retrieval, or model change.</li>
+                <li><strong>Adversarial cases:</strong> inputs designed to trigger jailbreaks, prompt injection, data leakage, or unsafe tool calls.</li>
+                <li><strong>Performance cases:</strong> examples that measure cost, latency, refusal rate, and answer length, not just correctness.</li>
+            </ul>
+            <p>The important habit is to run evals before changing models, prompts, retrieval settings, or tool permissions. In AI systems, a "minor" prompt edit can behave like a code change across thousands of hidden branches.</p>
+
+            <div class="concepts-box">
+                <h4>The Production Eval Loop</h4>
+                <div class="illustration-container">
+                    <svg class="illustration" viewBox="0 0 580 240" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram showing production AI eval flow from examples to launch gate to monitoring">
+                        <rect x="28" y="46" width="110" height="58" rx="8" class="fill-tertiary stroke-border" />
+                        <text x="83" y="72" text-anchor="middle" font-size="13" font-weight="bold">Examples</text>
+                        <text x="83" y="89" text-anchor="middle" font-size="11" class="muted">golden + failures</text>
+
+                        <rect x="176" y="46" width="110" height="58" rx="8" class="fill-tertiary stroke-border" />
+                        <text x="231" y="72" text-anchor="middle" font-size="13" font-weight="bold">Run Evals</text>
+                        <text x="231" y="89" text-anchor="middle" font-size="11" class="muted">quality + risk</text>
+
+                        <rect x="324" y="46" width="110" height="58" rx="8" class="fill-accent-glow stroke-accent" />
+                        <text x="379" y="72" text-anchor="middle" font-size="13" font-weight="bold">Launch Gate</text>
+                        <text x="379" y="89" text-anchor="middle" font-size="11" class="muted">pass / block</text>
+
+                        <rect x="472" y="46" width="80" height="58" rx="8" class="fill-tertiary stroke-border" />
+                        <text x="512" y="72" text-anchor="middle" font-size="13" font-weight="bold">Ship</text>
+                        <text x="512" y="89" text-anchor="middle" font-size="11" class="muted">limited ramp</text>
+
+                        <path d="M138 75 L176 75" class="stroke-accent" />
+                        <polygon points="176,75 166,69 166,81" class="fill-accent" />
+                        <path d="M286 75 L324 75" class="stroke-accent" />
+                        <polygon points="324,75 314,69 314,81" class="fill-accent" />
+                        <path d="M434 75 L472 75" class="stroke-accent" />
+                        <polygon points="472,75 462,69 462,81" class="fill-accent" />
+
+                        <rect x="176" y="148" width="110" height="58" rx="8" class="fill-tertiary stroke-border" />
+                        <text x="231" y="174" text-anchor="middle" font-size="13" font-weight="bold">Monitor</text>
+                        <text x="231" y="191" text-anchor="middle" font-size="11" class="muted">traces + metrics</text>
+
+                        <rect x="324" y="148" width="110" height="58" rx="8" class="fill-tertiary stroke-border" />
+                        <text x="379" y="174" text-anchor="middle" font-size="13" font-weight="bold">Review</text>
+                        <text x="379" y="191" text-anchor="middle" font-size="11" class="muted">sample failures</text>
+
+                        <path d="M512 104 C512 154 470 177 434 177" class="stroke-muted" />
+                        <polygon points="434,177 444,171 444,183" class="fill-accent" />
+                        <path d="M324 177 L286 177" class="stroke-muted" />
+                        <polygon points="286,177 296,171 296,183" class="fill-accent" />
+                        <path d="M176 177 C82 177 76 130 83 104" class="stroke-muted" />
+                        <polygon points="83,104 77,114 89,113" class="fill-accent" />
+                        <text x="290" y="226" text-anchor="middle" font-size="12" class="muted">production failures become the next regression tests</text>
+                    </svg>
+                </div>
+                <p>The loop is simple: collect examples, run evals, block risky releases, monitor live behavior, review failures, and add those failures back to the suite.</p>
+            </div>
+
+            <h2>Groundedness and Source Verification</h2>
+            <p>For RAG systems, the most common failure is not a totally random answer. It is an answer that sounds plausible but is only partly supported by the retrieved evidence. A groundedness check compares each important claim against the source passages the system provided.</p>
+            <p>Good groundedness evaluation asks:</p>
+            <ul>
+                <li>Does every factual claim have supporting evidence in the retrieved context?</li>
+                <li>Did the answer cite the specific source that supports the claim?</li>
+                <li>Did the model ignore conflicting evidence or overstate uncertainty?</li>
+                <li>Should the system answer, ask a clarifying question, retrieve again, or refuse?</li>
+            </ul>
+            <p>This is why citations are not just decoration. A citation should be a checkable pointer to the evidence that justifies the answer. If the pointer is wrong, the system is teaching users to trust the wrong thing.</p>
+
+            <h2>Prompt Injection and Tool Safety</h2>
+            <p><strong>Prompt injection</strong> happens when untrusted text tries to override the system's instructions. In a RAG app, the attack might live inside a PDF. In an agent, it might appear on a web page the agent browses. The dangerous pattern is the same: the model reads attacker-controlled text and treats it like an instruction from the product owner.</p>
+            <p>Tool use makes this risk sharper. A model that can only write text can mislead a user; a model with tools can email customers, change records, run code, or expose private data. Production systems reduce that risk with least-privilege tool scopes, allowlists, confirmation steps, output validation, and audit logs.</p>
+            <p>A strong rule of thumb: model instructions are not access control. The host application must enforce permissions outside the model.</p>
+
+            <h2>Observability for AI Apps</h2>
+            <p>Traditional logs often show an HTTP request, a status code, and a response time. AI observability needs more: prompt versions, retrieved chunks, model names, tool calls, token usage, evaluator scores, refusals, user feedback, and traces across the full agent loop.</p>
+            <p>Without traces, teams cannot answer basic production questions: Did retrieval fail? Did the model ignore good evidence? Did a tool return bad data? Did a prompt change increase cost? Did a new model improve benchmark scores but hurt real support tickets?</p>
+
+            <h2>Human Review and Launch Gates</h2>
+            <p>Human review is not a failure of automation; it is a control surface. High-impact workflows often need human approval for irreversible actions, sensitive domains, edge cases, and low-confidence answers. The product should make review efficient by showing the prompt, evidence, model answer, tool actions, and eval signals in one place.</p>
+            <p>Before launch, teams usually define gates: minimum eval scores, maximum hallucination rate, maximum latency, acceptable cost per task, security test coverage, and rollback criteria. After launch, sampled production traces become new tests so the system gets harder to break over time.</p>
+
+            <section class="sources-list" aria-labelledby="sources-heading">
+                <h2 id="sources-heading">Sources</h2>
+                <ul>
+                    <li><a href="https://platform.openai.com/docs/guides/evals">Working with evals</a> — OpenAI API docs</li>
+                    <li><a href="https://github.com/openai/evals">OpenAI Evals</a> — OpenAI</li>
+                    <li><a href="https://www.nist.gov/itl/ai-risk-management-framework">AI Risk Management Framework</a> — NIST</li>
+                    <li><a href="https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf">AI RMF Generative AI Profile</a> — NIST</li>
+                    <li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">OWASP Top 10 for LLM Applications</a> — OWASP Foundation</li>
+                    <li><a href="https://arxiv.org/abs/2306.05685">Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena</a> — Zheng et al.</li>
+                    <li><a href="https://arxiv.org/abs/2401.00396">RAGTruth: A Hallucination Corpus for Retrieval-Augmented Language Models</a> — Niu et al.</li>
+                </ul>
+            </section>
+        </article>
+
+        <nav class="chapter-navigation">
+            <div class="nav-link-card">
+                <span class="nav-label">Previous Chapter</span>
+                <a href="chapter7-frontiers.html" class="nav-title">Future Frontiers & Physical AI</a>
+            </div>
+            <div class="nav-link-card next">
+                <span class="nav-label">First Chapter</span>
+                <a href="chapter1-transformers.html" class="nav-title">The Transformer Core</a>
+            </div>
+        </nav>
+    </main>
+
+    <footer>
+        <p>AI 101 Guide — Optimized for Kindle Web Browser.</p>
+        <p>Toggle "Kindle / E-Ink" mode above for a pure book-like layout.</p>
+        <p>If you have feedback, email us at <a href="mailto:ai@puma.tech">ai@puma.tech</a></p>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+</html>

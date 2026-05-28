@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateKindleModeUI();
     updateThemeUI();
     updateFontScaleUI();
+    initReadingProgress();
     
     // Kindle mode toggle handler
     if (kindleToggleBtn) {
@@ -160,6 +161,100 @@ document.addEventListener('DOMContentLoaded', () => {
         body.style.setProperty('--font-scale', fontScale);
     }
 
+    function initReadingProgress() {
+        const chapterCards = document.querySelectorAll('.chapter-card');
+        const progressCount = document.getElementById('progress-count');
+        const chapterId = getCurrentChapterId();
+        const completionButton = createCompletionButton(chapterId);
+
+        if (completionButton) {
+            const chapterHeader = document.querySelector('.chapter-header');
+            if (chapterHeader) chapterHeader.appendChild(completionButton);
+        }
+
+        updateProgressUI();
+
+        function createCompletionButton(id) {
+            if (!id) return null;
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'btn-secondary completion-toggle';
+            button.setAttribute('aria-pressed', isChapterComplete(id) ? 'true' : 'false');
+            button.addEventListener('click', () => {
+                setChapterComplete(id, !isChapterComplete(id));
+                updateProgressUI();
+            });
+            return button;
+        }
+
+        function updateProgressUI() {
+            const chapterIds = [];
+
+            chapterCards.forEach((card) => {
+                const link = card.querySelector('.chapter-title a[href*="chapters/"]');
+                const id = link ? normalizeChapterHref(link.getAttribute('href')) : '';
+                if (!id) return;
+                chapterIds.push(id);
+                card.classList.toggle('completed', isChapterComplete(id));
+
+                let badge = card.querySelector('.chapter-status');
+                if (!badge) {
+                    badge = document.createElement('span');
+                    badge.className = 'chapter-status';
+                    const info = card.querySelector('.chapter-info') || card;
+                    info.appendChild(badge);
+                }
+                badge.textContent = isChapterComplete(id) ? 'Completed' : 'Not started';
+            });
+
+            if (completionButton && chapterId) {
+                const complete = isChapterComplete(chapterId);
+                completionButton.textContent = complete ? 'Completed' : 'Mark Complete';
+                completionButton.setAttribute('aria-pressed', complete ? 'true' : 'false');
+                completionButton.classList.toggle('is-complete', complete);
+            }
+
+            if (progressCount && chapterIds.length > 0) {
+                const completed = chapterIds.filter(isChapterComplete).length;
+                progressCount.textContent = completed + ' / ' + chapterIds.length + ' complete';
+            }
+        }
+
+        function getCurrentChapterId() {
+            const path = window.location.pathname.replace(/\/+/g, '/');
+            const match = path.match(/\/(genz\/)?chapters\/([^/]+\.html)$/);
+            return match ? 'chapters/' + match[2] : '';
+        }
+
+        function normalizeChapterHref(href) {
+            if (!href) return '';
+            const clean = href.split('#')[0];
+            const match = clean.match(/(?:^|\/)(chapters\/[^/]+\.html)$/);
+            return match ? match[1] : '';
+        }
+
+        function getCompletedChapters() {
+            try {
+                const parsed = JSON.parse(localStorage.getItem('completed-chapters') || '[]');
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function isChapterComplete(id) {
+            return getCompletedChapters().includes(id);
+        }
+
+        function setChapterComplete(id, complete) {
+            const chapters = getCompletedChapters().filter((item) => item !== id);
+            if (complete) chapters.push(id);
+            try {
+                localStorage.setItem('completed-chapters', JSON.stringify(chapters));
+            } catch (e) {}
+        }
+    }
+
     initGame();
 
     function initGame() {
@@ -243,6 +338,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     ['Test-time compute in an agent loop', true, 'Correct. The system spends extra inference-time work on planning, acting, observing, and revising.'],
                     ['One immediate next-token answer', false, 'A single pass is fast, but it is brittle for long workflows with feedback.'],
                     ['Training only on unverified synthetic data', false, 'Unverified synthetic loops can compound errors; useful synthetic data needs checks.']
+                ]
+            },
+            {
+                chapter: 'Chapter 8: Production',
+                title: 'The RAG assistant cites the wrong policy.',
+                prompt: 'The answer sounds confident, but the cited source does not actually support the claim. What should you add before launch?',
+                source: 'chapters/chapter8-evals.html',
+                choices: [
+                    ['Groundedness evals with source verification', true, 'Correct. A production RAG system should check whether claims are supported by the retrieved evidence and citations.'],
+                    ['A higher temperature setting', false, 'Higher temperature usually increases variation; it does not verify whether the answer is supported.'],
+                    ['More decorative citations', false, 'Citations only help if they point to evidence that actually supports the answer.']
                 ]
             }
         ];
@@ -361,19 +467,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function getHealth() {
-            if (score >= 6) return isGenZ ? 'Locked' : 'Robust';
-            if (score >= 4) return 'Stable';
-            if (score >= 2) return 'Needs Review';
+            if (score >= 7) return isGenZ ? 'Locked' : 'Robust';
+            if (score >= 5) return 'Stable';
+            if (score >= 3) return 'Needs Review';
             return isGenZ ? 'Shaky' : 'Fragile';
         }
 
         function getSummary() {
-            if (score >= 6) {
+            if (score >= 7) {
                 return isGenZ
                     ? 'You matched almost every scenario to the right AI system pattern.'
                     : 'You matched most scenarios to the right AI system pattern.';
             }
-            if (score >= 4) {
+            if (score >= 5) {
                 return isGenZ
                     ? 'You have the core map. Recheck the missed chapters to sharpen the tradeoffs.'
                     : 'You have the core map. Revisit the missed chapters to tighten the tradeoffs.';
@@ -453,7 +559,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 ['One immediate next-token answer', 'One instant next-token answer'],
                 ['A single pass is fast, but it is brittle for long workflows with feedback.', 'One pass is fast, but brittle for long workflows with feedback.'],
                 ['Training only on unverified synthetic data', 'Training only on unverified synthetic data'],
-                ['Unverified synthetic loops can compound errors; useful synthetic data needs checks.', 'Unverified synthetic loops can compound errors; useful synthetic data needs checks.']
+                ['Unverified synthetic loops can compound errors; useful synthetic data needs checks.', 'Unverified synthetic loops can compound errors; useful synthetic data needs checks.'],
+
+                ['Chapter 8: Production', 'Chapter 8: Production'],
+                ['The RAG assistant cites the wrong policy.', 'The RAG assistant cites the wrong policy.'],
+                ['The answer sounds confident, but the cited source does not actually support the claim. What should you add before launch?', 'The answer sounds confident, but the cited source does not actually support the claim. What should you add before launch?'],
+                ['Groundedness evals with source verification', 'Groundedness evals with source verification'],
+                ['Correct. A production RAG system should check whether claims are supported by the retrieved evidence and citations.', 'Correct. A production RAG system should check whether claims are backed by retrieved evidence and citations.'],
+                ['A higher temperature setting', 'A higher temperature setting'],
+                ['Higher temperature usually increases variation; it does not verify whether the answer is supported.', 'Higher temperature usually adds variation; it does not verify support.'],
+                ['More decorative citations', 'More decorative citations'],
+                ['Citations only help if they point to evidence that actually supports the answer.', 'Citations only help if they point to evidence that actually supports the answer.']
             ]);
 
             for (const item of items) {

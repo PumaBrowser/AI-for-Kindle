@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learn Modern AI — Kindle Reader Edition</title>
     <meta name="description"
-        content="A lightweight, high-contrast, and up-to-date guide to the core ideas and advancements behind modern AI models (Transformers, LLMs, MoE, RAG, Agents). Built for Kindle and e-ink reading.">
+        content="A lightweight, high-contrast, and up-to-date guide to the core ideas and advancements behind modern AI models, from Transformers and RAG to agents, evals, and production safety. Built for Kindle and e-ink reading.">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -24,6 +24,8 @@
                         aria-label="Increase font size">A+</button>
                 </div>
                 <a href="game.html" class="btn-icon" aria-label="Play the AI systems game">Play</a>
+                <a href="glossary.html" class="btn-icon" aria-label="Open the AI glossary">Glossary</a>
+                <a href="print.html" class="btn-icon" aria-label="Open the single-page edition">Print</a>
                 <a href="genz/index.html" class="btn-icon genz-link" aria-label="Read the Gen Z version">Gen Z</a>
                 <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">Dark</button>
                 <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">Kindle /
@@ -35,10 +37,12 @@
     <main class="animated">
         <section class="hero">
             <h1>Learn Modern AI</h1>
-            <p>A high-contrast guide and lightweight decision game for learning the systems behind modern AI: transformers, RAG, MoE, diffusion, agents, reasoning, and physical AI.</p>
+            <p>A high-contrast guide and lightweight decision game for learning the systems behind modern AI: transformers, RAG, MoE, diffusion, agents, reasoning, physical AI, and production evals.</p>
             <p class="hero-actions">
                 <a href="game.html" class="btn-primary">Start the Game</a>
                 <a href="#introduction" class="btn-secondary">Read the Guide</a>
+                <a href="glossary.html" class="btn-secondary">Open Glossary</a>
+                <a href="print.html" class="btn-secondary">Single-Page Edition</a>
             </p>
         </section>
 
@@ -46,7 +50,16 @@
             <h2>Understanding Modern AI</h2>
             <p>Artificial Intelligence has moved at a breakneck speed since the introduction of the Transformer
                 architecture. This site explains the key engineering ideas behind modern models without the math-heavy clutter, updated for the 2026 shift toward reasoning models, agentic workflows, long-context systems, efficient open-weight models, and physical AI.</p>
-            <p>Read the chapters in order or play <a href="game.html">AI Systems Quest</a>, a compact scenario game where each choice tests whether you know when to use retrieval, attention, sparse experts, tool calls, or extra test-time compute. Both paths are optimized for Kindle and other e-ink displays.</p>
+            <p>Read the chapters in order or play <a href="game.html">AI Systems Quest</a>, a compact scenario game where each choice tests whether you know when to use retrieval, attention, sparse experts, tool calls, extra test-time compute, or production evaluation. Both paths are optimized for Kindle and other e-ink displays.</p>
+        </section>
+
+        <section class="progress-panel" id="chapter-progress" aria-live="polite">
+            <div>
+                <p class="eyebrow">Reading progress</p>
+                <h2>Track Your Chapters</h2>
+                <p>Mark chapters complete as you read. Progress stays on this device and works without an account.</p>
+            </div>
+            <strong id="progress-count">0 / 8 complete</strong>
         </section>
 
         <section class="chapter-grid">
@@ -122,6 +135,29 @@
                     <p class="chapter-description">Analyze native multimodality, synthetic data constraints, and the
                         next physical frontiers for AI integration.</p>
                 </div>
+            </div>
+
+            <!-- Chapter 8 -->
+            <div class="chapter-card">
+                <div class="chapter-number">08</div>
+                <div class="chapter-info">
+                    <h3 class="chapter-title"><a href="chapters/chapter8-evals.html">Evaluation, Safety & Production AI</a></h3>
+                    <p class="chapter-description">Learn how teams test AI systems before launch: eval sets, groundedness checks, prompt-injection defenses, observability, and human review loops.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="resource-links" aria-labelledby="resources-heading">
+            <h2 id="resources-heading">Reference Tools</h2>
+            <div class="resource-grid">
+                <a class="resource-link" href="glossary.html">
+                    <strong>Glossary & Concept Index</strong>
+                    <span>Quick definitions for the terms used across the guide.</span>
+                </a>
+                <a class="resource-link" href="print.html">
+                    <strong>Single-Page Edition</strong>
+                    <span>A complete printable version assembled from the canonical chapters.</span>
+                </a>
             </div>
         </section>
     </main>

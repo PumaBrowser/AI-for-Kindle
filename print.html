@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single-Page Edition — AI 101 Guide</title>
+    <meta name="description" content="A complete single-page, printable edition of the AI 101 Guide for Kindle, e-ink, browser printing, and EPUB-style reading.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="print-edition">
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <a href="index.html" class="logo-link">AI 101 <span class="logo-badge">PRINT</span></a>
+            </div>
+            <div class="controls">
+                <div class="font-scale-controls">
+                    <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
+                    <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
+                </div>
+                <a href="index.html" class="btn-icon" aria-label="Read the AI guide">Guide</a>
+                <a href="glossary.html" class="btn-icon" aria-label="Open the AI glossary">Glossary</a>
+                <a href="game.html" class="btn-icon" aria-label="Play the AI systems game">Play</a>
+                <a href="genz/print.html" class="btn-icon genz-link" aria-label="Read the Gen Z version">Gen Z</a>
+                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">Kindle / E-Ink</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="animated">
+        <section class="hero">
+            <p class="eyebrow">Printable edition</p>
+            <h1>AI 101 Guide</h1>
+            <p>A complete single-page edition assembled from the canonical chapters. Use browser print, save as PDF, or read it as one continuous Kindle-friendly document.</p>
+            <p class="hero-actions">
+                <a href="index.html" class="btn-secondary">Table of Contents</a>
+                <a href="glossary.html" class="btn-secondary">Glossary</a>
+            </p>
+        </section>
+
+        <nav class="print-toc" aria-labelledby="print-toc-heading">
+            <h2 id="print-toc-heading">Contents</h2>
+            <ol>
+                <li><a href="#chapter1-transformers">The Transformer Core</a></li>
+                <li><a href="#chapter2-llms">LLM Training &amp; Alignment</a></li>
+                <li><a href="#chapter3-rag">RAG &amp; Context Windows</a></li>
+                <li><a href="#chapter4-moe">Scaling Efficiency: MoE &amp; Quantization</a></li>
+                <li><a href="#chapter5-diffusion">Diffusion &amp; Generative Media</a></li>
+                <li><a href="#chapter6-agents">Agentic AI &amp; Reasoning</a></li>
+                <li><a href="#chapter7-frontiers">Future Frontiers &amp; Physical AI</a></li>
+                <li><a href="#chapter8-evals">Evaluation, Safety &amp; Production AI</a></li>
+            </ol>
+        </nav>
+
+        <section class="print-chapter" id="chapter1-transformers">
+            <div class="chapter-header">
+                <div class="chapter-meta">
+                    <span>Chapter 1</span>
+                    <span>• 8 min read</span>
+                    <span>• Last reviewed: May 2026</span>
+                </div>
+                <h1>The Transformer Core</h1>
+            </div>
+
+            <p>Before 2017, natural language processing (NLP) models read text like humans do: one word at a time, from left to right. These models, known as Recurrent Neural Networks (RNNs) and Long Short-Term Memory (LSTM) networks, kept a running "mental state" that updated with each new word. While intuitive, this approach had a catastrophic bottleneck: it could not be parallelized. Because you needed the state of word <em>n-1</em> to compute the state of word <em>n</em>, GPUs could not process entire blocks of text simultaneously.</p>
+            
+            <p>Then came the landmark paper, <em>"Attention Is All You Need"</em>, which introduced the <strong>Transformer architecture</strong>. The Transformer discarded recurrence entirely, opting to process all words in a sequence at the exact same time. To do this, it relied on a mathematical shortcut called <strong>Self-Attention</strong>.</p>
+
+            <h2>The Core Breakthrough: Self-Attention</h2>
+            <p>Self-attention allows a model to look at a specific word and determine which other words in the sentence are most relevant to it, regardless of how far apart they are. Consider this example:</p>
+            
+            <blockquote>
+                "The bank robber ran to the river bank because he saw the police."
+            </blockquote>
+            
+            <p>How does the model know that the first "bank" refers to a financial institution, while the second "bank" refers to the edge of a river? In an RNN, by the time the model reached the end of the sentence, the context of "bank robber" might have faded. In a Transformer, the first "bank" is compared to all other words in the sentence concurrently, finding a strong mathematical connection to "robber." The second "bank" finds a connection to "river." The model dynamically contextualizes each word based on its surroundings.</p>
+
+            <div class="concepts-box">
+                <h4>Key Concept: The Query-Key-Value (QKV) Analogy</h4>
+                <div class="illustration-container">
+                    <svg class="illustration" viewBox="0 0 580 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram showing how a query scores keys and combines weighted values into an attention output">
+                        <!-- Query Vector -->
+                        <rect x="20" y="60" width="100" height="60" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="70" y="88" text-anchor="middle" font-size="14" font-weight="bold">Query (Q)</text>
+                        <text x="70" y="105" text-anchor="middle" font-size="11" class="muted">"What I seek"</text>
+
+                        <!-- Similarity Multiplication -->
+                        <path d="M120 90 L200 45" class="stroke-accent" stroke-width="2" />
+                        <path d="M120 90 L200 135" class="stroke-muted" stroke-width="1.5" />
+
+                        <!-- Key Vectors -->
+                        <rect x="200" y="15" width="100" height="60" rx="6" class="fill-accent-glow stroke-accent" />
+                        <text x="250" y="43" text-anchor="middle" font-size="14" font-weight="bold" class="fill-accent">Key 1 (K₁)</text>
+                        <text x="250" y="60" text-anchor="middle" font-size="11" class="muted">High Match (90%)</text>
+
+                        <rect x="200" y="105" width="100" height="60" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="250" y="133" text-anchor="middle" font-size="14" font-weight="bold">Key 2 (K₂)</text>
+                        <text x="250" y="150" text-anchor="middle" font-size="11" class="muted">Low Match (10%)</text>
+
+                        <!-- Weighted Values -->
+                        <path d="M300 45 L380 45" class="stroke-accent" stroke-width="2" />
+                        <path d="M300 135 L380 135" class="stroke-muted" stroke-width="1.5" />
+
+                        <!-- Value Vectors -->
+                        <rect x="380" y="15" width="100" height="60" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="430" y="43" text-anchor="middle" font-size="14" font-weight="bold">Value 1 (V₁)</text>
+                        <text x="430" y="60" text-anchor="middle" font-size="11" class="muted">Content 1</text>
+
+                        <rect x="380" y="105" width="100" height="60" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="430" y="133" text-anchor="middle" font-size="14" font-weight="bold">Value 2 (V₂)</text>
+                        <text x="430" y="150" text-anchor="middle" font-size="11" class="muted">Content 2</text>
+
+                        <!-- Sum/Output -->
+                        <path d="M480 45 L520 75" class="stroke-accent" stroke-width="2" />
+                        <path d="M480 135 L520 105" class="stroke-muted" stroke-width="1.5" />
+
+                        <!-- Output Vector -->
+                        <circle cx="535" cy="90" r="20" class="fill-accent stroke-accent" />
+                        <text x="535" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">Σ</text>
+                    </svg>
+                </div>
+                <p>To compute attention, the Transformer assigns three vectors to every single word:</p>
+                <ul>
+                    <li><strong>Query (Q):</strong> What the word is looking for (e.g., "I am a pronoun, where is my noun?").</li>
+                    <li><strong>Key (K):</strong> What the word represents or offers (e.g., "I am a noun, I describe a person").</li>
+                    <li><strong>Value (V):</strong> The actual content of the word (the semantic meaning).</li>
+                </ul>
+                <p>The model multiplies the Query vector of a word by the Key vectors of all other words. The higher the score, the more attention that word gets. The final representation is a weighted sum of the Value vectors based on these attention scores.</p>
+            </div>
+
+            <h2>Multi-Head Attention</h2>
+            <p>Instead of doing this attention calculation once, the Transformer does it multiple times in parallel. Each calculation is called an <strong>Attention Head</strong>. This is known as <strong>Multi-Head Attention</strong>.</p>
+            <p>By using multiple heads, the model can look at different aspects of the text at the same time. For example:</p>
+            <ul>
+                <li><strong>Head 1</strong> might focus on grammatical relationships (finding the verb for each noun).</li>
+                <li><strong>Head 2</strong> might focus on coreference resolution (matching "he" or "it" to the correct entity).</li>
+                <li><strong>Head 3</strong> might focus on physical proximity (local descriptors like adjectives).</li>
+            </ul>
+            <p>Combined, these heads build a highly dimensional and accurate understanding of language.</p>
+
+            <h2>Positional Encoding</h2>
+            <p>Since a Transformer processes all words simultaneously, it has no natural understanding of order. To a pure attention mechanism, "The dog bit the man" and "The man bit the dog" look identical because the words are the same. </p>
+            <p>To fix this, the Transformer uses <strong>Positional Encodings</strong>—a set of mathematical values added to each word's embedding that act as a coordinate. These coordinates tell the model exactly where each word sits in the sentence, allowing it to preserve the structural grammar of the text.</p>
+
+            <h2>Encoder vs. Decoder Architectures</h2>
+            <p>The original Transformer consisted of two halves: an <strong>Encoder</strong> (which reads and understands text) and a <strong>Decoder</strong> (which writes new text). Depending on the task, modern advancements have split these into three variants:</p>
+            <ol>
+                <li><strong>Encoder-Only Models (e.g., BERT):</strong> Excellent for understanding, classifying, and extracting information from text. They look in both directions (left and right) simultaneously.</li>
+                <li><strong>Decoder-Only Models (e.g., GPT, LLaMA):</strong> Excellent for generating text. They are autoregressive, meaning they generate one word at a time, looking only at past words (left-to-right masking) to predict the next word.</li>
+                <li><strong>Encoder-Decoder Models (e.g., T5, BART):</strong> Often used for translation or summarization, where an input sequence is processed entirely, and a brand new output sequence is generated.</li>
+            </ol>
+
+            <p>Many frontier text-first Large Language Models (LLMs) use <strong>decoder-only architectures</strong>, optimized for generating text by predicting the next token with massive efficiency.</p>
+
+            <section class="sources-list" aria-labelledby="sources-heading">
+                <h2 id="sources-heading">Sources</h2>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a> — Vaswani et al.</li>
+                    <li><a href="https://arxiv.org/abs/1810.04805">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</a> — Devlin et al.</li>
+                </ul>
+            </section>
+        </section>
+
+        <section class="print-chapter" id="chapter2-llms">
+            <div class="chapter-header">
+                <div class="chapter-meta">
+                    <span>Chapter 2</span>
+                    <span>• 9 min read</span>
+                    <span>• Last reviewed: May 2026</span>
+                </div>
+                <h1>LLM Training & Alignment</h1>
+            </div>
+
+            <p>Creating a modern AI assistant like ChatGPT or Gemini is not a single-step process. It requires taking raw, chaotic web data and refining it through multiple training stages. The journey from raw math to a helpful assistant is divided into three major milestones: <strong>Pre-training</strong>, <strong>Supervised Fine-Tuning (SFT)</strong>, and <strong>Alignment</strong>.</p>
+
+            <h2>Phase 1: Pre-training (Creating the "Base Model")</h2>
+            <p>The foundation of any LLM is the pre-trained base model. During this stage, the model is fed petabytes of raw text from books, articles, code repositories, and web pages. The training objective is simple: <strong>predict the next word (token) in a sentence.</strong></p>
+            <p>For example, given the text:</p>
+            <blockquote>
+                "The cat sat on the..."
+            </blockquote>
+            <p>The model calculates probability distributions over its entire vocabulary and predicts "mat" (or "sofa", "bed", etc.). By repeating this trillions of times across vast supercomputer clusters, the model builds a rich internal map of language, grammar, reasoning patterns, and encyclopedic facts. However, a base model is not an assistant; it is a text completer. If you ask a base model <em>"Write a recipe for chocolate cake,"</em> it might reply with a second question: <em>"And write a recipe for apple pie,"</em> because it is mimicking lists of recipes found on the internet.</p>
+
+            <h2>Phase 2: Supervised Fine-Tuning (Creating the "Instruct Model")</h2>
+            <p>To turn a text completer into an interactive assistant, engineers perform <strong>Supervised Fine-Tuning (SFT)</strong>. In this phase, the base model is trained on a curated dataset of high-quality conversational prompts and responses, written by human experts.</p>
+            <p>A typical training sample looks like:</p>
+            <pre><code>Prompt: Explain photosynthesis in one sentence.
+Response: Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to create oxygen and energy in the form of sugar.</code></pre>
+            <p>By training on tens of thousands of these conversational examples, the model learns the "instruct" behavior: it recognizes when it is being asked a question and understands that it must respond with helpful answers, adopting a conversational and polite tone.</p>
+
+            <h2>Phase 3: Alignment (RLHF and DPO)</h2>
+            <p>Even after SFT, a model can still produce toxic, biased, incorrect, or unhelpful output. SFT only teaches the model to imitate the training dialogues. To ensure the model is helpful, honest, and harmless, engineers "align" it with human preferences using two primary techniques:</p>
+
+            <h3>1. Reinforcement Learning from Human Feedback (RLHF)</h3>
+            <p>RLHF works by using a grading system. The process involves three steps:</p>
+            <ul>
+                <li><strong>Generate Options:</strong> The model generates multiple candidate answers to a prompt.</li>
+                <li><strong>Train a Reward Model:</strong> Human evaluators rate these candidate answers from best to worst. A separate neural network—the <em>Reward Model</em>—is trained to predict what score a human would give to any given response.</li>
+                <li><strong>Reinforce:</strong> Using an RL algorithm (typically PPO), the LLM's parameters are updated to maximize the score predicted by the Reward Model. Responses that humans like are rewarded, and disliked responses are penalized.</li>
+            </ul>
+
+            <h3>2. Direct Preference Optimization (DPO)</h3>
+            <p>While RLHF is highly effective, it is notoriously unstable, expensive, and complex to train because it requires maintaining multiple models simultaneously (the LLM, the Reward Model, and reference models). </p>
+            <p>In 2023, researchers introduced <strong>Direct Preference Optimization (DPO)</strong>. DPO bypasses the reward model entirely. It mathematically proves that you can optimize the LLM policy directly using a dataset of paired choices: a prompt, a <strong>preferred (chosen)</strong> response, and a <strong>disliked (rejected)</strong> response. DPO adjusts the weights so that the probability of the chosen response increases relative to the rejected response, creating a much simpler, faster, and more stable alignment loop.</p>
+
+            <div class="concepts-box">
+                <h4>Key Concept: Kaplan vs. Chinchilla Scaling Laws</h4>
+                <div class="illustration-container">
+                    <svg class="illustration" viewBox="0 0 580 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram comparing parameter-heavy scaling with compute-optimal scaling">
+                        <rect x="24" y="24" width="236" height="172" rx="8" class="fill-card stroke-border" />
+                        <text x="142" y="54" text-anchor="middle" font-size="15" font-weight="bold">Kaplan-style scaling</text>
+                        <rect x="54" y="78" width="78" height="60" rx="8" class="fill-accent-glow stroke-accent" />
+                        <text x="93" y="104" text-anchor="middle" font-size="13">Params</text>
+                        <text x="93" y="121" text-anchor="middle" font-size="11" class="muted">pushed up</text>
+                        <rect x="158" y="90" width="58" height="36" rx="8" class="fill-tertiary stroke-border" />
+                        <text x="187" y="112" text-anchor="middle" font-size="12">Data</text>
+                        <path d="M93 144 L93 166 L187 166 L187 132" class="stroke-muted" />
+                        <text x="132" y="186" text-anchor="middle" font-size="12" class="muted">Often under-trained</text>
+
+                        <rect x="320" y="24" width="236" height="172" rx="8" class="fill-card stroke-border" />
+                        <text x="438" y="54" text-anchor="middle" font-size="15" font-weight="bold">Chinchilla-style scaling</text>
+                        <circle cx="398" cy="108" r="26" class="fill-accent-glow stroke-accent" />
+                        <text x="398" y="112" text-anchor="middle" font-size="12">Params</text>
+                        <circle cx="478" cy="108" r="26" class="fill-accent-glow stroke-accent" />
+                        <text x="478" y="112" text-anchor="middle" font-size="12">Tokens</text>
+                        <path d="M424 108 L452 108" class="stroke-accent" />
+                        <text x="438" y="156" text-anchor="middle" font-size="12" class="muted">Scale model and data together</text>
+
+                        <path d="M274 110 L306 110" class="stroke-accent" />
+                        <polygon points="306,110 296,104 296,116" class="fill-accent" />
+                    </svg>
+                </div>
+                <p>How do we make models smarter? For a long time, the industry followed <strong>Kaplan's scaling laws</strong> (2020), which suggested that parameter size was the single most important factor—urging engineers to build larger models, even if they couldn't afford to train them on more data.</p>
+                <p>In 2022, DeepMind published the <strong>Chinchilla scaling laws</strong>. They proved that for optimal performance, parameter count and training data (tokens) should scale in equal proportion. Most models were actually <em>under-trained</em> on too little data. This shifted the industry toward training smaller, highly efficient models (like LLaMA or Mistral) for much longer on high-quality tokens, making them far cheaper to run on standard hardware.</p>
+            </div>
+
+            <section class="sources-list" aria-labelledby="sources-heading">
+                <h2 id="sources-heading">Sources</h2>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2001.08361">Scaling Laws for Neural Language Models</a> — Kaplan et al.</li>
+                    <li><a href="https://arxiv.org/abs/2203.15556">Training Compute-Optimal Large Language Models</a> — Hoffmann et al.</li>
+                    <li><a href="https://arxiv.org/abs/2203.02155">Training Language Models to Follow Instructions with Human Feedback</a> — Ouyang et al.</li>
+                    <li><a href="https://arxiv.org/abs/2305.18290">Direct Preference Optimization</a> — Rafailov et al.</li>
+                </ul>
+            </section>
+        </section>
+
+        <section class="print-chapter" id="chapter3-rag">
+            <div class="chapter-header">
+                <div class="chapter-meta">
+                    <span>Chapter 3</span>
+                    <span>• 9 min read</span>
+                    <span>• Last reviewed: May 2026</span>
+                </div>
+                <h1>RAG & Context Windows</h1>
+            </div>
+
+            <p>An AI model has two kinds of memory. The first is <strong>Parametric Memory</strong>—information baked directly into the model's weights during training. The second is <strong>Working Memory</strong>—the space available in the immediate input prompt, known as the <strong>Context Window</strong>. To build reliable systems that do not hallucinate, engineers use these two memories in tandem through RAG and ultra-long context architectures.</p>
+
+            <h2>The Limitation of Parametric Memory</h2>
+            <p>Relying purely on what a model has memorized has three massive drawbacks:</p>
+            <ol>
+                <li><strong>Knowledge Cutoff:</strong> The model only knows what existed before its training run finished.</li>
+                <li><strong>Hallucinations:</strong> When asked about obscure facts, models often confidently guess, creating plausible-sounding falsehoods.</li>
+                <li><strong>No Access to Private Data:</strong> Models cannot read your local PDFs, company emails, or secure databases.</li>
+            </ol>
+
+            <h2>Retrieval-Augmented Generation (RAG)</h2>
+            <p><strong>RAG</strong> solves this by turning the model into an open-book test taker. Instead of answering from memory, the system searches an external database for the answer, pastes the relevant documents directly into the context window, and asks the model to read them to generate the answer.</p>
+
+            <div class="concepts-box">
+                <h4>How the RAG Pipeline Works</h4>
+                <div class="illustration-container">
+                    <svg class="illustration" viewBox="0 0 580 200" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram showing documents chunked, embedded, stored, retrieved, and passed to an LLM">
+                        <rect x="18" y="48" width="84" height="64" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="60" y="75" text-anchor="middle" font-size="13" font-weight="bold">Docs</text>
+                        <text x="60" y="94" text-anchor="middle" font-size="11" class="muted">PDFs, pages</text>
+
+                        <path d="M102 80 L136 80" class="stroke-accent" />
+                        <polygon points="136,80 126,74 126,86" class="fill-accent" />
+                        <rect x="140" y="32" width="92" height="96" rx="6" class="fill-card stroke-border" />
+                        <text x="186" y="58" text-anchor="middle" font-size="13" font-weight="bold">Chunks</text>
+                        <line x1="158" y1="76" x2="214" y2="76" class="stroke-border" />
+                        <line x1="158" y1="94" x2="206" y2="94" class="stroke-border" />
+                        <line x1="158" y1="112" x2="212" y2="112" class="stroke-border" />
+
+                        <path d="M232 80 L266 80" class="stroke-accent" />
+                        <polygon points="266,80 256,74 256,86" class="fill-accent" />
+                        <rect x="270" y="48" width="84" height="64" rx="6" class="fill-accent-glow stroke-accent" />
+                        <text x="312" y="75" text-anchor="middle" font-size="13" font-weight="bold">Embed</text>
+                        <text x="312" y="94" text-anchor="middle" font-size="11" class="muted">Vectors</text>
+
+                        <path d="M354 80 L388 80" class="stroke-accent" />
+                        <polygon points="388,80 378,74 378,86" class="fill-accent" />
+                        <rect x="392" y="32" width="92" height="96" rx="6" class="fill-card stroke-border" />
+                        <text x="438" y="58" text-anchor="middle" font-size="13" font-weight="bold">Vector DB</text>
+                        <circle cx="418" cy="86" r="6" class="fill-accent" />
+                        <circle cx="454" cy="78" r="6" class="fill-accent" />
+                        <circle cx="438" cy="106" r="6" class="fill-accent" />
+
+                        <path d="M438 128 L438 162 L286 162 L286 126" class="stroke-muted" />
+                        <text x="362" y="184" text-anchor="middle" font-size="12" class="muted">query retrieves nearest chunks</text>
+
+                        <path d="M484 80 L518 80" class="stroke-accent" />
+                        <polygon points="518,80 508,74 508,86" class="fill-accent" />
+                        <rect x="522" y="48" width="42" height="64" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="543" y="84" text-anchor="middle" font-size="13" font-weight="bold">LLM</text>
+                    </svg>
+                </div>
+                <ol>
+                    <li><strong>Chunking:</strong> Large documents (like a 100-page manual) are broken down into small, digestible paragraphs (chunks).</li>
+                    <li><strong>Embeddings:</strong> An <em>Embedding Model</em> converts each text chunk into a string of numbers (a vector) representing its semantic meaning.</li>
+                    <li><strong>Vector Database:</strong> These vectors are stored in a specialized database (like Pinecone, Chroma, or pgvector).</li>
+                    <li><strong>Retrieval (Semantic Search):</strong> When a user asks a question, the system converts their question into a vector and finds the text chunks in the database that are mathematically closest to the question's meaning.</li>
+                    <li><strong>Augmentation & Generation:</strong> The system fetches those text chunks, inserts them into a prompt alongside the user's question, and sends it to the LLM: <em>"Here is the context: [chunks]. Answer this question based on that context: [query]."</em></li>
+                </ol>
+            </div>
+
+            <h2>The Evolution of Context Windows</h2>
+            <p>If RAG is so powerful, why not just feed the entire database directly into the model? Historically, this was impossible because of the way attention works. </p>
+            <p>The memory and computation cost of standard Self-Attention scales <strong>quadratically</strong> ($O(N^2)$) with the length of the input. If you double the length of your input, it takes four times more compute and memory to process. Early models were capped at a context window of just 2,048 tokens (roughly 1,500 words).</p>
+            <p>Recent architectural and serving breakthroughs have broken this barrier. By 2026, frontier systems commonly offer hundreds of thousands to millions of tokens of working memory; OpenAI lists a 1 million token API context window for GPT-5.5, while Google's Gemini line has pushed long-context reasoning into mainstream multimodal products. The main pillars of this scaling are:</p>
+
+            <h3>1. FlashAttention</h3>
+            <p>Introduced by Tri Dao, FlashAttention is a software-level optimization. Rather than changing the math of attention, it changes how the GPU handles memory. Standard attention writes massive intermediate tables back and forth between slow GPU High Bandwidth Memory (HBM) and fast on-chip SRAM. FlashAttention computes attention in small blocks, keeping data in the fast SRAM cache as much as possible. This reduces memory traffic by up to 20x, allowing context windows to scale dramatically without running out of GPU memory.</p>
+
+            <h3>2. Rotary Position Embeddings (RoPE)</h3>
+            <p>Older absolute positional systems could not handle context lengths longer than what they were trained on. <strong>RoPE</strong> represents positions by rotating the word vectors in a multi-dimensional mathematical space. Because rotation is relative, the model can understand the distance between words even if the total text length is far longer than the training parameters, allowing context window sizes to be scaled up post-training with minimal fine-tuning.</p>
+
+            <h2>The "Needle in a Haystack" Test</h2>
+            <p>Just because a model <em>can</em> accept a million tokens doesn't mean it is actually reading them. To evaluate long-context retrieval, researchers use the <strong>Needle in a Haystack (NIAH)</strong> test. </p>
+            <p>A random, unrelated fact (the "needle") is hidden somewhere inside a massive text dump of documents (the "haystack"). The model is then asked a question that can only be answered using that specific fact. Modern models must achieve near 100% accuracy, finding the needle regardless of whether it is hidden at the beginning, middle, or end of the document stack.</p>
+            <p>However, long context is not a free replacement for retrieval. Million-token prompts can still be slower, more expensive, and harder to audit than a well-built RAG pipeline. In production systems, engineers often combine both: use retrieval to select the most relevant evidence, then use a long-context model when the task requires cross-document synthesis, codebase-wide reasoning, or comparison across many artifacts.</p>
+
+            <section class="sources-list" aria-labelledby="sources-heading">
+                <h2 id="sources-heading">Sources</h2>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2005.11401">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a> — Lewis et al.</li>
+                    <li><a href="https://arxiv.org/abs/2205.14135">FlashAttention</a> — Dao et al.</li>
+                    <li><a href="https://arxiv.org/abs/2104.09864">RoFormer: Enhanced Transformer with Rotary Position Embedding</a> — Su et al.</li>
+                    <li><a href="https://blog.google/technology/ai/google-gemini-next-generation-model-february-2024/">Gemini 1.5 and long-context model capabilities</a> — Google</li>
+                    <li><a href="https://openai.com/index/introducing-gpt-5-5/">Introducing GPT-5.5</a> — OpenAI</li>
+                    <li><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/">Gemini 3.5: frontier intelligence with action</a> — Google</li>
+                </ul>
+            </section>
+        </section>
+
+        <section class="print-chapter" id="chapter4-moe">
+            <div class="chapter-header">
+                <div class="chapter-meta">
+                    <span>Chapter 4</span>
+                    <span>• 9 min read</span>
+                    <span>• Last reviewed: May 2026</span>
+                </div>
+                <h1>Scaling Efficiency: MoE & Quantization</h1>
+            </div>
+
+            <p>As AI models grow larger, running them becomes incredibly expensive. A dense 175-billion-parameter model requires multiple high-end enterprise GPUs running concurrently just to output a single word. To make these models practical for commercial use and deployable on smaller hardware, engineers rely on two massive efficiency breakthroughs: <strong>Mixture of Experts (MoE)</strong> and <strong>Quantization</strong>.</p>
+
+            <h2>Mixture of Experts (MoE)</h2>
+            <p>In a standard <strong>"Dense"</strong> model, every single parameter (the neural connections) is activated for every single word processed. This is highly inefficient; a model doesn't need to invoke its entire mathematical knowledge base to process a simple punctuation mark or pronoun.</p>
+            <p>An <strong>MoE</strong> architecture turns a dense model into a <strong>"Sparse"</strong> model by breaking it up into specialized compartments called <strong>Experts</strong> (typically inside the Feed-Forward Network layers). Instead of passing a word through all pathways, a dynamic <strong>Gating Network (Router)</strong> decides which experts should handle which word.</p>
+
+            <div class="concepts-box">
+                <h4>Sparse Routing in Action</h4>
+                <div class="illustration-container">
+                    <svg class="illustration" viewBox="0 0 580 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram showing a router sending one token to two selected experts">
+                        <rect x="22" y="82" width="92" height="56" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="68" y="105" text-anchor="middle" font-size="13" font-weight="bold">Token</text>
+                        <text x="68" y="123" text-anchor="middle" font-size="11" class="muted">"def"</text>
+
+                        <path d="M114 110 L164 110" class="stroke-accent" />
+                        <polygon points="164,110 154,104 154,116" class="fill-accent" />
+                        <rect x="168" y="72" width="96" height="76" rx="8" class="fill-accent-glow stroke-accent" />
+                        <text x="216" y="104" text-anchor="middle" font-size="14" font-weight="bold">Router</text>
+                        <text x="216" y="123" text-anchor="middle" font-size="11" class="muted">Top-2 gate</text>
+
+                        <path d="M264 110 C304 38 336 30 378 40" class="stroke-accent" />
+                        <path d="M264 110 C304 88 336 86 378 92" class="stroke-muted" />
+                        <path d="M264 110 C304 130 336 132 378 128" class="stroke-accent" />
+                        <path d="M264 110 C304 180 336 188 378 178" class="stroke-muted" />
+
+                        <rect x="382" y="18" width="150" height="44" rx="6" class="fill-accent-glow stroke-accent" />
+                        <text x="457" y="45" text-anchor="middle" font-size="13" font-weight="bold">Expert 3: code</text>
+                        <rect x="382" y="76" width="150" height="44" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="457" y="103" text-anchor="middle" font-size="13">Expert 4: prose</text>
+                        <rect x="382" y="134" width="150" height="44" rx="6" class="fill-accent-glow stroke-accent" />
+                        <text x="457" y="161" text-anchor="middle" font-size="13" font-weight="bold">Expert 5: logic</text>
+
+                        <path d="M532 40 L560 100 L532 156" class="stroke-accent" />
+                        <text x="496" y="202" text-anchor="middle" font-size="12" class="muted">Only selected experts run</text>
+                    </svg>
+                </div>
+                <p>Imagine a model with 8 distinct "Experts." When a token is processed:</p>
+                <ul>
+                    <li>If the token is a line of Python code, the Router sends it to <strong>Expert 3 (Code specialist)</strong> and <strong>Expert 5 (Logic specialist)</strong>.</li>
+                    <li>If the token is a word in French, the Router sends it to <strong>Expert 1 (Translation specialist)</strong>.</li>
+                </ul>
+                <p>Typically, the Router selects only the <strong>Top-2 Experts</strong> for each token. If a model has a total of 8x 7B experts (56B total parameters), it only activates roughly 12B parameters per token. This gives the model the vast knowledge capacity of a 56B model, but with the fast generation speed and compute cost of a much smaller 12B model.</p>
+            </div>
+
+            <h3>The Challenges of MoE</h3>
+            <p>MoE is not a free lunch. It introduces several hard engineering hurdles:</p>
+            <ol>
+                <li><strong>RAM Overhead:</strong> Although only 12B parameters are active at any millisecond, the entire 56B parameter model must still be loaded into the GPU's memory (VRAM). This means MoE requires significantly more memory than dense models of equivalent speed.</li>
+                <li><strong>Routing Collapse:</strong> During early training, the router might favor one expert, making it smarter, which causes the router to send even more traffic to it. Engineers must write custom algorithms to force load-balancing so all experts are trained evenly.</li>
+            </ol>
+
+            <h2>Quantization</h2>
+            <p>Neural networks represent their learned weights as high-precision decimals called floating-point numbers. During training, these are typically represented in 16-bit precision (<strong>FP16</strong> or <strong>BF16</strong>). </p>
+            <p>Storing weights in 16-bit precision means every single parameter requires 2 bytes of GPU memory. A 70-billion-parameter model requires at least 140 gigabytes of VRAM just to load, which exceeds the capacity of almost all consumer GPUs.</p>
+            <p><strong>Quantization</strong> is the process of compressing these weights by reducing their numerical precision—mapping them to smaller formats like 8-bit integers (<strong>INT8</strong>), 4-bit integers (<strong>INT4</strong>), or even custom formats like <strong>FP4</strong>.</p>
+
+            <h3>The Intuition Behind Quantization</h3>
+            <p>Think of quantization like reducing the color depth of a digital photo. If you convert a photo from 24-bit true color to an 8-bit color palette, the file size shrinks by 66%. The image looks slightly less smooth, but the shapes, objects, and overall context are still perfectly recognizable. </p>
+            <p>Similarly, when we quantize a model from 16-bit to 4-bit, we decrease its size by 75%. A 70B model that once required 140GB of VRAM can now fit into roughly 35GB of VRAM. Remarkably, due to the high mathematical redundancy in neural networks, this massive compression results in only a tiny degradation in reasoning capability.</p>
+
+            <h3>Modern Quantization Formats</h3>
+            <p>Several standard file formats are used to run these compressed models:</p>
+            <ul>
+                <li><strong>GGUF (formerly GGML):</strong> Optimized specifically for CPU execution, allowing users to run large models on consumer laptops (like Apple Silicon Macbooks) by leveraging system RAM instead of expensive GPU VRAM.</li>
+                <li><strong>GPTQ / AWQ:</strong> Formats optimized for GPU-accelerated quantized inference, ensuring that compressed models generate text at blisteringly fast speeds on standard desktop graphic cards.</li>
+            </ul>
+            <p>The 2025-2026 open-weight wave made this efficiency story concrete. OpenAI's gpt-oss models, for example, use Transformer MoE architectures where the 117B-parameter model activates only 5.1B parameters per token and the 21B-parameter model activates 3.6B. That design lets model builders expose large total capacity while keeping the per-token compute closer to a much smaller dense model.</p>
+
+            <section class="sources-list" aria-labelledby="sources-heading">
+                <h2 id="sources-heading">Sources</h2>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2101.03961">Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity</a> — Fedus et al.</li>
+                    <li><a href="https://arxiv.org/abs/2210.17323">GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers</a> — Frantar et al.</li>
+                    <li><a href="https://arxiv.org/abs/2306.00978">AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration</a> — Lin et al.</li>
+                    <li><a href="https://github.com/ggerganov/ggml/blob/master/docs/gguf.md">GGUF format documentation</a> — ggml</li>
+                    <li><a href="https://openai.com/index/introducing-gpt-oss/">Introducing gpt-oss</a> — OpenAI</li>
+                </ul>
+            </section>
+        </section>
+
+        <section class="print-chapter" id="chapter5-diffusion">
+            <div class="chapter-header">
+                <div class="chapter-meta">
+                    <span>Chapter 5</span>
+                    <span>• 8 min read</span>
+                    <span>• Last reviewed: May 2026</span>
+                </div>
+                <h1>Diffusion & Generative Media</h1>
+            </div>
+
+            <p>Generative AI for images and videos has undergone a massive transformation. Early image generators, called GANs (Generative Adversarial Networks), were notoriously difficult to train, often failing to produce coherent pictures. Today, almost all modern image and video generators (Stable Diffusion, Midjourney, Sora, Flux) rely on a mathematical concept called <strong>Diffusion</strong>.</p>
+
+            <h2>The Diffusion Paradigm</h2>
+            <p>Instead of trying to draw an image from scratch, a diffusion model is trained to do one thing: <strong>remove static noise.</strong> The process is split into two phases: the forward process and the reverse process.</p>
+
+            <h3>1. The Forward Process (Destroying Information)</h3>
+            <p>We take a clean photograph (say, of a golden retriever) and add a tiny layer of random mathematical noise. We repeat this step-by-step, perhaps 1,000 times, until the original dog is completely obliterated, leaving nothing but a block of pure gray static. This process requires no neural network; it is pure math.</p>
+
+            <h3>2. The Reverse Process (Creating Information)</h3>
+            <p>This is where the neural network lives. We show the model a noisy image and ask it: <em>"Can you predict exactly how much noise was added in this step?"</em> </p>
+            <p>By training the model on millions of pairs of clean and noisy images, it learns to recognize subtle structures within noise. When we want to generate a new image, we feed the model a block of <strong>pure, random noise</strong> and a text prompt (e.g., "A golden retriever playing in the grass"). The model subtracts a sliver of estimated noise. We repeat this subtraction loop 20 to 50 times. Bit by bit, structures appear, and a completely unique, high-resolution image emerges.</p>
+
+            <div class="concepts-box">
+                <h4>Key Concept: Latent Diffusion</h4>
+                <div class="illustration-container">
+                    <svg class="illustration" viewBox="0 0 580 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram showing pixels compressed into latent space, denoised, and decoded back to pixels">
+                        <rect x="24" y="46" width="92" height="92" rx="8" class="fill-card stroke-border" />
+                        <line x1="47" y1="46" x2="47" y2="138" class="stroke-border" />
+                        <line x1="70" y1="46" x2="70" y2="138" class="stroke-border" />
+                        <line x1="93" y1="46" x2="93" y2="138" class="stroke-border" />
+                        <line x1="24" y1="69" x2="116" y2="69" class="stroke-border" />
+                        <line x1="24" y1="92" x2="116" y2="92" class="stroke-border" />
+                        <line x1="24" y1="115" x2="116" y2="115" class="stroke-border" />
+                        <text x="70" y="164" text-anchor="middle" font-size="12" class="muted">Pixel space</text>
+
+                        <path d="M116 92 L174 92" class="stroke-accent" />
+                        <polygon points="174,92 164,86 164,98" class="fill-accent" />
+                        <text x="145" y="78" text-anchor="middle" font-size="11" class="muted">VAE encode</text>
+
+                        <rect x="178" y="62" width="70" height="60" rx="8" class="fill-accent-glow stroke-accent" />
+                        <circle cx="198" cy="82" r="5" class="fill-accent" />
+                        <circle cx="226" cy="78" r="5" class="fill-accent" />
+                        <circle cx="212" cy="104" r="5" class="fill-accent" />
+                        <text x="213" y="164" text-anchor="middle" font-size="12" class="muted">Latent space</text>
+
+                        <path d="M248 92 L306 92" class="stroke-accent" />
+                        <polygon points="306,92 296,86 296,98" class="fill-accent" />
+                        <text x="277" y="78" text-anchor="middle" font-size="11" class="muted">denoise loop</text>
+
+                        <rect x="310" y="50" width="96" height="84" rx="8" class="fill-tertiary stroke-border" />
+                        <path d="M330 116 C346 80 372 80 386 66" class="stroke-accent" />
+                        <path d="M330 72 C352 106 374 108 386 120" class="stroke-muted" />
+                        <text x="358" y="164" text-anchor="middle" font-size="12" class="muted">Prompt-guided</text>
+
+                        <path d="M406 92 L464 92" class="stroke-accent" />
+                        <polygon points="464,92 454,86 454,98" class="fill-accent" />
+                        <text x="435" y="78" text-anchor="middle" font-size="11" class="muted">VAE decode</text>
+
+                        <rect x="468" y="46" width="92" height="92" rx="8" class="fill-card stroke-border" />
+                        <path d="M488 114 C504 78 532 76 542 104" class="stroke-accent" />
+                        <circle cx="502" cy="82" r="10" class="fill-accent-glow stroke-accent" />
+                        <text x="514" y="164" text-anchor="middle" font-size="12" class="muted">Final image</text>
+                    </svg>
+                </div>
+                <p>Early diffusion models operated in <strong>"Pixel Space."</strong> Generating a 1024x1024 pixel image meant calculating noise values for over a million pixels at every step. This made early models incredibly slow and memory-intensive.</p>
+                <p>The breakthrough was <strong>Latent Diffusion</strong> (popularized by Stable Diffusion). It uses a <strong>Variational Autoencoder (VAE)</strong> to compress the image into a highly dense representation called "latent space" (shrinking a 512x512 image down to a 64x64 grid). The diffusion model does all its heavy lifting in this low-resolution space, and the VAE decodes the final latents back into pixels at the very end. This saved 90%+ of the compute, making image generation run on consumer laptops.</p>
+            </div>
+
+            <h2>Classifier-Free Guidance (CFG)</h2>
+            <p>How does the model make sure the image it generates actually matches your prompt, instead of wandering off on its own? This is controlled by <strong>Classifier-Free Guidance (CFG)</strong>.</p>
+            <p>During training, the model is occasionally trained without text prompts (unconditioned). During generation, the model predicts two things: what the noise removal should look like <em>with</em> the prompt, and what it should look like <em>without</em> it. The CFG scale decides how much weight to give to the difference. </p>
+            <ul>
+                <li><strong>Low CFG (1 to 3):</strong> Gives the model creative freedom. The image will be artistic but might ignore parts of your prompt.</li>
+                <li><strong>Medium CFG (7 to 9):</strong> The sweet spot for high-quality, prompt-adhering images.</li>
+                <li><strong>High CFG (15+):</strong> Forces strict prompt adherence, though it can make the image look oversaturated and digitally artificial.</li>
+            </ul>
+
+            <h2>The Shift to Diffusion Transformers (DiT)</h2>
+            <p>Traditional diffusion models used a convolutional network backbone called a <strong>U-Net</strong> to predict noise. However, U-Nets struggled to scale efficiently with massive datasets and compute budgets.</p>
+            <p>In 2023, researchers introduced the <strong>Diffusion Transformer (DiT)</strong>. DiT replaces the U-Net with a standard Transformer backbone. By dividing the latent image into patches (similar to how an LLM divides text into tokens), DiT models can scale predictably: adding more parameters and compute directly correlates with better image and video fidelity. This architecture underpins the latest state-of-the-art models like OpenAI's Sora, Stable Diffusion 3, and Flux.</p>
+
+            <section class="sources-list" aria-labelledby="sources-heading">
+                <h2 id="sources-heading">Sources</h2>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2006.11239">Denoising Diffusion Probabilistic Models</a> — Ho et al.</li>
+                    <li><a href="https://arxiv.org/abs/2112.10752">High-Resolution Image Synthesis with Latent Diffusion Models</a> — Rombach et al.</li>
+                    <li><a href="https://arxiv.org/abs/2207.12598">Classifier-Free Diffusion Guidance</a> — Ho and Salimans</li>
+                    <li><a href="https://arxiv.org/abs/2212.09748">Scalable Diffusion Models with Transformers</a> — Peebles and Xie</li>
+                </ul>
+            </section>
+        </section>
+
+        <section class="print-chapter" id="chapter6-agents">
+            <div class="chapter-header">
+                <div class="chapter-meta">
+                    <span>Chapter 6</span>
+                    <span>• 9 min read</span>
+                    <span>• Last reviewed: May 2026</span>
+                </div>
+                <h1>Agentic AI & Reasoning</h1>
+            </div>
+
+            <p>For the first few years of the LLM boom, AI models were treated as passive chatbots: you write a prompt, and the model instantly outputs a response. Today, the frontier has shifted toward <strong>Agentic AI</strong>. Instead of answering statically, agentic systems act as autonomous software entities that can plan, use external tools, inspect their own output, and run in loops to solve multi-step problems.</p>
+
+            <h2>Tool Use & Function Calling</h2>
+            <p>LLMs are notoriously bad at precise math (like multiplying two 8-digit numbers) and cannot fetch live data or interact with the physical world because they are just word-prediction engines. </p>
+            <p><strong>Tool Use</strong> (or <strong>Function Calling</strong>) overcomes this limitation by giving models hands. The model is provided with a list of available tools, described in plain text. For example:</p>
+            <pre><code>Available Tool: calculate_weather(location, date)
+- Returns the temperature forecast for a location.</code></pre>
+            <p>If the user asks: <em>"Should I wear a coat in Chicago tomorrow?"</em>, the LLM recognizes it cannot answer from memory. Instead of guessing, it outputs a structured instruction:</p>
+            <pre><code>{
+  "call": "calculate_weather",
+  "arguments": { "location": "Chicago", "date": "tomorrow" }
+}</code></pre>
+            <p>The host application intercepts this JSON, runs the actual weather API, receives the result (e.g., "Chicago: 41°F, Rain"), and appends it to the model's chat history. The LLM reads the result and finishes its response: <em>"Yes, you should wear a coat. Chicago will be 41°F and raining tomorrow."</em></p>
+
+            <h2>Reasoning Loops: ReAct and Reflection</h2>
+            <p>To solve complex tasks, agents use structured loops rather than generating answers in a single pass.</p>
+
+            <h3>1. The ReAct (Reason + Act) Loop</h3>
+            <p>ReAct forces the model to document its thinking before taking actions. The loop proceeds as follows:</p>
+            <ul>
+                <li><strong>Thought:</strong> The model explains its plan (e.g., "I need to find the population of France, then multiply it by 0.12").</li>
+                <li><strong>Action:</strong> The model calls a search engine or calculator tool.</li>
+                <li><strong>Observation:</strong> The model reads the tool's output and updates its plan, looping back to Thought until the task is complete.</li>
+            </ul>
+
+            <h3>2. Reflection and Self-Correction</h3>
+            <p>If a model writes a block of code, it may contain a bug. A reflection agent doesn't send the code to the user immediately. Instead, it runs the code in an isolated environment, catches any error logs, feeds those errors back to itself, and rewrites the code to fix the bug. This cyclic feedback loop dramatically boosts task success rates.</p>
+
+            <div class="concepts-box">
+                <h4>System 1 vs. System 2 Thinking in AI</h4>
+                <div class="illustration-container">
+                    <svg class="illustration" viewBox="0 0 580 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram comparing a fast single-pass answer with a slower reason-act-observe loop">
+                        <rect x="24" y="38" width="218" height="132" rx="8" class="fill-card stroke-border" />
+                        <text x="133" y="68" text-anchor="middle" font-size="15" font-weight="bold">System 1</text>
+                        <rect x="54" y="94" width="70" height="44" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="89" y="120" text-anchor="middle" font-size="12">Prompt</text>
+                        <path d="M124 116 L172 116" class="stroke-accent" />
+                        <polygon points="172,116 162,110 162,122" class="fill-accent" />
+                        <rect x="176" y="94" width="40" height="44" rx="6" class="fill-accent-glow stroke-accent" />
+                        <text x="196" y="120" text-anchor="middle" font-size="12">Ans</text>
+                        <text x="133" y="154" text-anchor="middle" font-size="12" class="muted">one forward pass</text>
+
+                        <rect x="302" y="24" width="254" height="168" rx="8" class="fill-card stroke-border" />
+                        <text x="429" y="54" text-anchor="middle" font-size="15" font-weight="bold">System 2 agent loop</text>
+                        <rect x="334" y="82" width="72" height="42" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="370" y="107" text-anchor="middle" font-size="12">Plan</text>
+                        <rect x="452" y="82" width="72" height="42" rx="6" class="fill-accent-glow stroke-accent" />
+                        <text x="488" y="107" text-anchor="middle" font-size="12">Act</text>
+                        <rect x="393" y="138" width="72" height="42" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="429" y="163" text-anchor="middle" font-size="12">Observe</text>
+                        <path d="M406 103 L452 103" class="stroke-accent" />
+                        <polygon points="452,103 442,97 442,109" class="fill-accent" />
+                        <path d="M488 124 L464 138" class="stroke-accent" />
+                        <polygon points="464,138 469,128 474,138" class="fill-accent" />
+                        <path d="M393 159 C350 154 342 130 354 124" class="stroke-accent" />
+                        <polygon points="354,124 344,128 350,136" class="fill-accent" />
+                        <text x="429" y="203" text-anchor="middle" font-size="12" class="muted">repeat until the task is done</text>
+                    </svg>
+                </div>
+                <p>Cognitive psychologist Daniel Kahneman famously split human thinking into two modes:</p>
+                <ul>
+                    <li><strong>System 1 (Fast):</strong> Fast, intuitive, automatic actions (e.g., answering "2+2=?", reading a familiar road sign).</li>
+                    <li><strong>System 2 (Slow):</strong> Slow, deliberate, logical reasoning (e.g., solving "17 × 24", filling out a tax form).</li>
+                </ul>
+                <p>Standard LLMs operate mostly like <strong>System 1</strong>. They output the next token immediately without much opportunity to plan, test, or revise. If they start a sentence poorly, they cannot truly rewind the generation path.</p>
+                <p>Modern <strong>System 2 Reasoning Models</strong> spend extra inference-time compute before producing a final answer. OpenAI's GPT-5.5, Google's Gemini 3.5 Flash, DeepSeek-R1, and related reasoning systems all point toward the same design shift: models are being trained and served to plan, use tools, check intermediate work, and keep going across longer workflows. Some expose a visible plan or controllable "thinking" effort; others keep the reasoning internal while returning a concise answer.</p>
+            </div>
+
+            <section class="sources-list" aria-labelledby="sources-heading">
+                <h2 id="sources-heading">Sources</h2>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2210.03629">ReAct: Synergizing Reasoning and Acting in Language Models</a> — Yao et al.</li>
+                    <li><a href="https://arxiv.org/abs/2302.04761">Toolformer: Language Models Can Teach Themselves to Use Tools</a> — Schick et al.</li>
+                    <li><a href="https://arxiv.org/abs/2303.11366">Reflexion: Language Agents with Verbal Reinforcement Learning</a> — Shinn et al.</li>
+                    <li><a href="https://openai.com/index/learning-to-reason-with-llms/">Learning to Reason with LLMs</a> — OpenAI</li>
+                    <li><a href="https://openai.com/index/introducing-gpt-5-5/">Introducing GPT-5.5</a> — OpenAI</li>
+                    <li><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/">Gemini 3.5: frontier intelligence with action</a> — Google</li>
+                    <li><a href="https://www.nature.com/articles/s41586-025-09422-z">DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning</a> — Nature</li>
+                </ul>
+            </section>
+        </section>
+
+        <section class="print-chapter" id="chapter7-frontiers">
+            <div class="chapter-header">
+                <div class="chapter-meta">
+                    <span>Chapter 7</span>
+                    <span>• 9 min read</span>
+                    <span>• Last reviewed: May 2026</span>
+                </div>
+                <h1>Future Frontiers & Physical AI</h1>
+            </div>
+
+            <p>We are entering a new era of artificial intelligence. The frontier is no longer just about making models bigger. Researchers are expanding models into the physical world, training them to process multiple senses natively, and shifting from one-shot answers toward agents that can take action over time.</p>
+
+            <h2>Native Multimodality</h2>
+            <p>Early multimodal systems were <strong>"Stitched"</strong> together. For example, to let an AI "see" an image, engineers would run an image-captioning model to generate a text description, and then feed that text to the LLM. This was incredibly lossy; a text caption cannot capture the precise spatial layout of a room, the emotional expression on a face, or the specific pitch of a sound.</p>
+            <p>Modern state-of-the-art models (like Gemini and GPT-5.5) are <strong>Natively Multimodal</strong>. They are built with a unified architecture or tightly integrated model system. Text, pixels, audio waveforms, video frames, and tool outputs are converted into a shared mathematical language (embeddings) and routed through models that can reason across them. </p>
+            <p>This allows the model to reason across modalities simultaneously. A native multimodal model can watch a video, listen to the speaker's sarcasm, read the slides in the background, and output a unified analysis in real time, catching nuances that stitched systems miss entirely.</p>
+
+            <h2>The "Data Wall" and Synthetic Data</h2>
+            <p>For a decade, AI progress was fueled by feeding models more data. However, the industry is hitting a <strong>Data Wall</strong>: LLMs have already consumed almost all high-quality, publicly available human-written text on the internet. </p>
+            <p>To continue training, researchers are turning to <strong>Synthetic Data</strong>—data generated by AI models to train other AI models.</p>
+
+            <div class="concepts-box">
+                <h4>The Promise and Danger of Synthetic Data</h4>
+                <div class="illustration-container">
+                    <svg class="illustration" viewBox="0 0 580 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram contrasting unverified synthetic data loops with verified synthesis">
+                        <rect x="24" y="32" width="236" height="152" rx="8" class="fill-card stroke-border" />
+                        <text x="142" y="62" text-anchor="middle" font-size="15" font-weight="bold">Unverified loop</text>
+                        <circle cx="104" cy="112" r="30" class="fill-tertiary stroke-border" />
+                        <text x="104" y="117" text-anchor="middle" font-size="12">Model</text>
+                        <circle cx="180" cy="112" r="30" class="fill-tertiary stroke-border" />
+                        <text x="180" y="109" text-anchor="middle" font-size="12">Synthetic</text>
+                        <text x="180" y="124" text-anchor="middle" font-size="12">data</text>
+                        <path d="M134 112 L150 112" class="stroke-muted" />
+                        <polygon points="150,112 141,107 141,117" class="fill-accent" />
+                        <path d="M180 82 C146 54 96 62 92 84" class="stroke-muted" />
+                        <polygon points="92,84 88,74 99,77" class="fill-accent" />
+                        <text x="142" y="162" text-anchor="middle" font-size="12" class="muted">errors can compound</text>
+
+                        <path d="M274 108 L306 108" class="stroke-accent" />
+                        <polygon points="306,108 296,102 296,114" class="fill-accent" />
+
+                        <rect x="320" y="32" width="236" height="152" rx="8" class="fill-card stroke-border" />
+                        <text x="438" y="62" text-anchor="middle" font-size="15" font-weight="bold">Verified synthesis</text>
+                        <rect x="344" y="88" width="72" height="48" rx="6" class="fill-tertiary stroke-border" />
+                        <text x="380" y="117" text-anchor="middle" font-size="12">Generate</text>
+                        <rect x="452" y="88" width="72" height="48" rx="6" class="fill-accent-glow stroke-accent" />
+                        <text x="488" y="109" text-anchor="middle" font-size="12">Check</text>
+                        <text x="488" y="124" text-anchor="middle" font-size="11" class="muted">tests, sims</text>
+                        <path d="M416 112 L452 112" class="stroke-accent" />
+                        <polygon points="452,112 442,106 442,118" class="fill-accent" />
+                        <path d="M488 136 L488 158 L380 158 L380 136" class="stroke-accent" />
+                        <text x="438" y="176" text-anchor="middle" font-size="12" class="muted">only validated data trains</text>
+                    </svg>
+                </div>
+                <p>If models train on unverified synthetic data, they risk <strong>Model Collapse</strong>—a phenomenon where errors, biases, and weird linguistic quirks compound over generations, causing the model to become increasingly stupid and disconnected from reality.</p>
+                <p>To prevent this, engineers use <strong>Verified Synthesis</strong>: using external environments to validate the AI's data. For example:</p>
+                <ul>
+                    <li>An AI generates code, which is then run in a <strong>compiler</strong> to verify it works. Only working code is used for training.</li>
+                    <li>An AI solves a math problem. The solution is validated using <strong>formal math verifiers</strong>.</li>
+                    <li>An AI reasons about physical properties. The scenario is run through a <strong>physics engine</strong> to make sure it follows real-world laws.</li>
+                </ul>
+            </div>
+
+            <h2>Robotics and Physical Grounding</h2>
+            <p>For AI to truly understand the world, it must interact with it. By combining multimodal LLMs with robotic control systems, researchers have developed <strong>Vision-Language-Action (VLA)</strong> models such as Google's RT-2 and Gemini Robotics.</p>
+            <p>A VLA model doesn't just output text; it outputs physical actions for a robot's joints and grippers. When you tell a VLA-enabled robot arm: <em>"Pick up the yellow banana and put it in the basket,"</em> the model processes the camera feed (pixels), matches the words to the objects, calculates the spatial path, and controls the robot's motors directly. The LLM acts as the robot's planning layer, giving it common-sense reasoning and adaptability to new environments without custom programming for every object.</p>
+
+            <h2>The Next Paradigm: Test-Time Compute</h2>
+            <p>Pre-training scaling laws (adding more parameters and GPUs during training) are no longer the only axis of progress. The newer vector is <strong>Test-Time Compute</strong> (scaling at inference time).</p>
+            <p>Instead of forcing a model to answer within a fraction of a second, test-time compute lets the model spend extra compute planning, checking, searching, or coordinating tools. This is why frontier model releases increasingly emphasize agentic coding, computer use, document work, and scientific workflows rather than only chat benchmark scores. The practical question is becoming: how much thought should the system buy for this task?</p>
+
+            <section class="sources-list" aria-labelledby="sources-heading">
+                <h2 id="sources-heading">Sources</h2>
+                <ul>
+                    <li><a href="https://deepmind.google/discover/blog/rt-2-new-model-translates-vision-and-language-into-action/">RT-2: New model translates vision and language into action</a> — Google DeepMind</li>
+                    <li><a href="https://arxiv.org/abs/2503.20020">Gemini Robotics: Bringing AI into the Physical World</a> — Google DeepMind</li>
+                    <li><a href="https://www.nature.com/articles/s41586-024-07566-y">AI models collapse when trained on recursively generated data</a> — Nature</li>
+                    <li><a href="https://arxiv.org/abs/2408.03314">Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters</a> — Snell et al.</li>
+                    <li><a href="https://openai.com/index/learning-to-reason-with-llms/">Learning to Reason with LLMs</a> — OpenAI</li>
+                    <li><a href="https://openai.com/index/introducing-gpt-5-5/">Introducing GPT-5.5</a> — OpenAI</li>
+                </ul>
+            </section>
+        </section>
+
+        <section class="print-chapter" id="chapter8-evals">
+            <div class="chapter-header">
+                <div class="chapter-meta">
+                    <span>Chapter 8</span>
+                    <span>• 10 min read</span>
+                    <span>• Last reviewed: May 2026</span>
+                </div>
+                <h1>Evaluation, Safety & Production AI</h1>
+            </div>
+
+            <p>Building an AI demo is mostly about capability: can the model answer, retrieve, reason, or act? Shipping an AI product is about repeatability: can the system keep doing the right thing when prompts change, documents drift, users attack it, models upgrade, and costs spike?</p>
+            <p>Production AI teams treat the model as one component in a larger system. The surrounding product needs evals, guardrails, observability, rollback plans, and human review for cases where model confidence is not enough.</p>
+
+            <h2>Eval-Driven Development</h2>
+            <p>An <strong>eval</strong> is a repeatable test for behavior that matters. Instead of asking "does the answer look good?", an eval asks a narrower question: did the assistant cite the right policy section, refuse the unsafe request, preserve the JSON schema, choose the right tool, or solve the task within the latency budget?</p>
+            <p>Useful eval suites mix several test types:</p>
+            <ul>
+                <li><strong>Golden examples:</strong> known prompts with expected answers, labels, or rubrics.</li>
+                <li><strong>Regression cases:</strong> failures from production that must not come back after a prompt, retrieval, or model change.</li>
+                <li><strong>Adversarial cases:</strong> inputs designed to trigger jailbreaks, prompt injection, data leakage, or unsafe tool calls.</li>
+                <li><strong>Performance cases:</strong> examples that measure cost, latency, refusal rate, and answer length, not just correctness.</li>
+            </ul>
+            <p>The important habit is to run evals before changing models, prompts, retrieval settings, or tool permissions. In AI systems, a "minor" prompt edit can behave like a code change across thousands of hidden branches.</p>
+
+            <div class="concepts-box">
+                <h4>The Production Eval Loop</h4>
+                <div class="illustration-container">
+                    <svg class="illustration" viewBox="0 0 580 240" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram showing production AI eval flow from examples to launch gate to monitoring">
+                        <rect x="28" y="46" width="110" height="58" rx="8" class="fill-tertiary stroke-border" />
+                        <text x="83" y="72" text-anchor="middle" font-size="13" font-weight="bold">Examples</text>
+                        <text x="83" y="89" text-anchor="middle" font-size="11" class="muted">golden + failures</text>
+
+                        <rect x="176" y="46" width="110" height="58" rx="8" class="fill-tertiary stroke-border" />
+                        <text x="231" y="72" text-anchor="middle" font-size="13" font-weight="bold">Run Evals</text>
+                        <text x="231" y="89" text-anchor="middle" font-size="11" class="muted">quality + risk</text>
+
+                        <rect x="324" y="46" width="110" height="58" rx="8" class="fill-accent-glow stroke-accent" />
+                        <text x="379" y="72" text-anchor="middle" font-size="13" font-weight="bold">Launch Gate</text>
+                        <text x="379" y="89" text-anchor="middle" font-size="11" class="muted">pass / block</text>
+
+                        <rect x="472" y="46" width="80" height="58" rx="8" class="fill-tertiary stroke-border" />
+                        <text x="512" y="72" text-anchor="middle" font-size="13" font-weight="bold">Ship</text>
+                        <text x="512" y="89" text-anchor="middle" font-size="11" class="muted">limited ramp</text>
+
+                        <path d="M138 75 L176 75" class="stroke-accent" />
+                        <polygon points="176,75 166,69 166,81" class="fill-accent" />
+                        <path d="M286 75 L324 75" class="stroke-accent" />
+                        <polygon points="324,75 314,69 314,81" class="fill-accent" />
+                        <path d="M434 75 L472 75" class="stroke-accent" />
+                        <polygon points="472,75 462,69 462,81" class="fill-accent" />
+
+                        <rect x="176" y="148" width="110" height="58" rx="8" class="fill-tertiary stroke-border" />
+                        <text x="231" y="174" text-anchor="middle" font-size="13" font-weight="bold">Monitor</text>
+                        <text x="231" y="191" text-anchor="middle" font-size="11" class="muted">traces + metrics</text>
+
+                        <rect x="324" y="148" width="110" height="58" rx="8" class="fill-tertiary stroke-border" />
+                        <text x="379" y="174" text-anchor="middle" font-size="13" font-weight="bold">Review</text>
+                        <text x="379" y="191" text-anchor="middle" font-size="11" class="muted">sample failures</text>
+
+                        <path d="M512 104 C512 154 470 177 434 177" class="stroke-muted" />
+                        <polygon points="434,177 444,171 444,183" class="fill-accent" />
+                        <path d="M324 177 L286 177" class="stroke-muted" />
+                        <polygon points="286,177 296,171 296,183" class="fill-accent" />
+                        <path d="M176 177 C82 177 76 130 83 104" class="stroke-muted" />
+                        <polygon points="83,104 77,114 89,113" class="fill-accent" />
+                        <text x="290" y="226" text-anchor="middle" font-size="12" class="muted">production failures become the next regression tests</text>
+                    </svg>
+                </div>
+                <p>The loop is simple: collect examples, run evals, block risky releases, monitor live behavior, review failures, and add those failures back to the suite.</p>
+            </div>
+
+            <h2>Groundedness and Source Verification</h2>
+            <p>For RAG systems, the most common failure is not a totally random answer. It is an answer that sounds plausible but is only partly supported by the retrieved evidence. A groundedness check compares each important claim against the source passages the system provided.</p>
+            <p>Good groundedness evaluation asks:</p>
+            <ul>
+                <li>Does every factual claim have supporting evidence in the retrieved context?</li>
+                <li>Did the answer cite the specific source that supports the claim?</li>
+                <li>Did the model ignore conflicting evidence or overstate uncertainty?</li>
+                <li>Should the system answer, ask a clarifying question, retrieve again, or refuse?</li>
+            </ul>
+            <p>This is why citations are not just decoration. A citation should be a checkable pointer to the evidence that justifies the answer. If the pointer is wrong, the system is teaching users to trust the wrong thing.</p>
+
+            <h2>Prompt Injection and Tool Safety</h2>
+            <p><strong>Prompt injection</strong> happens when untrusted text tries to override the system's instructions. In a RAG app, the attack might live inside a PDF. In an agent, it might appear on a web page the agent browses. The dangerous pattern is the same: the model reads attacker-controlled text and treats it like an instruction from the product owner.</p>
+            <p>Tool use makes this risk sharper. A model that can only write text can mislead a user; a model with tools can email customers, change records, run code, or expose private data. Production systems reduce that risk with least-privilege tool scopes, allowlists, confirmation steps, output validation, and audit logs.</p>
+            <p>A strong rule of thumb: model instructions are not access control. The host application must enforce permissions outside the model.</p>
+
+            <h2>Observability for AI Apps</h2>
+            <p>Traditional logs often show an HTTP request, a status code, and a response time. AI observability needs more: prompt versions, retrieved chunks, model names, tool calls, token usage, evaluator scores, refusals, user feedback, and traces across the full agent loop.</p>
+            <p>Without traces, teams cannot answer basic production questions: Did retrieval fail? Did the model ignore good evidence? Did a tool return bad data? Did a prompt change increase cost? Did a new model improve benchmark scores but hurt real support tickets?</p>
+
+            <h2>Human Review and Launch Gates</h2>
+            <p>Human review is not a failure of automation; it is a control surface. High-impact workflows often need human approval for irreversible actions, sensitive domains, edge cases, and low-confidence answers. The product should make review efficient by showing the prompt, evidence, model answer, tool actions, and eval signals in one place.</p>
+            <p>Before launch, teams usually define gates: minimum eval scores, maximum hallucination rate, maximum latency, acceptable cost per task, security test coverage, and rollback criteria. After launch, sampled production traces become new tests so the system gets harder to break over time.</p>
+
+            <section class="sources-list" aria-labelledby="sources-heading">
+                <h2 id="sources-heading">Sources</h2>
+                <ul>
+                    <li><a href="https://platform.openai.com/docs/guides/evals">Working with evals</a> — OpenAI API docs</li>
+                    <li><a href="https://github.com/openai/evals">OpenAI Evals</a> — OpenAI</li>
+                    <li><a href="https://www.nist.gov/itl/ai-risk-management-framework">AI Risk Management Framework</a> — NIST</li>
+                    <li><a href="https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf">AI RMF Generative AI Profile</a> — NIST</li>
+                    <li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">OWASP Top 10 for LLM Applications</a> — OWASP Foundation</li>
+                    <li><a href="https://arxiv.org/abs/2306.05685">Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena</a> — Zheng et al.</li>
+                    <li><a href="https://arxiv.org/abs/2401.00396">RAGTruth: A Hallucination Corpus for Retrieval-Augmented Language Models</a> — Niu et al.</li>
+                </ul>
+            </section>
+        </section>
+    </main>
+
+    <footer>
+        <p>AI 101 Guide — Optimized for Kindle Web Browser.</p>
+        <p>Generated from the canonical chapter files.</p>
+        <p>If you have feedback, email us at <a href="mailto:ai@puma.tech">ai@puma.tech</a></p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

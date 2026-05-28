@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" class="genz-static">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossary & Concept Index — AI 101 Guide — Gen Z Edition</title>
+    <meta name="description" content="A Kindle-friendly glossary of core AI concepts, including attention, embeddings, RAG, MoE, evals, guardrails, and agentic systems.">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <a href="index.html" class="logo-link">AI 101 <span class="logo-badge">INDEX</span></a>
+            </div>
+            <div class="controls">
+                <div class="font-scale-controls">
+                    <button id="font-decrease" class="btn-scale" title="Decrease Font Size" aria-label="Decrease font size">A−</button>
+                    <button id="font-increase" class="btn-scale" title="Increase Font Size" aria-label="Increase font size">A+</button>
+                </div>
+                <a href="index.html" class="btn-icon" aria-label="Read the AI guide">Guide</a>
+                <a href="game.html" class="btn-icon" aria-label="Play the AI systems game">Play</a>
+                <a href="print.html" class="btn-icon" aria-label="Open the single-page edition">Print</a>
+                <a href="../glossary.html" class="btn-icon genz-link active" aria-label="Read the original version">Original</a>
+                <button id="theme-toggle" class="btn-icon" aria-label="Switch to dark mode" aria-pressed="false">Dark</button>
+                <button id="kindle-toggle" class="btn-icon" aria-label="Switch to high-contrast Kindle mode" aria-pressed="false">Kindle / E-Ink</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="animated">
+        <section class="hero">
+            <p class="eyebrow">Reference</p>
+            <h1>Glossary & Concept Index</h1>
+            <p>Short definitions for the terms that repeat across the guide, with chapter links for deeper reading.</p>
+        </section>
+
+        <section class="glossary-list" aria-label="AI glossary">
+            <article id="agent" class="glossary-entry">
+                <h2>Agent</h2>
+                <p>An AI system that can plan, call tools, observe results, and continue through a task instead of returning one immediate answer.</p>
+                <a href="chapters/chapter6-agents.html">Chapter 6</a>
+            </article>
+            <article id="alignment" class="glossary-entry">
+                <h2>Alignment</h2>
+                <p>Training and product work that steers a model toward useful, honest, safe, and controllable behavior.</p>
+                <a href="chapters/chapter2-llms.html">Chapter 2</a>
+            </article>
+            <article id="attention" class="glossary-entry">
+                <h2>Attention</h2>
+                <p>The Transformer mechanism that lets each token weigh which other tokens matter most for interpreting it.</p>
+                <a href="chapters/chapter1-transformers.html">Chapter 1</a>
+            </article>
+            <article id="context-window" class="glossary-entry">
+                <h2>Context Window</h2>
+                <p>The immediate working memory available to the model: the prompt, retrieved documents, tool outputs, and prior messages it can inspect now.</p>
+                <a href="chapters/chapter3-rag.html">Chapter 3</a>
+            </article>
+            <article id="diffusion" class="glossary-entry">
+                <h2>Diffusion</h2>
+                <p>A generative media approach that starts from noise and repeatedly removes predicted noise until an image, video, or audio sample emerges.</p>
+                <a href="chapters/chapter5-diffusion.html">Chapter 5</a>
+            </article>
+            <article id="embedding" class="glossary-entry">
+                <h2>Embedding</h2>
+                <p>A vector representation that places text, images, or other data into a mathematical space where similar meanings sit near each other.</p>
+                <a href="chapters/chapter3-rag.html">Chapter 3</a>
+            </article>
+            <article id="eval" class="glossary-entry">
+                <h2>Eval</h2>
+                <p>A repeatable test that checks whether an AI system behaves correctly on cases that matter for the product.</p>
+                <a href="chapters/chapter8-evals.html">Chapter 8</a>
+            </article>
+            <article id="groundedness" class="glossary-entry">
+                <h2>Groundedness</h2>
+                <p>The degree to which an answer is supported by the evidence the system retrieved or was given.</p>
+                <a href="chapters/chapter8-evals.html">Chapter 8</a>
+            </article>
+            <article id="guardrail" class="glossary-entry">
+                <h2>Guardrail</h2>
+                <p>A product-level check or constraint around the model, such as input filtering, output validation, citation checks, or tool permission rules.</p>
+                <a href="chapters/chapter8-evals.html">Chapter 8</a>
+            </article>
+            <article id="llm-as-judge" class="glossary-entry">
+                <h2>LLM-as-Judge</h2>
+                <p>Using a model to grade another model's output with a rubric. It is useful for scale, but it needs calibration because judges can be biased.</p>
+                <a href="chapters/chapter8-evals.html">Chapter 8</a>
+            </article>
+            <article id="moe" class="glossary-entry">
+                <h2>Mixture of Experts</h2>
+                <p>A sparse architecture where a router activates only a few specialized expert networks for each token.</p>
+                <a href="chapters/chapter4-moe.html">Chapter 4</a>
+            </article>
+            <article id="prompt-injection" class="glossary-entry">
+                <h2>Prompt Injection</h2>
+                <p>An attack where untrusted text tries to override the system's instructions, often through retrieved documents, web pages, or user input.</p>
+                <a href="chapters/chapter8-evals.html">Chapter 8</a>
+            </article>
+            <article id="qkv" class="glossary-entry">
+                <h2>Query, Key, Value</h2>
+                <p>The three vectors used by attention: what a token seeks, what other tokens offer, and the content that gets blended into the result.</p>
+                <a href="chapters/chapter1-transformers.html">Chapter 1</a>
+            </article>
+            <article id="rag" class="glossary-entry">
+                <h2>Retrieval-Augmented Generation</h2>
+                <p>A pattern where the system retrieves relevant external evidence, places it in context, and asks the model to answer from that evidence.</p>
+                <a href="chapters/chapter3-rag.html">Chapter 3</a>
+            </article>
+            <article id="test-time-compute" class="glossary-entry">
+                <h2>Test-Time Compute</h2>
+                <p>Extra inference-time work spent on planning, searching, checking, or tool use before the final answer is returned.</p>
+                <a href="chapters/chapter7-frontiers.html">Chapter 7</a>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p>AI 101 Guide — Optimized for Kindle Web Browser.</p>
+        <p>Toggle "Kindle / E-Ink" mode above for a pure book-like layout.</p>
+        <p>If you have feedback, email us at <a href="mailto:ai@puma.tech">ai@puma.tech</a></p>
+    </footer>
+
+    <script src="../app.js"></script>
+</body>
+</html>

@@ -118,7 +118,9 @@ body.kindle-mode a:hover {
 }
 
 body.kindle-mode .card,
-body.kindle-mode .chapter-card {
+body.kindle-mode .chapter-card,
+body.kindle-mode .resource-link,
+body.kindle-mode .glossary-entry {
     border: 2px solid #000000 !important;
     border-radius: 0px !important;
     background: #ffffff !important;
@@ -479,6 +481,112 @@ body.kindle-mode .hero {
     margin-bottom: 0;
 }
 
+.chapter-status {
+    display: inline-flex;
+    margin-top: 0.75rem;
+    padding: 0.18rem 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.chapter-card.completed {
+    border-color: var(--accent);
+}
+
+.chapter-card.completed .chapter-status,
+.completion-toggle.is-complete {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+    color: var(--text-primary);
+}
+
+body.kindle-mode .chapter-status,
+body.kindle-mode .completion-toggle.is-complete {
+    border: 2px solid #000000 !important;
+    border-radius: 0 !important;
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+.progress-panel {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    align-items: center;
+    margin: 2rem 0;
+    padding: 1.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--bg-secondary);
+    box-shadow: var(--card-shadow);
+}
+
+.progress-panel h2 {
+    margin-top: 0;
+}
+
+.progress-panel p:last-child {
+    margin-bottom: 0;
+}
+
+.progress-panel strong {
+    flex: 0 0 auto;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+}
+
+body.kindle-mode .progress-panel {
+    border: 2px solid #000000 !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+}
+
+.resource-links {
+    margin-top: 2.5rem;
+}
+
+.resource-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.resource-link {
+    display: block;
+    padding: 1.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-secondary);
+    box-shadow: var(--card-shadow);
+}
+
+.resource-link:hover {
+    border-color: var(--accent);
+    text-decoration: none;
+}
+
+.resource-link strong,
+.resource-link span {
+    display: block;
+}
+
+.resource-link strong {
+    color: var(--text-primary);
+    font-family: var(--font-heading);
+    margin-bottom: 0.35rem;
+}
+
+.resource-link span {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
 /* Reading Layout */
 .chapter-header {
     margin-bottom: 2.5rem;
@@ -518,6 +626,10 @@ body.kindle-mode .chapter-body blockquote {
 
 .chapter-body li {
     margin-bottom: 0.5rem;
+}
+
+.completion-toggle {
+    margin-top: 0.5rem;
 }
 
 .chapter-body img {
@@ -608,6 +720,69 @@ body.kindle-mode .concepts-box h4 {
 
 body.kindle-mode .sources-list {
     border-top: 2px solid #000000 !important;
+}
+
+.glossary-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.glossary-entry {
+    padding: 1.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-secondary);
+    box-shadow: var(--card-shadow);
+}
+
+.glossary-entry h2 {
+    margin-top: 0;
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.glossary-entry p {
+    margin-bottom: 0.75rem;
+}
+
+.print-edition main {
+    max-width: 820px;
+}
+
+.print-toc {
+    margin: 2rem 0;
+    padding: 1.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-secondary);
+}
+
+.print-chapter {
+    break-before: page;
+    page-break-before: always;
+}
+
+.print-chapter:first-of-type {
+    break-before: auto;
+    page-break-before: auto;
+}
+
+.print-chapter blockquote {
+    border-left: 4px solid var(--accent);
+    padding-left: 1.25rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--text-secondary);
+}
+
+.print-chapter ul,
+.print-chapter ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.print-chapter li {
+    margin-bottom: 0.5rem;
 }
 
 body.kindle-mode .game-board,
@@ -1038,6 +1213,15 @@ body.kindle-mode .illustration .stroke-muted {
     .nav-link-card {
         max-width: 100%;
     }
+
+    .progress-panel {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .resource-grid {
+        grid-template-columns: 1fr;
+    }
     
     .nav-link-card.next {
         text-align: left;
@@ -1061,5 +1245,55 @@ body.kindle-mode .illustration .stroke-muted {
     .btn-primary,
     .btn-secondary {
         width: 100%;
+    }
+}
+
+@media print {
+    header,
+    footer,
+    .controls,
+    .chapter-navigation,
+    .completion-toggle,
+    .hero-actions {
+        display: none !important;
+    }
+
+    body,
+    :root,
+    :root.dark-theme,
+    :root.light-theme {
+        --bg-primary: #ffffff;
+        --bg-secondary: #ffffff;
+        --bg-tertiary: #ffffff;
+        --text-primary: #000000;
+        --text-secondary: #000000;
+        --text-muted: #333333;
+        --accent: #000000;
+        --accent-glow: transparent;
+        --border-color: #000000;
+        --card-shadow: none;
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+
+    main {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .hero,
+    .concepts-box,
+    .illustration-container,
+    .print-toc {
+        border: 1px solid #000000 !important;
+        border-radius: 0 !important;
+        background: #ffffff !important;
+        box-shadow: none !important;
+    }
+
+    a {
+        color: #000000 !important;
+        text-decoration: underline !important;
     }
 }
