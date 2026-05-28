@@ -8,4 +8,4 @@ script = ""
 [[actions]]
 name = "Run"
 icon = "tool"
-command = "python -m http.server 8080"
+command = "python -m http.server 8070"
